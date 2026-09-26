@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+<meta name="theme-color" content="#1B2A4A">
+<title>家装施工流程指南 · 装修顺序一次看明白</title>
+<style>
+:root{
+  --navy:#1B2A4A;--navy2:#27406B;--orange:#FF9A3C;--orange-d:#F08428;
+  --bg:#F2F5FA;--card:#FFFFFF;--line:#E4E9F2;--text:#26303F;--sub:#6B7689;
+}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:-apple-system,BlinkMacSystemFont,"PingFang SC","Hiragino Sans GB","Microsoft YaHei",sans-serif;
+  background:var(--bg);color:var(--text);line-height:1.65;font-size:16px;
+  padding-bottom:88px;
+}
+.wrap{max-width:560px;margin:0 auto;background:var(--bg);min-height:100vh;position:relative;}
+
+/* ---------- 顶部 ---------- */
+.hero{
+  background:linear-gradient(150deg,#22365C 0%,#16233F 55%,#101A2F 100%);
+  color:#fff;padding:34px 24px 30px;position:relative;overflow:hidden;
+}
+.hero::after{
+  content:"";position:absolute;top:-70px;right:-60px;width:220px;height:220px;
+  background:radial-gradient(circle,rgba(255,154,60,.28),transparent 68%);
+}
+.hero .badge{
+  display:inline-block;background:rgba(255,154,60,.18);color:var(--orange);
+  border:1px solid rgba(255,154,60,.45);font-size:12px;font-weight:700;
+  padding:4px 12px;border-radius:20px;letter-spacing:.5px;margin-bottom:14px;
+}
+.hero h1{margin:0 0 10px;font-size:25px;font-weight:800;letter-spacing:.5px;line-height:1.4;}
+.hero p{margin:0;color:#B9C6DE;font-size:14.5px;position:relative;}
+.hero .stats{display:flex;gap:26px;margin-top:22px;position:relative;}
+.hero .stats div{font-size:12px;color:#96A5C2;}
+.hero .stats b{display:block;font-size:21px;color:var(--orange);font-weight:800;letter-spacing:.5px;}
+
+/* ---------- 通用 ---------- */
+.sec-title{
+  display:flex;align-items:center;gap:9px;font-size:17px;font-weight:800;color:var(--navy);
+  margin:24px 20px 12px;
+}
+.sec-title .bar{width:4px;height:17px;background:var(--orange);border-radius:2px;}
+
+/* ---------- 阶段列表 ---------- */
+.list{padding:0 16px;}
+.card{
+  background:var(--card);border-radius:15px;padding:15px 16px;margin-bottom:11px;
+  display:flex;align-items:center;gap:14px;
+  box-shadow:0 2px 12px rgba(27,42,74,.06);
+  cursor:pointer;transition:transform .15s,box-shadow .15s;position:relative;
+}
+.card:active{transform:scale(.985);box-shadow:0 1px 6px rgba(27,42,74,.09);}
+.card.done{background:#F7FAF8;}
+.ico{
+  width:46px;height:46px;flex:none;border-radius:13px;
+  background:linear-gradient(140deg,#2B4370,#1B2A4A);
+  display:flex;align-items:center;justify-content:center;font-size:22px;
+  box-shadow:0 3px 9px rgba(27,42,74,.22);
+}
+.card.done .ico{background:linear-gradient(140deg,#3FA36B,#2E7D50);}
+.card .mid{flex:1;min-width:0;}
+.card .name{font-size:16.5px;font-weight:700;color:var(--navy);display:flex;align-items:center;gap:7px;}
+.card .no{
+  font-size:11px;font-weight:800;color:#fff;background:var(--orange);
+  min-width:19px;height:19px;border-radius:50%;display:inline-flex;
+  align-items:center;justify-content:center;padding:0 5px;flex:none;
+}
+.card .tag{font-size:13px;color:var(--sub);margin-top:2px;
+  overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}
+.card .arrow{color:#C3CCDC;font-size:19px;flex:none;font-weight:300;}
+.card.done .arrow{color:#3FA36B;}
+
+/* ---------- 详情 ---------- */
+.page-head{
+  background:linear-gradient(150deg,#22365C,#101A2F);color:#fff;
+  padding:20px 20px 26px;position:relative;
+}
+.back{
+  display:inline-flex;align-items:center;gap:5px;font-size:14px;color:#B9C6DE;
+  margin-bottom:16px;cursor:pointer;font-weight:600;
+}
+.ph-top{display:flex;align-items:center;gap:14px;}
+.ph-ico{
+  width:56px;height:56px;flex:none;border-radius:16px;font-size:27px;
+  background:linear-gradient(140deg,rgba(255,154,60,.9),rgba(240,132,40,.85));
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 5px 16px rgba(255,154,60,.32);
+}
+.ph-name{font-size:22px;font-weight:800;line-height:1.3;}
+.ph-tag{font-size:13px;color:#B9C6DE;margin-top:3px;}
+
+.block{
+  background:var(--card);border-radius:15px;margin:12px 16px;padding:17px 18px;
+  box-shadow:0 2px 12px rgba(27,42,74,.06);
+}
+.block.next{border-left:5px solid var(--orange);background:#FFFBF6;}
+.bh{display:flex;align-items:center;gap:9px;font-size:16px;font-weight:800;
+  color:var(--navy);margin-bottom:11px;}
+.bh .bico{
+  width:28px;height:28px;flex:none;border-radius:9px;font-size:15px;
+  background:#EDF1F8;display:flex;align-items:center;justify-content:center;
+}
+.bh .bico.o{background:#FFEFDD;}
+.block-text{font-size:15px;color:#3B4757;}
+.item{
+  font-size:15px;color:#3B4757;padding:6px 0 6px 20px;position:relative;line-height:1.6;
+}
+.item::before{
+  content:"";position:absolute;left:5px;top:14px;width:6px;height:6px;
+  border-radius:50%;background:#B9C6DE;
+}
+.item.o::before{background:var(--orange);}
+.item.sm::before{background:var(--navy2);}
+.next-box{
+  background:linear-gradient(135deg,#FFF3E6,#FFE9D2);border-radius:11px;
+  padding:13px 16px;display:flex;align-items:center;gap:11px;
+}
+.next-box .nb-ico{font-size:22px;}
+.next-box .nb-t{font-size:12px;color:#B06A21;font-weight:700;letter-spacing:.5px;}
+.next-box .nb-v{font-size:17px;font-weight:800;color:var(--navy);margin-top:1px;}
+.smart-time{
+  display:inline-flex;align-items:center;gap:6px;
+  background:linear-gradient(135deg,#FFB05E,#F08428);color:#fff;
+  font-size:12.5px;font-weight:800;padding:6px 14px;border-radius:20px;
+  letter-spacing:.4px;margin-bottom:12px;box-shadow:0 3px 10px rgba(240,132,40,.3);
+}
+.subh{
+  font-size:13px;font-weight:800;color:var(--orange-d);margin:14px 0 4px;
+  padding-top:12px;border-top:1px dashed var(--line);
+}
+.block.smart{border-left:5px solid var(--navy);}
+.block.smart .item{color:var(--navy);font-weight:500;}
+.block.local-block{
+  border-left:5px solid var(--orange);
+  background:linear-gradient(135deg,#FFFCF8,#FFF8F0);
+}
+.block.local-block .bh{color:#B0621F;}
+.block.local-block .bh .bico{background:#FFEFDD;}
+.item.lc::before{background:var(--orange);}
+
+/* ---------- 进度条 ---------- */
+.prog-card{
+  background:var(--card);border-radius:15px;margin:16px;padding:18px 20px;
+  box-shadow:0 2px 12px rgba(27,42,74,.06);
+}
+.prog-top{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:12px;gap:10px;flex-wrap:nowrap;}
+.prog-top .pt-l{font-size:14.5px;font-weight:800;color:var(--navy);white-space:nowrap;}
+.prog-top .pt-r{font-size:13px;color:var(--sub);white-space:nowrap;}
+.prog-top .pt-r b{color:var(--orange);font-size:19px;font-weight:800;}
+.bar-bg{height:11px;background:#EAEFF7;border-radius:6px;overflow:hidden;}
+.bar-fill{
+  height:100%;border-radius:6px;width:0;
+  background:linear-gradient(90deg,var(--orange),#FFB86B);
+  transition:width .45s cubic-bezier(.4,0,.2,1);
+}
+.now-box{
+  margin-top:15px;background:linear-gradient(135deg,#F3F7FE,#E8F0FC);
+  border-radius:11px;padding:13px 15px;display:flex;align-items:center;gap:12px;
+}
+.now-box .ni{font-size:24px;}
+.now-box .nlab{font-size:11.5px;color:var(--sub);font-weight:700;letter-spacing:.5px;}
+.now-box .nval{font-size:16px;font-weight:800;color:var(--navy);margin-top:2px;}
+
+/* ---------- 打卡行 ---------- */
+.prow{
+  display:flex;align-items:center;gap:12px;background:var(--card);
+  border-radius:13px;padding:12px 15px;margin-bottom:9px;cursor:pointer;
+  box-shadow:0 1px 8px rgba(27,42,74,.05);transition:background .2s;
+}
+.prow:active{background:#F6F9FD;}
+.prow .pico{
+  width:38px;height:38px;flex:none;border-radius:11px;font-size:18px;
+  background:linear-gradient(140deg,#EEF3FB,#E2EAF7);
+  display:flex;align-items:center;justify-content:center;
+}
+.prow .pn{flex:1;font-size:15px;font-weight:600;color:var(--navy);min-width:0;}
+.prow.done .pn{color:#8A94A6;}
+.prow.done .pico{background:linear-gradient(140deg,#E6F5EC,#D8EEE2);}
+.tick{
+  width:25px;height:25px;flex:none;border-radius:50%;border:2px solid #CFD8E6;
+  display:flex;align-items:center;justify-content:center;font-size:14px;
+  color:transparent;transition:all .2s;
+}
+.prow.done .tick{background:#3FA36B;border-color:#3FA36B;color:#fff;}
+
+/* ---------- 领取区 ---------- */
+.cta{
+  margin:22px 16px 8px;
+  background:linear-gradient(150deg,#22365C,#16233F);border-radius:17px;
+  padding:22px 20px;color:#fff;text-align:center;position:relative;overflow:hidden;
+}
+.cta::after{
+  content:"";position:absolute;bottom:-50px;left:-40px;width:170px;height:170px;
+  background:radial-gradient(circle,rgba(255,154,60,.22),transparent 70%);
+}
+.cta h3{margin:0 0 7px;font-size:19px;font-weight:800;position:relative;}
+.cta p{margin:0 0 17px;font-size:13.5px;color:#B9C6DE;position:relative;}
+.cta .btns{display:flex;gap:10px;position:relative;}
+.btn{
+  flex:1;border:none;border-radius:11px;padding:13px 10px;font-size:15px;
+  font-weight:800;cursor:pointer;font-family:inherit;transition:transform .15s;
+}
+.btn:active{transform:scale(.97);}
+.btn-o{background:linear-gradient(135deg,#FFA94D,#F08428);color:#fff;
+  box-shadow:0 4px 14px rgba(240,132,40,.35);}
+.btn-gh{background:rgba(255,255,255,.09);color:#fff;border:1px solid rgba(255,255,255,.28);}
+
+/* ---------- 底部固定栏 ---------- */
+.tabbar{
+  position:fixed;bottom:0;left:0;right:0;z-index:60;
+  background:rgba(255,255,255,.96);backdrop-filter:blur(12px);
+  border-top:1px solid var(--line);display:flex;
+  max-width:560px;margin:0 auto;
+  padding-bottom:env(safe-area-inset-bottom);
+}
+.tabbar .tb{
+  flex:1;text-align:center;padding:9px 0 7px;font-size:11px;color:#93A0B5;
+  cursor:pointer;font-weight:600;
+}
+.tabbar .tb .ti{font-size:21px;display:block;line-height:1.3;filter:grayscale(1);opacity:.55;}
+.tabbar .tb.on{color:var(--navy);}
+.tabbar .tb.on .ti{filter:none;opacity:1;}
+
+/* ---------- 关于 ---------- */
+.about-hero{
+  background:linear-gradient(150deg,#22365C,#101A2F);color:#fff;
+  padding:34px 24px 28px;text-align:center;position:relative;overflow:hidden;
+}
+.about-hero::after{
+  content:"";position:absolute;top:-60px;left:50%;transform:translateX(-50%);
+  width:210px;height:210px;background:radial-gradient(circle,rgba(255,154,60,.25),transparent 68%);
+}
+.ava{
+  width:76px;height:76px;border-radius:50%;margin:0 auto 14px;font-size:33px;
+  background:linear-gradient(140deg,#FFA94D,#E8731A);
+  display:flex;align-items:center;justify-content:center;font-weight:800;
+  box-shadow:0 6px 20px rgba(240,132,40,.35);position:relative;
+}
+.about-hero h2{margin:0 0 6px;font-size:21px;font-weight:800;position:relative;}
+.about-hero .sub{font-size:13.5px;color:#B9C6DE;position:relative;}
+.about-hero .stats{display:flex;justify-content:center;gap:30px;margin-top:20px;position:relative;}
+.about-hero .stats div{font-size:11.5px;color:#96A5C2;}
+.about-hero .stats b{display:block;font-size:19px;color:var(--orange);font-weight:800;}
+
+/* ---------- 提示条 ---------- */
+.toast{
+  position:fixed;left:50%;top:50%;transform:translate(-50%,-50%) scale(.9);
+  background:rgba(20,30,50,.94);color:#fff;padding:14px 26px;border-radius:13px;
+  font-size:15px;font-weight:700;z-index:999;opacity:0;pointer-events:none;
+  transition:all .25s;
+}
+.toast.show{opacity:1;transform:translate(-50%,-50%) scale(1);}
+
+.hide{display:none!important;}
+.foot{text-align:center;font-size:11.5px;color:#9AA6BA;padding:20px 0 6px;}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============ 16 阶段数据（内嵌，顺序不可颠倒） ============ */
+const STAGES=[
+{id:0,name:"前期准备",tag:"想清楚再动手",icon:"📋",
+desc:"装修还没正式动工，先把自家的需求、预算和大致方案想清楚，定好风格，避免后期反复改、反复花钱。",
+works:["想清楚家里几口人住、各自生活习惯和收纳需求","定下装修风格和大致预算（建议留出 10%-20% 机动钱）","找设计师或装修公司量房、出平面方案和报价","确定要不要中央空调、新风、全屋智能（这些影响后面水电）","去建材市场转一转，了解瓷砖、地板、卫浴等主材行情"],
+next:"物业报备 + 拆改",
+accept:["平面方案自己和家人都满意，没漏掉重要功能","预算清单清楚，知道钱花在哪","报价单看明白，知道后期可能增项的地方"],
+attn:["多和设计师、家人当面沟通需求，反复确认比后期返工省大钱","量房时自己最好在场，确认尺寸和承重墙、配重墙位置","先定大件家电（中央空调/新风/全屋智能），再定最终方案","合同和报价单逐条看，看不懂的当场问清楚"],
+smartTime:"智能规划期 · 定方案选网关",
+local:["长治冬天冷、夏天不算太潮，方案要以采暖为核心，地暖/暖气片先定，再谈格局","老小区多是砖混楼，层高普遍 2.8 米左右，吊顶别做太厚，压层高","本地装修公司爱把\"全包\"报很低，看清套餐里含不含水电改造和主材，多数是不含的","先量房再谈钱，长治房子朝向和采光差异大，同一个小区也未必一样"],
+smart:["想装智能，这一步就要定方案：选米家/华为/涂鸦等系统，定中枢网关放哪","列清智能清单：智能开关、灯具、窗帘、门锁、传感器、摄像头、暖通","网络规划提前做：每个房间留网线，弱电箱留电源和散热空间","智能和定制柜一起想，避免后期柜子挡了面板和传感器"],
+buy:["先了解行情，不急着买；但中央空调/新风如要装，此阶段就要定","全屋定制可先约初测沟通"],
+pick:["装修公司/设计师：看实景完工案例和口碑，别只看谁报价低","别一上来交大额定金，留点议价和退路空间","主材先逛市场摸行情，别急着下单，容易被忽悠"],
+pit:["别脑子一热就开工，前期想清楚最省钱","预算一定要留机动，装修几乎都会超一点","合同里增项怎么算、怎么收费，一定写清楚"]},
+{id:1,name:"物业报备 + 拆改",tag:"报备登记改格局",icon:"🏠",
+desc:"先去物业登记报备、交装修押金，拿到允许后再按图纸拆墙、砌墙、改格局。这一步是把房子变成你想要的样子。",
+works:["到物业报备，交装修押金，办工人出入证","确认哪些墙能拆、哪些绝对不能动","拆除非承重墙、多余隔断","按新方案新建墙体","拆旧门窗（如需要）"],
+next:"水电改造",
+accept:["拆改后的空间尺寸和图纸一致","拆下来的建筑垃圾清运干净","承重墙、剪力墙、配重墙一丝没动"],
+attn:["动工前再三确认承重墙、配重墙、剪力墙位置（物业图纸标红）","拆改垃圾及时装袋清运，别堆楼道惹投诉","拆改后复核现场尺寸，和图纸一致再往下走","敲墙时周围没人，注意安全"],
+smartTime:"拆改期 · 弱电与网线定位",
+local:["长治老小区（80-2000 年代的楼）多是砖混结构，承重墙多、能拆的少，动工前必须看物业图纸","老楼常有\"外墙保温层薄、冬天返霜\"问题，拆改后新砌墙注意做保温","垃圾清运在本地有固定渠道，问清小区物业是否指定清运队，自己找可能被拦","拆下来的旧门窗、旧暖气片可以回收，别直接当垃圾扔，能抵点清运费"],
+smart:["拆改一般不动智能布线，但先确认弱电箱位置和入户光纤走向","如果改格局，留意保留或新增网线点位（书房、客厅电视墙）","智能中枢/路由器打算放哪，提前想好，影响后面布线"],
+buy:["如需中央空调/新风，此阶段要打孔定位","全屋定制可安排初测"],
+pick:["垃圾清运费问清含不含、运到哪、几次","新砌墙用什么砖或轻质材料，提前问清价格和工期","要装中央空调/新风，此阶段就约好打孔定位"],
+pit:["承重墙、配重墙、剪力墙绝对不能拆，拆了违法还危险","动工前一定问清物业哪些墙不能动","装修押金问清楚什么情况能退、怎么退"]},
+{id:2,name:"水电改造",tag:"隐蔽工程最关键",icon:"⚡",
+desc:"这是最关键的隐蔽工程。按你平时怎么用，重新布置电线和水管，开槽、走线、布管。装完就埋墙里了，以后改不了，所以最费心。",
+works:["和水电师傅现场交底，定好每个插座、开关、水龙头位置","墙面地面开槽","布管、穿线（电线水管走好）","预留智能设备、净水器、扫地机器人等线路","厨房、卫生间单独回路"],
+next:"防水 + 闭水试验",
+accept:["对照点位图，逐个核对插座开关位置对不对","水管打压测试，不漏水","拍照留存所有布线走向（以后墙上打孔要用）"],
+attn:["和水电师傅现场逐一点位交底，边走边定最准","全程最好自己盯，尤其开槽深度、管线走向","强弱电交叉处包锡纸防信号干扰","完工立刻拍照留底（带尺寸），以后墙上打孔全靠它"],
+smartTime:"水电期 · 核心布线留零线",
+local:["长治集中供暖，暖气管道改造要单独找热力公司或专业水暖工，别让水电工顺手改","老房多是单火线，想上智能开关必须借水电改造这次补零线，否则以后没机会","本地水质偏硬，净水器和软水机建议提前留位和电源，事后加装很麻烦","冬季施工注意：气温低于 5 度别做水管打压外露测试，容易冻裂"],
+smart:["智能开关必须留零线！这是最常见的坑，没零线后期只能换电池款","多留插座：网关、摄像头、传感器、扫地机、窗帘电机都要电","每个房间拉超六类网线，客厅电视墙、卧室床头预留网络点","电动窗帘、智能马桶、智能镜柜、净水器提前留好电源","弱电箱换大的或加扩容模块，装得下路由和网关"],
+buy:["强弱电箱、空开、漏保","水管、电线材料（一般施工方包，可指定品牌）","提前定好洁具，确定排水口位置"],
+pick:["电线认国标 BV 线、大品牌（熊猫/德力西/远东），别用非标","水管选 PPR 品牌（伟星/日丰/保利），问是否厂家上门打压质保","空开漏保选正泰/施耐德，看额定电流匹配","网线至少超六类（CAT6A），别用五类"],
+pit:["插座宁多勿少，后期加很麻烦","厨房、卫生间、空调要单独回路","水电完工必须拍照留底，这是保命的"]},
+{id:3,name:"防水 + 闭水试验",tag:"不漏才能往下走",icon:"💧",
+desc:"卫生间、厨房、阳台刷防水涂料，刷完做闭水试验，蓄水泡 24-48 小时，看楼下漏不漏。这一步不过，后面全白搭。",
+works:["基层处理干净、平整","刷防水涂料，一般 2-3 遍","做闭水试验，蓄满水","通知楼下邻居帮忙看顶面"],
+next:"泥瓦施工",
+accept:["闭水试验时间做够（至少 24 小时，建议 48 小时）","楼下顶面没有渗水、水印","淋浴区防水刷到 1.8 米高，其他区域够高"],
+attn:["刷防水前基层必须干、平、无浮砂","管根、阴阳角、地漏处重点刷，做圆弧过渡","闭水时自己也要去楼下看顶面，别只听师傅说","门口做挡水坝，蓄水深度够，别泡到邻居家"],
+smartTime:"水电期 · 智能电源定位",
+local:["长治供暖期长（约 11 月至次年 3 月），卫生间湿气大，防水一定刷够高度","老楼楼板薄、隔音差，闭水试验更容易渗到楼下，必须提前和邻居打好招呼","本地卫生间普遍小，干湿分离要提前规划，否则防水和排水都受影响","冬天做闭水，水温低会拖慢固化，多等一天再放水更保险"],
+smart:["智能马桶、智能镜柜的电源位置在防水前定好，别被水淹","卫生间湿区插座选防溅盒，智能设备电源别正对花洒","镜柜后若藏智能屏，确认墙体已做防水再固定"],
+buy:["防水材料一般由施工方提供","提前和楼下邻居打招呼配合查看"],
+pick:["防水涂料看类型：墙面用刚性、地面用柔性更稳","别贪便宜用劣质涂料，刷够遍数和厚度才管用","看环保标准和保质期，正规品牌更放心"],
+pit:["闭水试验千万别偷懒不做、别提前放水","门口要做挡水坝，别泡到邻居家","发现问题立即返工，别硬着头皮往下走"]},
+{id:4,name:"泥瓦施工",tag:"铺砖找平做面子",icon:"🧱",
+desc:"铺墙砖地砖、地面找平，是家里硬装的“面子”工程，铺得好不好一眼就看出来。",
+works:["包下水管道","墙砖、地砖铺贴","地面找平","窗台石、过门石安装"],
+next:"木工吊顶",
+accept:["用空鼓锤敲，空鼓率控制在 5% 以内","砖缝均匀、对齐","地漏处坡度对，不积水","阴阳角方正"],
+attn:["铺砖前泡水（吸水率高的砖），全瓷砖可薄贴","现场盯空鼓，尤其四角和边缝","地漏处做回字坡或切角，保证排水顺畅","瓷砖铺完做成品保护，别被后续工种划伤"],
+smartTime:"泥瓦期 · 底盒预埋开孔",
+local:["长治冬天供暖期室内干、夏天不算潮，瓷砖一般不用特别挑防潮款，重点看平整度和色差","本地瓦工旺季（春秋）排期紧，提前约师傅，好师傅要排队一两周","瓷砖建议在本地建材市场看实物（城隍庙、英雄路一带集中），网购买错色差退换麻烦","厨房卫生间地面建议选防滑程度高一点的，冬天穿拖鞋、有地暖也不打滑"],
+smart:["电动窗帘电源底盒、智能面板底盒提前预埋，深度要够（≥5cm）","瓷砖开孔给智能面板、传感器留位，别事后砸墙","壁龛或墙排处若放智能屏/音箱，预留电源和网线"],
+buy:["瓷砖、地砖、美缝剂","地漏、过门石、窗台石"],
+pick:["瓷砖看吸水率、平整度、同批次色差","地砖上墙要刷背胶或用瓷砖胶，别只用水泥","美缝剂选环氧彩砂更耐脏防霉","地漏选防臭深水封或磁吸款，别省这几十块"],
+pit:["瓷砖铺前泡水，不然会吸走水泥浆导致空鼓","留缝，别贴死，热胀冷缩会崩","地漏买防臭的，别省这几十块"]},
+{id:5,name:"木工吊顶",tag:"吊顶造型留风口",icon:"📐",
+desc:"做客厅、走廊的吊顶造型，顺便把中央空调、新风的出风口位置留出来。",
+works:["吊顶龙骨框架","封石膏板","做窗帘盒","背景墙基层（如需要）"],
+next:"油工腻子乳胶漆",
+accept:["吊顶平整，没有明显高低","螺丝做了防锈处理","转角用整板，防开裂"],
+attn:["吊顶前确认中央空调/新风风口尺寸位置","盯转角用整板（L 型切割）、钉眼做防锈","窗帘盒尺寸和窗帘轨道匹配，提前量好","自攻螺丝间距别太大，结构才稳"],
+smartTime:"吊顶期 · 检修口与定位",
+local:["长治层高普遍不高（2.6-2.8 米），吊顶做太厚会压抑，建议局部吊顶 + 简单边吊","老楼预制板楼顶不平，吊顶前先找平，别直接封板造成歪斜","本地冬天干燥、暖气烘烤，石膏板接缝和钉眼更要做好防裂处理","如果要装中央空调或新风，风口位置要在吊顶前和暖通师傅一起定死"],
+smart:["吊顶留智能主机的检修口（网关、AP、背景音乐主机）","电动窗帘盒尺寸按电机定，留好电源和检修空间","筒灯/射灯若接智能驱动，灯位和驱动盒位置提前留","背景音乐喇叭、人体存在传感器位置吊顶时定位"],
+buy:["石膏板、龙骨（一般施工方包）","提前定好灯具尺寸，方便留孔"],
+pick:["石膏板选大品牌（龙牌/可耐福），看厚度达标","龙骨用轻钢更稳，尽量别用木龙骨（易变形）","腻子、防锈等辅材随油工一起确认品牌"],
+pit:["吊顶转角用 L 型整板切割，防开裂","钉眼做防锈，不然以后生锈印子","灯位、检修口提前留好"]},
+{id:6,name:"油工腻子乳胶漆",tag:"墙面刷白找平",icon:"🖌️",
+desc:"墙面刮腻子、打磨、刷漆，决定家里最终“白不白、平不平、整不整齐”。",
+works:["阴阳角找直","刮腻子 2-3 遍","打磨平整","刷底漆一遍、面漆两遍"],
+next:"厨卫吊顶安装",
+accept:["墙面平整，无色差","没有透底、流坠、刷花","阳角顺直，不歪"],
+attn:["盯阴阳角找直，用靠尺或护角条","腻子必须干透再打磨，别抢工期开裂","刷漆前把家具地面盖好，别溅上","一遍底漆两遍面漆别省，效果差很多"],
+smartTime:"油工期 · 底盒补平防护",
+local:["长治冬天供暖期室内极干，腻子和乳胶漆容易开裂，施工后要保湿养护、别开窗猛吹","本地春秋风大灰多，刷漆关窗施工，否则墙面沾灰发花","气温低于 5 度不建议刷漆，等供暖或者开春再刷，效果差很多","老房墙面多有空鼓、起皮，铲墙皮到位再批腻子，否则新漆也会跟着掉"],
+smart:["智能面板底盒周边补平，漆面统一，别露出歪斜底盒","刷漆前把已布的智能线管、底盒盖好，别进灰进漆","调色灯光区域确认色温，避免智能灯装完色差"],
+buy:["乳胶漆、腻子粉","可顺带定开关面板颜色"],
+pick:["乳胶漆看环保等级（十环/法国A+/无添加），别只看价格","腻子选耐水型，别用普通腻子易掉粉","调色漆先刷小样确认，避免色差翻车","底漆面漆用同系列配套，别混用"],
+pit:["一遍底漆两遍面漆别省","腻子干透再打磨，别抢工期","阴雨天、返潮天别刷漆，干不透"]},
+{id:7,name:"厨卫吊顶安装",tag:"铝扣板 + 浴霸",icon:"🪟",
+desc:"厨房、卫生间装铝扣板吊顶，顺便把浴霸、灯具、排烟管一起装上。",
+works:["安装铝扣板吊顶","装浴霸/凉霸","装厨房灯具","接好排烟管"],
+next:"全屋定制复尺 / 安装",
+accept:["吊顶平整、收边严密","浴霸、灯具能正常用","排烟顺畅不倒烟"],
+attn:["先装排烟管/止逆阀再装吊顶，顺序别反","浴霸、灯具线路预留对，别装完才发现错位","留个检修口，以后维护方便","用水平仪找平，别肉眼看"],
+smartTime:"安装期 · 网关浴霸接电",
+local:["长治冬天冷，浴室建议一定要装风暖浴霸（别灯暖），冬天洗澡全靠它","本地厨房油烟不算特别重，但排烟管走向要有坡度、通到外墙，别排到公共烟道反味","铝扣板在本地市场很成熟，认厚度的同时看收边条，收边不好容易积灰发黄","老楼卫生间排气孔可能偏小，装浴霸前量好孔径，不够要扩孔"],
+smart:["吊顶内藏网关/路由/AP 时，留检修口方便复位","智能晾衣机、智能浴霸在吊顶时一并装好并接线","吊顶前确认智能设备电源已留，别装完发现没电"],
+buy:["铝扣板、浴霸、凉霸、厨房灯（提前买好）"],
+pick:["铝扣板选 0.6mm 以上厚度，太薄易变形","浴霸选风暖（别灯暖伤眼），看功率和换气量","止逆阀选硅胶/磁吸密封好的，防油烟倒灌","吊顶电器认准 3C 认证"],
+pit:["先装烟管再装吊顶，顺序别反","止逆阀提前装好，防别人家油烟倒灌","留个检修口，以后好维护"]},
+{id:8,name:"全屋定制复尺 / 安装",tag:"柜子进场安装",icon:"🗄️",
+desc:"衣柜、橱柜、鞋柜等定制柜，工厂生产完了，师傅上门复尺确认尺寸后安装。",
+works:["厂家上门复尺，确认最终尺寸","柜体进场安装","橱柜台面安装","抽屉、拉篮等五金装好"],
+next:"木门安装",
+accept:["柜体与墙面贴合，不晃","门板缝隙均匀","五金开关顺滑","台面无崩边、无渗水"],
+attn:["复尺必须在瓷砖铺完、吊顶做好之后","盯柜体与墙面缝隙，过大要补缝处理","台面装完试水，看下水顺不顺、渗不渗","五金件核对品牌型号，别被偷换"],
+smartTime:"安装期 · 柜体留电走线",
+local:["长治全屋定制本地品牌和全国大牌都有，本地厂交期快、能上门复尺，大牌板材更稳，看自己取舍","本地房子进深普遍不大，柜子建议做到顶、别留卫生死角，也省得放杂物积灰","供暖房间板材要留意，冬天干、夏天潮，选稳定性好的板材（多层/欧松）更抗变形","量尺要在墙地砖和吊顶都完工后，本地师傅习惯早量，量早了尺寸必错"],
+smart:["柜体预留插座：灯带、消毒机、智能收纳需电源","智能镜柜、智能衣柜在定制时定好型号，柜体留走线","柜门若接电动/智能开合，复尺时沟通电机位置和电源"],
+buy:["全屋定制（前期已定）","拉手、见光板等配件确认"],
+pick:["板材看环保等级（ENF/F4 星最优），别只看价格","板材类型按空间选：橱柜用多层/欧松，衣柜用颗粒/欧松","五金认准百隆/悍高/东泰，别用杂牌","台面石英石看石英含量（93% 以上更耐用）","合同写清材质、工期、增项怎么算"],
+pit:["复尺要在瓷砖铺完、吊顶做好之后","橱柜高度和木门要协调，先沟通好","台面装完试水，看下水顺不顺"]},
+{id:9,name:"木门安装",tag:"室内门装好",icon:"🚪",
+desc:"卧室门、厨房门等室内门，量完尺寸工厂做好，现在上门安装。",
+works:["门套安装","门扇安装","门锁、合页等五金","哑口套（如需要）"],
+next:"地板安装",
+accept:["门缝均匀","开关顺畅、没异响","门吸牢固"],
+attn:["量尺在地面找平、墙厚确定之后","门和地板谁先谁后，提前和师傅约定","盯门套与墙缝隙，过大要打胶补","合页一般 3 个，门吸位置提前定"],
+smartTime:"安装期 · 智能锁门磁",
+local:["长治冬天供暖期室内干，木门容易收缩、门缝变大，装门时别把缝隙留太死","本地门洞尺寸常不规整（老楼尤其），量尺要多点测量取最小值","供暖房间的门和地板要协调好先后，先装门后铺地板容易卡门","木门在本地小厂定制更便宜，但要盯漆面和封边，别只看价格"],
+smart:["智能门锁提前买好，门装完即可安装（看门厚和锁体）","门磁、门窗传感器贴门框，装门时顺手定位","确认锁体导向片和门开向，避免智能锁装不上"],
+buy:["室内门（前期已定）","门锁、合页、门吸"],
+pick:["门芯看实木复合/实木，别买纸芯填充","看漆面平整无颗粒、无流坠","锁具选静音磁吸更舒服","套线、门吸等五金是否包含问清楚"],
+pit:["门洞尺寸量准，不然装不上","门和地板的先后要提前和师傅定好","门底留缝要合适，不卡地板"]},
+{id:10,name:"地板安装",tag:"铺地板上踢脚线",icon:"🪵",
+desc:"铺木地板或复合地板，踢脚线一起装上，家里地面完成。",
+works:["地面清扫干净","铺防潮垫","地板铺装","踢脚线安装"],
+next:"开关灯具五金安装",
+accept:["地板无空鼓、无异响","墙边留了伸缩缝","踢脚线平顺、无缝隙"],
+attn:["铺前地面干透、平整、清洁，缺一不可","墙边留伸缩缝（踢脚线遮），别顶死","铺完别马上重踩，等胶干透","地板和门底留缝，别卡门"],
+smartTime:"安装期 · 地暖温控走线",
+local:["长治集中供暖，如果铺地暖，一定选耐地热专用地板，普通地板容易变形开缝","不装地暖的房间，实木复合比纯实木更稳，本地暖气烘烤下纯实木易开裂","本地春秋短、冬夏温差大，地板墙边伸缩缝要留够，别顶死","铺前让地板在室内放一两天适应温湿度，直接铺容易后期响、翘"],
+smart:["地暖若接智能温控，地板下传感器/温控底盒提前留","地板铺完再装踢脚线里的网线/智能线，别压坏","智能地暖温控面板底盒位置与地板完成面平齐"],
+buy:["木地板、踢脚线、防潮垫"],
+pick:["按预算和是否地暖选：地暖用专用耐地热地板","看耐磨等级（家用 AC3 以上够）","踢脚线材质和地板配套","环保等级 ENF 优先","问清包不包安装、辅料谁出"],
+pit:["地板和门之间留伸缩缝，别顶死","安装前地面必须干透、清洁","潮气大的天别铺，容易变形"]},
+{id:11,name:"开关灯具五金安装",tag:"家里开始亮起来",icon:"💡",
+desc:"把所有开关插座面板、灯具、窗帘杆等小五金装好，家里开始“亮起来”。",
+works:["装开关插座面板","装主灯、筒灯、灯带","装窗帘杆等五金","智能设备此时配网"],
+next:"卫浴安装",
+accept:["每个插座都通电测试","灯都亮、没闪","面板端正不歪"],
+attn:["装前先断电，安全第一","装完逐一通电测试每个插座和灯","智能设备这时候连网调试","灯具易碎，轻拿轻放"],
+smartTime:"安装期 · 面板网关配网",
+local:["长治冬天日照少、室内偏暗，灯光建议选色温偏暖（3000-3500K），别全用冷白显冷清","老房层高和线路条件有限，智能面板要趁装面板时一并换，别装完再返工","本地电网偶尔有波动，智能设备建议配稳压或选带保护的网关，减少掉线","面板选通用大牌，本地五金店就有货，坏了随时能换，别用太小众的品牌"],
+smart:["智能开关面板集中安装：先确认零线到位再上电","智能灯具、窗帘电机、传感器、网关在此阶段装好配网","网关放房屋中心、高处、少遮挡，信号最稳","逐一对设备配网测试，别漏装漏连"],
+buy:["开关插座、灯具、窗帘杆（前期已买）"],
+pick:["开关插座看阻燃 PC 材质、带儿童安全门","品牌选公牛/施耐德/西门子，别用杂牌","灯具看无频闪驱动、色温统一（别一个冷一个暖）","窗帘杆看承重和材质，别用太细的"],
+pit:["装完逐一测试，别漏了","智能设备这时候连网调试","灯具易碎，轻拿轻放"]},
+{id:12,name:"卫浴安装",tag:"马桶花洒装齐",icon:"🛁",
+desc:"马桶、花洒、浴室柜、镜柜等卫浴洁具安装到位，卫生间能用起来了。",
+works:["装浴室柜、镜柜","装马桶","装花洒、龙头","装毛巾架等五金挂件"],
+next:"开荒保洁",
+accept:["马桶不漏水、不晃动","花洒出水正常、冷热对","柜体稳固、不晃"],
+attn:["马桶坑距量准再买（305 或 400），买错装不上","装完都试一遍水，看漏不漏、晃不晃","玻璃胶打防霉中性胶，别用酸性发黑","浴室柜调水平，门板开合顺"],
+smartTime:"安装期 · 智能洁具接电",
+local:["长治水质偏硬，花洒、龙头容易结水垢，选易清洁的材质和出水口，后期省心","马桶坑距量准再买，老楼坑距常是 300，新楼多为 400，买错装不上退换麻烦","本地卫生间普遍不大，浴室柜建议选挂墙式，地面好打扫、柜体不返潮","装完试水一定要试，本地个别小区水压偏低，花洒出水小要提前确认"],
+smart:["智能马桶、智能镜柜、智能花洒在此阶段接电装好","卫生间加水浸传感器，漏水第一时间提醒","智能设备用防霉中性胶固定，别用酸性发黑","装完逐一试功能：加热、冲洗、除雾、联动"],
+buy:["马桶、花洒、浴室柜、镜柜、挂件（前期已买）"],
+pick:["马桶看坑距和冲水方式（虹吸式更安静）","花洒看阀芯（陶瓷阀芯）、出水方式和握感","浴室柜看防潮（多层实木/铝合金），别用普通密度板","龙头看全铜材质和起泡器","玻璃胶买防霉中性，自己备一支"],
+pit:["马桶坑距量准，买错装不上","玻璃胶选防霉的，不然发黑","装完都试一遍水"]},
+{id:13,name:"开荒保洁",tag:"全面大扫除",icon:"🧹",
+desc:"装修留下的垃圾和灰尘全面清理，为入住前做彻底大扫除。",
+works:["全屋除尘","玻璃、窗户清洁","地面、墙面除胶除污","橱柜内部清理"],
+next:"竣工验收",
+accept:["无装修残留、无水泥点","玻璃光亮、无水痕","角落细节都干净"],
+attn:["全部硬装完成后才能做","盯细节：玻璃、踢脚线、缝隙都要干净","贵重小物件先收好，别弄丢","自己验收满意再付钱"],
+smartTime:"保洁后 · 设备防尘防水",
+local:["长治春秋风沙大，保洁最好选风小的日子做，否则刚擦完又落灰","本地冬天冷，开窗通风除尘怕冻坏管道，保洁尽量安排在供暖前或开春","装修后的水泥点、胶印要趁早清，放久了硬化更难处理","自己找保洁或请本地家政都行，重点看有没有专业工具（玻璃器、除胶剂）"],
+smart:["智能主机、摄像头别用湿布擦，断电后干擦","清洁时把网关、传感器先盖好，防进水进灰","玻璃胶未干的区域先别动智能设备"],
+buy:["可请专业保洁，或自购工具"],
+pick:["请保洁看是否专业（带工具、有经验）","自己买清洁剂别用强酸强碱，伤瓷砖和洁具","别用钢丝球，会划伤表面"],
+pit:["保洁要在全部硬装完成后做","别用钢丝球，会划伤瓷砖和洁具","保护膜、标签撕干净"]},
+{id:14,name:"竣工验收",tag:"验收合格再付尾款",icon:"📑",
+desc:"和施工方一起全面验收，确认所有项目合格，没问题了再结清尾款。",
+works:["逐项验收所有项目","试水、试电、试设备","签署验收单","结算尾款、拿保修卡"],
+next:"通风入住",
+accept:["整体质量合格","问题清单整改完","保修卡、说明书、余料移交"],
+attn:["逐项验收，把问题列成清单交给施工方","试水、试电、试所有设备","留一部分尾款，验收合格再付","拿齐保修卡、说明书、剩余材料"],
+smartTime:"验收期 · 联调与教学",
+local:["本地施工队多是熟人介绍，验收更要按清单走，白纸黑字比口头承诺管用","供暖前一定要试一遍地暖/暖气，不然住进去发现问题，热力公司未必认装修责任","尾款留到位（建议 5%-10%），本地讲究\"验收合格再结清\"，别提前付完","拿齐所有说明书和保修卡，本地售后靠单据，丢了说不清"],
+smart:["智能系统整体联调：灯光、窗帘、门锁、场景一键测试","教业主用 App、设场景、加家人账号","移交智能设备清单、账号、保修，留好说明书","确认断网/断电恢复后设备能自动重连"],
+buy:["如有问题，整改材料（一般施工方负责）"],
+pick:["可自购空鼓锤、手电自己复验更踏实","准备空气质量检测仪备用（入住前用）","保修条款写清：保多久、保什么"],
+pit:["留一部分尾款，验收合格再付","保修条款写清楚，多久保什么","完工拍照留底，日后有据"]},
+{id:15,name:"通风入住",tag:"通风去醛再搬家",icon:"🏡",
+desc:"开窗通风去甲醛，放一段时间，检测合格后再安心搬家入住。",
+works:["持续开窗通风","放活性炭、绿植辅助","做空气质量检测","择好日子搬家"],
+next:"",
+accept:["甲醛检测达标","通风时间够（一般 3-6 个月）"],
+attn:["持续开窗通风，最好形成对流","夏天高温加速甲醛释放，通风最快","别只凭味道判断，没味也可能超标","老人、小孩、孕妇通风更久些"],
+smartTime:"入住期 · 维护与联动",
+local:["长治冬天冷、开窗少，除甲醛建议配合新风或定期短时开窗，别指望自然通风","供暖期室温高会加速甲醛释放，正好也是通风去味的好时机，别错过","本地冬季雾霾天多，通风看天气，雾霾天改开净化器更合适","有老人小孩的家庭，建议开春装完、过一个夏天再入住，最稳妥"],
+smart:["智能新风/净化器联动空气质量，自动换气去醛","入住后用 App 看用电、用水、安防数据，心里有数","定期换滤芯、查传感器电量，保持系统灵敏"],
+buy:["除醛产品、空气质量检测仪、搬家纸箱"],
+pick:["检测仪选带校准/找专业机构检测更准","活性炭定期更换，绿植只辅助","新风机/净化器看 CADR 值和滤芯等级"],
+pit:["别急着住，尤其有老人小孩","夏天通风最快，高温加速释放","检测合格再入住，别只凭味道判断"]}
+];
+
+/* ============ 配置（侯哥可改这里） ============ */
+const CONFIG={
+  brand:"侯哥智改",
+  wechat:"ZNGHS_HYL",
+  phone:"18003459640",
+  slogan:"不报金额，只讲顺序"
+};
+
+/* ============ 状态 ============ */
+const KEY="hgjz_progress_v1";
+let done=JSON.parse(localStorage.getItem(KEY)||"[]");
+let view="home";        // home | detail | progress | about
+let curId=0;
+
+function saveDone(){localStorage.setItem(KEY,JSON.stringify(done));}
+function toast(msg){
+  const t=document.getElementById("toast");
+  t.textContent=msg;t.classList.add("show");
+  clearTimeout(t._t);t._t=setTimeout(()=>t.classList.remove("show"),1500);
+}
+function copyText(txt){
+  const ta=document.createElement("textarea");
+  ta.value=txt;ta.style.position="fixed";ta.style.opacity="0";
+  document.body.appendChild(ta);ta.select();
+  try{document.execCommand("copy");toast("已复制：" + txt);}
+  catch(e){toast("请手动复制：" + txt);}
+  document.body.removeChild(ta);
+}
+
+/* ============ 渲染 ============ */
+function render(){
+  const app=document.getElementById("app");
+  if(view==="home")app.innerHTML=viewHome();
+  else if(view==="detail")app.innerHTML=viewDetail(curId);
+  else if(view==="progress")app.innerHTML=viewProgress();
+  else if(view==="about")app.innerHTML=viewAbout();
+  bind();
+  window.scrollTo(0,0);
+}
+
+/* ---- 首页 ---- */
+function viewHome(){
+  const cards=STAGES.map(s=>{
+    const d=done.includes(s.id);
+    return `<div class="card ${d?"done":""}" data-go="${s.id}">
+      <div class="ico">${s.icon}</div>
+      <div class="mid">
+        <div class="name"><span class="no">${s.id+1}</span>${s.name}</div>
+        <div class="tag">${s.tag}</div>
+      </div>
+      <div class="arrow">${d?"✓":"›"}</div>
+    </div>`;
+  }).join("");
+  return `
+  <div class="hero">
+    <span class="badge">装修小白必备</span>
+    <h1>装修顺序，<br>一次看明白</h1>
+    <p>做完这一步，下一步干什么？16 个阶段讲清楚，验收要点、采购提醒、避坑指南全给你。</p>
+    <div class="stats">
+      <div><b>16</b>施工阶段</div>
+      <div><b>${done.length}</b>已完成</div>
+      <div><b>100+</b>避坑要点</div>
+    </div>
+  </div>
+  <div class="sec-title"><span class="bar"></span>装修全流程</div>
+  <div class="list">${cards}</div>
+  ${ctaBlock()}
+  <div class="foot">${CONFIG.brand} · ${CONFIG.slogan}</div>
+  ${tabbar("home")}`;
+}
+
+/* ---- 详情 ---- */
+function viewDetail(id){
+  const s=STAGES.find(x=>x.id===id);
+  const d=done.includes(s.id);
+  const nxt=s.next?STAGES.find(x=>x.name===s.next):null;
+  const li=(arr,cls="")=>arr.map(x=>`<div class="item ${cls}">${x}</div>`).join("");
+  return `
+  <div class="page-head">
+    <div class="back" data-back="1">‹ 返回流程</div>
+    <div class="ph-top">
+      <div class="ph-ico">${s.icon}</div>
+      <div>
+        <div class="ph-name">${s.id+1}. ${s.name}</div>
+        <div class="ph-tag">${s.tag}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="bh"><span class="bico">📖</span>这一步在干嘛</div>
+    <div class="block-text">${s.desc}</div>
+  </div>
+
+  <div class="block">
+    <div class="bh"><span class="bico">🔨</span>本阶段要做的工作</div>
+    ${li(s.works)}
+  </div>
+
+  <div class="block next">
+    <div class="bh"><span class="bico o">✅</span>做完这一步，下一步干什么</div>
+    <div class="next-box">
+      <span class="nb-ico">${nxt?nxt.icon:"🎉"}</span>
+      <div>
+        <div class="nb-t">${nxt?"下一步施工":"流程已完成"}</div>
+        <div class="nb-v">${nxt?(nxt.id+1)+". "+nxt.name:"恭喜，全部走完！"}</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="block">
+    <div class="bh"><span class="bico">🔍</span>业主要验收什么</div>
+    ${li(s.accept,"o")}
+  </div>
+
+  <div class="block">
+    <div class="bh"><span class="bico">👀</span>本环节注意事项</div>
+    ${li(s.attn)}
+  </div>
+
+  <div class="block smart">
+    <div class="bh"><span class="bico">🏠</span>全屋智能 · 安装时机与注意</div>
+    <div class="smart-time">⏱ ${s.smartTime}</div>
+    ${li(s.smart,"sm")}
+  </div>
+
+  <div class="block">
+    <div class="bh"><span class="bico o">🛒</span>采购与选品</div>
+    <div class="subh" style="border-top:none;padding-top:0;margin-top:0;">要提前买 / 预约</div>
+    ${li(s.buy)}
+    <div class="subh">选品要注意</div>
+    ${li(s.pick,"o")}
+  </div>
+
+  <div class="block local-block">
+    <div class="bh"><span class="bico">📍</span>长治本地实情</div>
+    ${li(s.local,"lc")}
+  </div>
+
+  <div class="block">
+    <div class="bh"><span class="bico o">⚠️</span>避坑提醒</div>
+    ${li(s.pit,"o")}
+  </div>
+
+  <div class="block" style="text-align:center;padding:16px;">
+    <button class="btn ${d?"btn-gh":"btn-o"}" style="${d?"background:#EDF1F8;color:#5B6880;box-shadow:none;width:100%;":""}width:100%;"
+      data-checkin="${s.id}">${d?"✓ 本阶段已完成（点击取消）":"✅ 我已完成本阶段"}</button>
+    ${nxt?`<div style="font-size:12.5px;color:#8A94A6;margin-top:10px;">完成后自动跳转到「${nxt.name}」</div>`:""}
+  </div>
+
+  ${ctaBlock()}
+  ${tabbar("home")}`;
+}
+
+/* ---- 进度 ---- */
+function viewProgress(){
+  const total=STAGES.length;
+  const cnt=done.length;
+  const pct=Math.round(cnt/total*100);
+  let cur=STAGES.find(s=>!done.includes(s.id));
+  if(!cur)cur=STAGES[STAGES.length-1];
+  const rows=STAGES.map(s=>{
+    const d=done.includes(s.id);
+    return `<div class="prow ${d?"done":""}" data-checkin="${s.id}">
+      <div class="pico">${s.icon}</div>
+      <div class="pn">${s.id+1}. ${s.name}</div>
+      <div class="tick">✓</div>
+    </div>`;
+  }).join("");
+  return `
+  <div class="sec-title" style="margin-top:22px;"><span class="bar"></span>我的装修进度</div>
+  <div class="prog-card">
+    <div class="prog-top">
+      <div class="pt-l">已完成 ${cnt} / ${total} 个阶段</div>
+      <div class="pt-r"><b>${pct}</b>%</div>
+    </div>
+    <div class="bar-bg"><div class="bar-fill" style="width:${pct}%"></div></div>
+    <div class="now-box">
+      <span class="ni">${cur.icon}</span>
+      <div>
+        <div class="nlab">${cnt>=total?"全部完成":"当前阶段"}</div>
+        <div class="nval">${cnt>=total?"装修全部走完，恭喜！":(cur.id+1)+". "+cur.name}</div>
+      </div>
+    </div>
+    ${cnt<total?`<div style="font-size:13px;color:#8A94A6;margin-top:10px;line-height:1.5;">👉 接下来该准备：<b style="color:#1B2A4A;">${cur.works[0]}</b></div>`:""}
+  </div>
+  <div class="sec-title"><span class="bar"></span>点一下打卡</div>
+  <div class="list" style="padding:0 16px;">${rows}</div>
+  <div style="text-align:center;padding:14px;">
+    <span style="font-size:13px;color:#8A94A6;text-decoration:underline;cursor:pointer;" data-reset="1">清空进度，重新开始</span>
+  </div>
+  ${ctaBlock()}
+  ${tabbar("progress")}`;
+}
+
+/* ---- 关于 ---- */
+function viewAbout(){
+  return `
+  <div class="about-hero">
+    <div class="ava">智</div>
+    <h2>资深全屋智能工程师 · 设计师</h2>
+    <div class="sub">11 年定制柜设计 + 全屋智能落地</div>
+    <div class="stats">
+      <div><b>10+</b>年行业深耕</div>
+      <div><b>500+</b>户家庭服务</div>
+      <div><b>1v1</b>全流程交付</div>
+    </div>
+  </div>
+  <div class="block">
+    <div class="bh"><span class="bico">🧰</span>关于本人</div>
+    <div class="block-text">
+      十余年家居与智能行业深耕，资深全屋智能工程师兼设计师。从户型规划、方案设计，到设备选型、安装调试，坚持全流程亲手交付，已陪伴数百户家庭完成理想居所。<br><br>
+      同时，也是最懂定制柜的智能设计师——柜体结构与智能点位，这两个圈子几乎不重叠，我能一起给你排明白。
+    </div>
+  </div>
+  <div class="block">
+    <div class="bh"><span class="bico o">🎯</span>能帮你什么</div>
+    <div class="item o">装修全流程顺序，不懵圈</div>
+    <div class="item o">每个阶段验收要点，不被糊弄</div>
+    <div class="item o">全屋智能安装时机与点位，别留遗憾</div>
+    <div class="item o">采购与选品建议，少花冤枉钱</div>
+  </div>
+  <div class="block">
+    <div class="bh"><span class="bico">📐</span>专业领域</div>
+    <div class="item">全屋智能方案设计与落地调试</div>
+    <div class="item">智能 × 定制柜一体化整合</div>
+    <div class="item">老房智能化免改线升级</div>
+    <div class="item">户型优化与收纳体系规划</div>
+    <div class="item">灯光设计与场景氛围定制</div>
+  </div>
+  <div class="block" style="background:#FFFBF6;border-left:5px solid #FF9A3C;">
+    <div style="font-size:15px;font-weight:700;color:#1B2A4A;line-height:1.7;">
+      一户一案，不套模板。<br>设计不是炫技，是让家真正好用。
+    </div>
+  </div>
+  ${ctaBlock()}
+  ${tabbar("about")}`;
+}
+
+/* ---- 领取区（钩子） ---- */
+function ctaBlock(){
+  return `
+  <div class="cta">
+    <h3>免费领《装修顺序表》</h3>
+    <p>16 阶段完整顺序 + 验收要点，一张表看得明明白白<br>加微信直接发你，还能免费帮你排施工顺序</p>
+    <div class="btns">
+      <button class="btn btn-o" data-copy="${CONFIG.wechat}">加微信领资料</button>
+      <button class="btn btn-gh" data-call="1">电话咨询</button>
+    </div>
+    <p style="margin:14px 0 0;font-size:12px;opacity:.75;">微信：${CONFIG.wechat} （加时备注「装修」）</p>
+  </div>`;
+}
+
+/* ---- 底部 tab ---- */
+function tabbar(active){
+  const t=(k,ico,name)=>`<div class="tb ${active===k?"on":""}" data-tab="${k}">
+    <span class="ti">${ico}</span>${name}</div>`;
+  return `<div class="tabbar">
+    ${t("home","📋","流程")}
+    ${t("progress","✅","进度")}
+    ${t("about","🧰","关于")}
+  </div>`;
+}
+
+/* ============ 事件绑定 ============ */
+function bind(){
+  document.querySelectorAll("[data-go]").forEach(el=>{
+    el.onclick=()=>{curId=+el.dataset.go;view="detail";render();};
+  });
+  document.querySelectorAll("[data-back]").forEach(el=>{
+    el.onclick=()=>{view="home";render();};
+  });
+  document.querySelectorAll("[data-tab]").forEach(el=>{
+    el.onclick=()=>{view=el.dataset.tab;render();};
+  });
+  document.querySelectorAll("[data-checkin]").forEach(el=>{
+    el.onclick=(e)=>{
+      e.stopPropagation();
+      const id=+el.dataset.checkin;
+      const i=done.indexOf(id);
+      if(i>=0){done.splice(i,1);toast("已取消打卡");}
+      else{
+        done.push(id);saveDone();
+        const nxt=STAGES.find(s=>s.id===id).next;
+        if(nxt){toast("👍 完成！下一步：" + nxt);}
+        else{toast("🎉 全部完成，恭喜入住！");}
+      }
+      saveDone();
+      setTimeout(()=>{
+        if(view==="detail"){
+          const nxt=STAGES.find(s=>s.id===curId).nextId;
+          if(done.includes(curId) && nxt>=0){curId=nxt;}
+        }
+        render();
+      },700);
+    };
+  });
+  document.querySelectorAll("[data-reset]").forEach(el=>{
+    el.onclick=()=>{
+      if(confirm("确定清空所有进度吗？")){done=[];saveDone();render();toast("已清空");}
+    };
+  });
+  document.querySelectorAll("[data-copy]").forEach(el=>{
+    el.onclick=()=>copyText(el.dataset.copy);
+  });
+  document.querySelectorAll("[data-call]").forEach(el=>{
+    el.onclick=()=>{
+      if(/Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent)){
+        window.location.href="tel:"+CONFIG.phone;
+      }else{
+        copyText(CONFIG.phone);
+      }
+    };
+  });
+}
+
+render();
+</script>
+</body>
+</html>

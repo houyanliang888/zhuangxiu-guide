@@ -4,7 +4,19 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
 <meta name="theme-color" content="#1B2A4A">
+<meta name="description" content="家装 16 个施工阶段的完整流程：每阶段该做什么、验收看什么、什么时候买什么、坑在哪，附全屋智能安装节点与长治本地实情。">
 <title>家装施工流程指南 · 装修顺序一次看明白</title>
+
+<!-- ===== PWA ===== -->
+<link rel="manifest" href="./manifest.webmanifest">
+<link rel="icon" type="image/png" href="./favicon.png">
+<link rel="apple-touch-icon" href="./apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="装修顺序">
+<meta name="format-detection" content="telephone=no">
+
 <style>
 :root{
   --navy:#1B2A4A;--navy2:#27406B;--orange:#FF9A3C;--orange-d:#F08428;
@@ -258,11 +270,101 @@ body{
 
 .hide{display:none!important;}
 .foot{text-align:center;font-size:11.5px;color:#9AA6BA;padding:20px 0 6px;}
+
+/* ---------- PWA 安装引导条 ---------- */
+.install-bar{
+  position:fixed;left:0;right:0;bottom:0;z-index:60;
+  max-width:560px;margin:0 auto;
+  background:linear-gradient(135deg,#22365C,#16233F);
+  color:#fff;padding:13px 15px;display:none;align-items:center;gap:12px;
+  box-shadow:0 -6px 24px rgba(15,25,45,.28);
+  border-radius:16px 16px 0 0;
+  transform:translateY(110%);transition:transform .34s cubic-bezier(.2,.8,.3,1);
+}
+.install-bar.on{display:flex;transform:translateY(0);}
+.install-bar .ib-ico{
+  width:40px;height:40px;border-radius:11px;flex:0 0 auto;
+  background:rgba(255,154,60,.16);border:1px solid rgba(255,154,60,.4);
+  display:flex;align-items:center;justify-content:center;font-size:20px;
+}
+.install-bar .ib-txt{flex:1;min-width:0;}
+.install-bar .ib-txt b{display:block;font-size:14px;font-weight:800;letter-spacing:.3px;}
+.install-bar .ib-txt span{display:block;font-size:11.5px;color:#A9B7D1;margin-top:2px;line-height:1.45;}
+.install-bar .ib-go{
+  flex:0 0 auto;background:var(--orange);color:#1B2A4A;border:0;
+  font-size:13px;font-weight:800;padding:9px 15px;border-radius:20px;cursor:pointer;
+  font-family:inherit;
+}
+.install-bar .ib-x{
+  flex:0 0 auto;background:transparent;border:0;color:#7C8AA6;
+  font-size:20px;line-height:1;padding:4px 2px;cursor:pointer;font-family:inherit;
+}
+
+/* ---------- iOS 安装说明浮层 ---------- */
+.ios-tip{
+  position:fixed;inset:0;z-index:90;background:rgba(12,20,36,.72);
+  display:none;align-items:flex-end;justify-content:center;
+  backdrop-filter:blur(3px);
+}
+.ios-tip.on{display:flex;}
+.ios-tip .it-card{
+  background:#fff;width:100%;max-width:560px;border-radius:20px 20px 0 0;
+  padding:24px 22px calc(24px + env(safe-area-inset-bottom));
+  animation:slideUp .3s cubic-bezier(.2,.8,.3,1);
+}
+@keyframes slideUp{from{transform:translateY(40px);opacity:.6}to{transform:translateY(0);opacity:1}}
+.ios-tip .it-card h3{margin:0 0 6px;font-size:18px;font-weight:800;color:var(--navy);}
+.ios-tip .it-card .it-sub{margin:0 0 18px;font-size:13px;color:var(--sub);}
+.ios-tip .it-step{
+  display:flex;align-items:flex-start;gap:11px;padding:11px 0;
+  border-bottom:1px dashed var(--line);font-size:14.5px;color:var(--text);
+}
+.ios-tip .it-step:last-of-type{border-bottom:0;}
+.ios-tip .it-num{
+  flex:0 0 auto;width:23px;height:23px;border-radius:50%;
+  background:var(--navy);color:#fff;font-size:12.5px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;margin-top:1px;
+}
+.ios-tip .it-step em{font-style:normal;color:var(--orange-d);font-weight:800;}
+.ios-tip .it-ok{
+  width:100%;margin-top:16px;background:var(--navy);color:#fff;border:0;
+  padding:14px;border-radius:12px;font-size:15.5px;font-weight:700;
+  cursor:pointer;font-family:inherit;
+}
+
+/* 已装成 App 时隐藏安装条（standalone 模式） */
+@media (display-mode: standalone){ .install-bar{display:none!important;} }
+
+/* 有安装条时给内容留出空间 */
+body.has-install{padding-bottom:150px;}
 </style>
 </head>
 <body>
 <div class="wrap" id="app"></div>
 <div class="toast" id="toast"></div>
+
+<!-- ===== PWA 安装引导条（安卓/桌面 Chrome 有原生安装事件时显示）===== -->
+<div class="install-bar" id="installBar">
+  <div class="ib-ico">📲</div>
+  <div class="ib-txt">
+    <b>装到手机桌面，工地随时查</b>
+    <span>像 App 一样打开，断网也能看</span>
+  </div>
+  <button class="ib-go" id="installGo">安装</button>
+  <button class="ib-x" id="installClose" aria-label="关闭">×</button>
+</div>
+
+<!-- ===== iOS 安装说明浮层（iPhone 没有原生安装事件，需手把手教）===== -->
+<div class="ios-tip" id="iosTip">
+  <div class="it-card">
+    <h3>装到 iPhone 桌面</h3>
+    <p class="it-sub">iOS 不支持一键安装，跟着下面 3 步走一遍就好，之后像 App 一样用</p>
+    <div class="it-step"><span class="it-num">1</span><div>点底部中间的 <em>「分享」</em> 按钮（方框 + 向上箭头）</div></div>
+    <div class="it-step"><span class="it-num">2</span><div>在菜单里往下滑，选 <em>「添加到主屏幕」</em></div></div>
+    <div class="it-step"><span class="it-num">3</span><div>右上角点 <em>「添加」</em>，桌面上就有「装修顺序」了</div></div>
+    <button class="it-ok" id="iosOk">知道了</button>
+  </div>
+</div>
 
 <script>
 /* ============ 16 阶段数据（内嵌，顺序不可颠倒） ============ */
@@ -778,6 +880,110 @@ function bind(){
 }
 
 render();
+
+/* ============ PWA：Service Worker 注册（离线可用）============ */
+if ("serviceWorker" in navigator) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(() => {});
+  });
+}
+
+/* ============ PWA：安装引导 ============ */
+(function () {
+  const bar = document.getElementById("installBar");
+  const tip = document.getElementById("iosTip");
+  const CLOSE_KEY = "hgjz_install_closed_v1";
+  let deferredPrompt = null;
+
+  const isStandalone =
+    window.matchMedia("(display-mode: standalone)").matches ||
+    window.navigator.standalone === true;
+  if (isStandalone) return;                       // 已装，啥也不弹
+  if (localStorage.getItem(CLOSE_KEY) === "1") return;  // 关过就不再烦
+
+  const ua = navigator.userAgent;
+  const isIOS = /iPhone|iPad|iPod/i.test(ua) && !window.MSStream;
+  const isWechat = /MicroMessenger/i.test(ua);    // 微信内置浏览器：装不了，只提示
+
+  function show(el) {
+    el.classList.add("on");
+    document.body.classList.add("has-install");
+  }
+  function hide() {
+    bar.classList.remove("on");
+    document.body.classList.remove("has-install");
+  }
+
+  document.getElementById("installClose").onclick = () => {
+    localStorage.setItem(CLOSE_KEY, "1");
+    hide();
+  };
+
+  // 微信里没法装，引导去浏览器打开
+  if (isWechat) {
+    setTimeout(() => {
+      bar.querySelector(".ib-ico").textContent = "🌐";
+      bar.querySelector(".ib-txt b").textContent = "想装到桌面？先点右上角 ···";
+      bar.querySelector(".ib-txt span").textContent = "选「在浏览器打开」，再按提示安装";
+      bar.querySelector(".ib-go").textContent = "知道了";
+      bar.querySelector(".ib-go").onclick = () => {
+        localStorage.setItem(CLOSE_KEY, "1");
+        hide();
+      };
+      show(bar);
+    }, 2600);
+    return;
+  }
+
+  // 安卓 / 桌面 Chrome：有原生安装能力
+  window.addEventListener("beforeinstallprompt", (e) => {
+    e.preventDefault();
+    deferredPrompt = e;
+    setTimeout(() => show(bar), 2000);
+  });
+
+  document.getElementById("installGo").onclick = async () => {
+    if (deferredPrompt) {
+      try {
+        deferredPrompt.prompt();
+        await deferredPrompt.userChoice;
+      } catch (err) {}
+      deferredPrompt = null;
+      localStorage.setItem(CLOSE_KEY, "1");
+      hide();
+      return;
+    }
+    if (isIOS) {           // iOS：手把手教
+      tip.classList.add("on");
+      return;
+    }
+    toast("浏览器菜单里选「安装应用 / 添加到主屏幕」");
+  };
+
+  document.getElementById("iosOk").onclick = () => {
+    tip.classList.remove("on");
+    localStorage.setItem(CLOSE_KEY, "1");
+    hide();
+  };
+  tip.onclick = (e) => { if (e.target === tip) tip.classList.remove("on"); };
+
+  // iOS Safari 不会触发 beforeinstallprompt，延时自己弹
+  if (isIOS && !isWechat) {
+    setTimeout(() => show(bar), 3200);
+  }
+
+  // 装完自动收起
+  window.addEventListener("appinstalled", () => {
+    localStorage.setItem(CLOSE_KEY, "1");
+    hide();
+    toast("已装到桌面，下次直接点图标打开");
+  });
+
+  // 已装成 App 后不再显示
+  const mq = window.matchMedia("(display-mode: standalone)");
+  if (mq.addEventListener) mq.addEventListener("change", (ev) => { if (ev.matches) hide(); });
+})();
+
 </script>
 </body>
 </html>

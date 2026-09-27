@@ -1,0 +1,1316 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<title>装修顺序表 · A4 可打印版 | 侯哥智改</title>
+<style>
+@page { size: A4; margin: 12mm 11mm 13mm; }
+
+:root{
+  --navy:#1B2A4A; --navy2:#27406B; --orange:#FF9A3C; --orange-d:#E87F1E;
+  --line:#D8DEE9; --line2:#EDF1F7; --text:#222B39; --sub:#5C6878; --bg:#fff;
+}
+*{box-sizing:border-box;-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+html,body{margin:0;padding:0;}
+body{
+  font-family:"Microsoft YaHei","PingFang SC","Hiragino Sans GB",sans-serif;
+  color:var(--text);font-size:10.5pt;line-height:1.62;background:#fff;
+}
+
+/* ============ 封面区 ============ */
+.cover{
+  border:2.5px solid var(--navy);border-radius:6px;padding:20px 22px 18px;
+  margin-bottom:15px;position:relative;overflow:hidden;
+}
+.cover::after{
+  content:"";position:absolute;top:-52px;right:-52px;width:150px;height:150px;
+  border-radius:50%;background:radial-gradient(circle,rgba(255,154,60,.20),transparent 70%);
+}
+.brand-row{display:flex;align-items:baseline;gap:9px;margin-bottom:9px;}
+.brand{font-size:10.5pt;font-weight:700;color:var(--sub);letter-spacing:.6px;}
+.slogan{
+  font-size:8.5pt;color:var(--orange-d);border:1px solid var(--orange);
+  background:#FFF6EC;border-radius:10px;padding:1.5px 8px;font-weight:700;
+}
+h1{
+  margin:6px 0 8px;font-size:27pt;font-weight:800;letter-spacing:2px;
+  color:var(--navy);line-height:1.18;
+}
+h1 .hl{color:var(--orange-d);}
+.cover .lead{margin:0;font-size:10pt;color:var(--sub);line-height:1.7;}
+.cover .meta{
+  margin-top:13px;padding-top:11px;border-top:1px dashed var(--line);
+  display:flex;flex-wrap:wrap;gap:6px 20px;font-size:9pt;color:var(--sub);
+}
+.cover .meta b{color:var(--navy);}
+.cover .meta .wx{color:var(--orange-d);font-weight:800;font-size:10.5pt;}
+
+/* ============ 目录 ============ */
+.toc{border:1px solid var(--line);border-radius:6px;padding:12px 15px;margin-bottom:16px;background:#FAFBFD;}
+.toc h2{margin:0 0 9px;font-size:11.5pt;color:var(--navy);font-weight:800;}
+.toc ol{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:2px 16px;}
+.toc li{
+  font-size:9.5pt;padding:2.5px 0;color:var(--text);
+  border-bottom:1px dotted var(--line2);
+}
+.toc-n{
+  display:inline-block;width:20px;color:var(--orange-d);font-weight:800;
+  font-size:9pt;margin-right:5px;
+}
+
+/* ============ 说明条 ============ */
+.howto{
+  border-left:3px solid var(--orange);background:#FFFBF6;
+  padding:9px 13px;margin-bottom:16px;border-radius:0 5px 5px 0;
+  font-size:9.5pt;color:#5A4A38;line-height:1.7;
+}
+.howto b{color:var(--orange-d);}
+
+/* ============ 阶段块 ============ */
+.stage{
+  border:1px solid var(--line);border-radius:6px;padding:13px 15px 12px;
+  break-inside:avoid;page-break-inside:avoid;
+  background:var(--bg);
+  /* 一页一阶段：每块强制另起一页 */
+  break-before:page;page-break-before:always;
+}
+.stage:first-of-type{break-before:auto;page-break-before:auto;}
+/* 最后一个阶段后面接页脚，也另起一页 */
+.pagefoot{break-before:page;page-break-before:always;}
+
+/* 内容偏多的阶段：整体收紧（字号/行距/间距同时缩），保证一页装得下且不裁切 */
+.stage.dense{padding:11px 13px 10px;}
+.stage.dense .st-desc{font-size:10.2pt;line-height:1.6;margin-bottom:8px;}
+.stage.dense .cell li{font-size:9.3pt;line-height:1.52;margin-bottom:1px;}
+.stage.dense .local li,
+.stage.dense .pit li{font-size:9.1pt;line-height:1.52;margin-bottom:1px;}
+.stage.dense .grid{margin-bottom:7px;}
+.stage.dense .local,
+.stage.dense .pit{margin-bottom:7px;padding:6px 11px 6px;}
+.stage.dense .st-progress{margin-bottom:5px;}
+.stage.dense .st-head{padding-bottom:7px;margin-bottom:8px;}
+.stage.dense .st-next-wrap{margin-bottom:9px;}
+.stage.dense .nx{font-size:10.6pt;padding:5px 14px;}
+.stage.dense .st-title h3{font-size:14.5pt;}
+.st-head{
+  display:flex;align-items:center;gap:10px;
+  border-bottom:2px solid var(--navy);padding-bottom:8px;margin-bottom:10px;
+}
+
+/* 阶段进度条（16 个圆点，当前高亮）*/
+.st-progress{
+  display:flex;align-items:center;gap:10px;margin-bottom:7px;
+}
+.st-count{
+  flex:0 0 auto;font-size:8.5pt;font-weight:800;color:var(--sub);
+  letter-spacing:.6px;
+}
+.st-dots{display:flex;align-items:center;gap:3px;flex:1;}
+.st-dots i{
+  display:block;flex:1;height:3.5px;border-radius:2px;background:var(--line);
+}
+.st-dots i.on{background:var(--orange);}
+.st-num{
+  flex:0 0 auto;width:34px;height:34px;border-radius:50%;
+  background:var(--navy);color:#fff;font-weight:800;font-size:13pt;
+  display:flex;align-items:center;justify-content:center;letter-spacing:-.5px;
+}
+.st-title{flex:1;min-width:0;}
+.st-title h3{
+  margin:0;font-size:15.5pt;font-weight:800;color:var(--navy);letter-spacing:.6px;
+}
+.st-tag{margin:1px 0 0;font-size:9pt;color:var(--sub);}
+.st-check{
+  flex:0 0 auto;font-size:9.5pt;color:var(--sub);
+  display:flex;align-items:center;gap:6px;
+}
+.cb{
+  display:inline-block;width:14px;height:14px;border:1.5px solid var(--navy);
+  border-radius:3px;background:#fff;
+}
+
+.st-desc{margin:0 0 10px;font-size:10.8pt;color:#39424F;line-height:1.68;}
+
+.st-next-wrap{margin-bottom:11px;}
+.nx{
+  display:inline-block;background:var(--navy);color:#fff;
+  font-size:11.2pt;font-weight:800;padding:5.5px 16px;border-radius:15px;
+  letter-spacing:.5px;
+}
+.nx::before{content:"👉 ";}
+.nx-end{background:var(--orange-d);}
+
+.grid{display:grid;grid-template-columns:1fr 1fr;gap:0 19px;margin-bottom:9px;}
+.cell h4{
+  margin:0 0 4px;font-size:10.4pt;font-weight:800;color:var(--navy);
+  display:flex;align-items:center;gap:5px;
+}
+.cell .ic{font-size:10.4pt;}
+.cell ul{margin:0;padding-left:16px;}
+.cell li{font-size:9.9pt;line-height:1.6;color:#3B4553;margin-bottom:2px;}
+
+/* 智能小节高亮 */
+.smart-cell{
+  background:#FFFBF4;border:1px solid #FBE3C6;border-radius:5px;
+  padding:7px 10px 7px;
+}
+.smart-cell h4{color:#B36A12;}
+.smart-time{
+  display:inline-block;background:linear-gradient(135deg,#FF9A3C,#F08428);
+  color:#fff;font-size:9.4pt;font-weight:800;padding:3px 10px;
+  border-radius:12px;margin-bottom:5px;letter-spacing:.4px;
+}
+.smart-cell li{color:#6B5433;}
+
+/* 本地实情 */
+.local{
+  border-left:4px solid var(--orange);background:#FFFBF6;
+  border-radius:0 5px 5px 0;padding:7px 12px 7px;margin-bottom:9px;
+}
+.local h4{margin:0 0 4px;font-size:10pt;font-weight:800;color:#B36A12;}
+.local ul{margin:0;padding-left:16px;}
+.local li{font-size:9.7pt;line-height:1.6;color:#6B5433;margin-bottom:1.5px;}
+
+/* 避坑 */
+.pit{
+  border-left:4px solid #C0392B;background:#FFF7F6;
+  border-radius:0 5px 5px 0;padding:7px 12px 7px;
+}
+.pit h4{margin:0 0 4px;font-size:10pt;font-weight:800;color:#A93226;}
+.pit ul{margin:0;padding-left:16px;}
+.pit li{font-size:9.7pt;line-height:1.6;color:#7A3A32;margin-bottom:1.5px;}
+
+/* ============ 页脚（含二维码，作为独立结尾页）============ */
+.pagefoot{
+  break-before:page;page-break-before:always;
+  border-top:3px solid var(--navy);padding-top:20px;
+  text-align:center;
+}
+.pagefoot .big{
+  font-size:16pt;font-weight:800;color:var(--navy);letter-spacing:1px;margin-bottom:6px;
+}
+.pagefoot .sub{font-size:10pt;color:var(--sub);margin-bottom:22px;}
+.pf-qr-row{
+  display:flex;align-items:center;justify-content:center;gap:26px;
+  border:1.5px solid var(--line);border-radius:8px;
+  padding:18px 22px;margin:0 auto 20px;max-width:420px;background:#FAFBFD;
+}
+.pf-qr-row img{width:130px;height:130px;display:block;}
+.pf-qr-txt{text-align:left;}
+.pf-qr-txt b{display:block;font-size:11.5pt;color:var(--navy);margin-bottom:5px;}
+.pf-qr-txt span{display:block;font-size:9pt;color:var(--sub);line-height:1.65;}
+.pf-wx{
+  display:inline-block;border:1.5px dashed var(--orange);
+  background:#FFFBF6;border-radius:7px;padding:11px 22px;margin-bottom:20px;
+}
+.pf-wx b{font-size:13pt;color:var(--orange-d);font-weight:800;letter-spacing:.5px;}
+.pf-wx span{display:block;font-size:9pt;color:var(--sub);margin-top:3px;}
+.pf-foot{
+  font-size:9.5pt;color:var(--sub);line-height:1.85;
+  border-top:1px dashed var(--line);padding-top:14px;margin-top:6px;
+}
+.pf-foot .url{font-size:8.5pt;color:#8B97A8;word-break:break-all;}
+
+/* ============ 屏幕预览时的提示（打印不显示）============ */
+.screen-tip{
+  position:fixed;left:0;right:0;bottom:0;background:var(--navy);color:#fff;
+  text-align:center;padding:11px 16px;font-size:12.5px;z-index:99;
+}
+.screen-tip b{color:var(--orange);}
+@media print{ .screen-tip{display:none!important;} }
+</style>
+</head>
+<body>
+
+<!-- ================= 封面 ================= -->
+<div class="cover">
+  <div class="brand-row">
+    <span class="brand">侯哥智改 · 全屋智能设计</span>
+    <span class="slogan">不报金额，只讲顺序</span>
+  </div>
+  <h1>装修顺序表<br><span class="hl">16 个阶段，一次看明白</span></h1>
+  <p class="lead">
+    做完这一步，下一步做什么？这张表按真实施工链路排好 16 个阶段——<br>
+    每个阶段该做什么、验收看什么、什么时候买什么、坑在哪，都写清楚了。<br>
+    并针对长治本地情况做了调整：集中供暖、老小区砖混、层高偏矮、冬季干燥、水质偏硬、春秋风沙大。
+  </p>
+  <div class="meta">
+    <div>适用：<b>自住装修 · 老房翻新 · 全屋智能改造</b></div>
+    <div>用法：<b>打印后贴在工地，做完一项打个勾</b></div>
+    <div>问题咨询：<span class="wx">微信 ZNGHS_HYL</span></div>
+    <div>电话：<b>18003459640</b></div>
+  </div>
+</div>
+
+<!-- ================= 目录 ================= -->
+<div class="toc">
+  <h2>📋 施工顺序总览（16 个阶段 · 顺序不可颠倒）</h2>
+  <ol><li><span class="toc-n">01</span>前期准备</li><li><span class="toc-n">02</span>物业报备 + 拆改</li><li><span class="toc-n">03</span>水电改造</li><li><span class="toc-n">04</span>防水 + 闭水试验</li><li><span class="toc-n">05</span>泥瓦施工</li><li><span class="toc-n">06</span>木工吊顶</li><li><span class="toc-n">07</span>油工腻子乳胶漆</li><li><span class="toc-n">08</span>厨卫吊顶安装</li><li><span class="toc-n">09</span>全屋定制复尺 / 安装</li><li><span class="toc-n">10</span>木门安装</li><li><span class="toc-n">11</span>地板安装</li><li><span class="toc-n">12</span>开关灯具五金安装</li><li><span class="toc-n">13</span>卫浴安装</li><li><span class="toc-n">14</span>开荒保洁</li><li><span class="toc-n">15</span>竣工验收</li><li><span class="toc-n">16</span>通风入住</li></ol>
+</div>
+
+<div class="howto">
+  <b>怎么用这张表——</b>
+  ① 按 01→16 的顺序走，<b>不要跳步</b>，尤其水电、防水、验收这三步一旦返工最费钱；
+  ② 每个阶段末尾的「下一步」就是紧接着要干的活，不用自己猜；
+  ③ 右上角 □ 手写打勾，勾完再往下走；
+  ④ 标「⏱」的橙色标签是<b>全屋智能的安装节点</b>——这是普通工序表里没有的，错过就得返工。
+</div>
+
+<!-- ================= 16 阶段 ================= -->
+
+<section class="stage dense">
+  <div class="st-progress">
+    <span class="st-count">阶段 01 / 16</span>
+    <span class="st-dots"><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span>
+  </div>
+
+  <header class="st-head">
+    <div class="st-num">01</div>
+    <div class="st-title">
+      <h3>前期准备</h3>
+      <p class="st-tag">想清楚再动手</p>
+    </div>
+    <div class="st-check"><span class="cb"></span>已完成</div>
+  </header>
+
+  <p class="st-desc">装修还没正式动工，先把自家的需求、预算和大致方案想清楚，定好风格，避免后期反复改、反复花钱。</p>
+
+  <div class="st-next-wrap"><span class="nx">下一步 → 物业报备 + 拆改</span></div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔨</span>本阶段要做的</h4>
+      <ul class="works"><li>想清楚家里几口人住、各自生活习惯和收纳需求</li><li>定下装修风格和大致预算（建议留出 10%-20% 机动钱）</li><li>找设计师或装修公司量房、出平面方案和报价</li><li>确定要不要中央空调、新风、全屋智能（这些影响后面水电）</li><li>去建材市场转一转，了解瓷砖、地板、卫浴等主材行情</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">✅</span>验收要点</h4>
+      <ul class="accept"><li>平面方案自己和家人都满意，没漏掉重要功能</li><li>预算清单清楚，知道钱花在哪</li><li>报价单看明白，知道后期可能增项的地方</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">⚠️</span>注意事项</h4>
+      <ul class="attn"><li>多和设计师、家人当面沟通需求，反复确认比后期返工省大钱</li><li>量房时自己最好在场，确认尺寸和承重墙、配重墙位置</li><li>先定大件家电（中央空调/新风/全屋智能），再定最终方案</li><li>合同和报价单逐条看，看不懂的当场问清楚</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">🛒</span>这时候要买什么</h4>
+      <ul class="buy"><li>先了解行情，不急着买；但中央空调/新风如要装，此阶段就要定</li><li>全屋定制可先约初测沟通</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔍</span>选品要注意</h4>
+      <ul class="pick"><li>装修公司/设计师：看实景完工案例和口碑，别只看谁报价低</li><li>别一上来交大额定金，留点议价和退路空间</li><li>主材先逛市场摸行情，别急着下单，容易被忽悠</li></ul>
+    </div>
+    <div class="cell smart-cell">
+      <h4><span class="ic">📡</span>全屋智能 · 安装节点</h4>
+      <div class="smart-time">⏱ 智能规划期 · 定方案选网关</div>
+      <ul class="smart"><li>想装智能，这一步就要定方案：选米家/华为/涂鸦等系统，定中枢网关放哪</li><li>列清智能清单：智能开关、灯具、窗帘、门锁、传感器、摄像头、暖通</li><li>网络规划提前做：每个房间留网线，弱电箱留电源和散热空间</li><li>智能和定制柜一起想，避免后期柜子挡了面板和传感器</li></ul>
+    </div>
+  </div>
+
+  <div class="local">
+    <h4><span class="ic">📍</span>长治本地实情</h4>
+    <ul class="local-list"><li>长治冬天冷、夏天不算太潮，方案要以采暖为核心，地暖/暖气片先定，再谈格局</li><li>老小区多是砖混楼，层高普遍 2.8 米左右，吊顶别做太厚，压层高</li><li>本地装修公司爱把&quot;全包&quot;报很低，看清套餐里含不含水电改造和主材，多数是不含的</li><li>先量房再谈钱，长治房子朝向和采光差异大，同一个小区也未必一样</li></ul>
+  </div>
+
+  <div class="pit">
+    <h4><span class="ic">🚫</span>避坑提醒</h4>
+    <ul class="pit-list"><li>别脑子一热就开工，前期想清楚最省钱</li><li>预算一定要留机动，装修几乎都会超一点</li><li>合同里增项怎么算、怎么收费，一定写清楚</li></ul>
+  </div>
+</section>
+
+<section class="stage dense">
+  <div class="st-progress">
+    <span class="st-count">阶段 02 / 16</span>
+    <span class="st-dots"><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span>
+  </div>
+
+  <header class="st-head">
+    <div class="st-num">02</div>
+    <div class="st-title">
+      <h3>物业报备 + 拆改</h3>
+      <p class="st-tag">报备登记改格局</p>
+    </div>
+    <div class="st-check"><span class="cb"></span>已完成</div>
+  </header>
+
+  <p class="st-desc">先去物业登记报备、交装修押金，拿到允许后再按图纸拆墙、砌墙、改格局。这一步是把房子变成你想要的样子。</p>
+
+  <div class="st-next-wrap"><span class="nx">下一步 → 水电改造</span></div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔨</span>本阶段要做的</h4>
+      <ul class="works"><li>到物业报备，交装修押金，办工人出入证</li><li>确认哪些墙能拆、哪些绝对不能动</li><li>拆除非承重墙、多余隔断</li><li>按新方案新建墙体</li><li>拆旧门窗（如需要）</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">✅</span>验收要点</h4>
+      <ul class="accept"><li>拆改后的空间尺寸和图纸一致</li><li>拆下来的建筑垃圾清运干净</li><li>承重墙、剪力墙、配重墙一丝没动</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">⚠️</span>注意事项</h4>
+      <ul class="attn"><li>动工前再三确认承重墙、配重墙、剪力墙位置（物业图纸标红）</li><li>拆改垃圾及时装袋清运，别堆楼道惹投诉</li><li>拆改后复核现场尺寸，和图纸一致再往下走</li><li>敲墙时周围没人，注意安全</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">🛒</span>这时候要买什么</h4>
+      <ul class="buy"><li>如需中央空调/新风，此阶段要打孔定位</li><li>全屋定制可安排初测</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔍</span>选品要注意</h4>
+      <ul class="pick"><li>垃圾清运费问清含不含、运到哪、几次</li><li>新砌墙用什么砖或轻质材料，提前问清价格和工期</li><li>要装中央空调/新风，此阶段就约好打孔定位</li></ul>
+    </div>
+    <div class="cell smart-cell">
+      <h4><span class="ic">📡</span>全屋智能 · 安装节点</h4>
+      <div class="smart-time">⏱ 拆改期 · 弱电与网线定位</div>
+      <ul class="smart"><li>拆改一般不动智能布线，但先确认弱电箱位置和入户光纤走向</li><li>如果改格局，留意保留或新增网线点位（书房、客厅电视墙）</li><li>智能中枢/路由器打算放哪，提前想好，影响后面布线</li></ul>
+    </div>
+  </div>
+
+  <div class="local">
+    <h4><span class="ic">📍</span>长治本地实情</h4>
+    <ul class="local-list"><li>长治老小区（80-2000 年代的楼）多是砖混结构，承重墙多、能拆的少，动工前必须看物业图纸</li><li>老楼常有&quot;外墙保温层薄、冬天返霜&quot;问题，拆改后新砌墙注意做保温</li><li>垃圾清运在本地有固定渠道，问清小区物业是否指定清运队，自己找可能被拦</li><li>拆下来的旧门窗、旧暖气片可以回收，别直接当垃圾扔，能抵点清运费</li></ul>
+  </div>
+
+  <div class="pit">
+    <h4><span class="ic">🚫</span>避坑提醒</h4>
+    <ul class="pit-list"><li>承重墙、配重墙、剪力墙绝对不能拆，拆了违法还危险</li><li>动工前一定问清物业哪些墙不能动</li><li>装修押金问清楚什么情况能退、怎么退</li></ul>
+  </div>
+</section>
+
+<section class="stage dense">
+  <div class="st-progress">
+    <span class="st-count">阶段 03 / 16</span>
+    <span class="st-dots"><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span>
+  </div>
+
+  <header class="st-head">
+    <div class="st-num">03</div>
+    <div class="st-title">
+      <h3>水电改造</h3>
+      <p class="st-tag">隐蔽工程最关键</p>
+    </div>
+    <div class="st-check"><span class="cb"></span>已完成</div>
+  </header>
+
+  <p class="st-desc">这是最关键的隐蔽工程。按你平时怎么用，重新布置电线和水管，开槽、走线、布管。装完就埋墙里了，以后改不了，所以最费心。</p>
+
+  <div class="st-next-wrap"><span class="nx">下一步 → 防水 + 闭水试验</span></div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔨</span>本阶段要做的</h4>
+      <ul class="works"><li>和水电师傅现场交底，定好每个插座、开关、水龙头位置</li><li>墙面地面开槽</li><li>布管、穿线（电线水管走好）</li><li>预留智能设备、净水器、扫地机器人等线路</li><li>厨房、卫生间单独回路</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">✅</span>验收要点</h4>
+      <ul class="accept"><li>对照点位图，逐个核对插座开关位置对不对</li><li>水管打压测试，不漏水</li><li>拍照留存所有布线走向（以后墙上打孔要用）</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">⚠️</span>注意事项</h4>
+      <ul class="attn"><li>和水电师傅现场逐一点位交底，边走边定最准</li><li>全程最好自己盯，尤其开槽深度、管线走向</li><li>强弱电交叉处包锡纸防信号干扰</li><li>完工立刻拍照留底（带尺寸），以后墙上打孔全靠它</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">🛒</span>这时候要买什么</h4>
+      <ul class="buy"><li>强弱电箱、空开、漏保</li><li>水管、电线材料（一般施工方包，可指定品牌）</li><li>提前定好洁具，确定排水口位置</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔍</span>选品要注意</h4>
+      <ul class="pick"><li>电线认国标 BV 线、大品牌（熊猫/德力西/远东），别用非标</li><li>水管选 PPR 品牌（伟星/日丰/保利），问是否厂家上门打压质保</li><li>空开漏保选正泰/施耐德，看额定电流匹配</li><li>网线至少超六类（CAT6A），别用五类</li></ul>
+    </div>
+    <div class="cell smart-cell">
+      <h4><span class="ic">📡</span>全屋智能 · 安装节点</h4>
+      <div class="smart-time">⏱ 水电期 · 核心布线留零线</div>
+      <ul class="smart"><li>智能开关必须留零线！这是最常见的坑，没零线后期只能换电池款</li><li>多留插座：网关、摄像头、传感器、扫地机、窗帘电机都要电</li><li>每个房间拉超六类网线，客厅电视墙、卧室床头预留网络点</li><li>电动窗帘、智能马桶、智能镜柜、净水器提前留好电源</li><li>弱电箱换大的或加扩容模块，装得下路由和网关</li></ul>
+    </div>
+  </div>
+
+  <div class="local">
+    <h4><span class="ic">📍</span>长治本地实情</h4>
+    <ul class="local-list"><li>长治集中供暖，暖气管道改造要单独找热力公司或专业水暖工，别让水电工顺手改</li><li>老房多是单火线，想上智能开关必须借水电改造这次补零线，否则以后没机会</li><li>本地水质偏硬，净水器和软水机建议提前留位和电源，事后加装很麻烦</li><li>冬季施工注意：气温低于 5 度别做水管打压外露测试，容易冻裂</li></ul>
+  </div>
+
+  <div class="pit">
+    <h4><span class="ic">🚫</span>避坑提醒</h4>
+    <ul class="pit-list"><li>插座宁多勿少，后期加很麻烦</li><li>厨房、卫生间、空调要单独回路</li><li>水电完工必须拍照留底，这是保命的</li></ul>
+  </div>
+</section>
+
+<section class="stage dense">
+  <div class="st-progress">
+    <span class="st-count">阶段 04 / 16</span>
+    <span class="st-dots"><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span>
+  </div>
+
+  <header class="st-head">
+    <div class="st-num">04</div>
+    <div class="st-title">
+      <h3>防水 + 闭水试验</h3>
+      <p class="st-tag">不漏才能往下走</p>
+    </div>
+    <div class="st-check"><span class="cb"></span>已完成</div>
+  </header>
+
+  <p class="st-desc">卫生间、厨房、阳台刷防水涂料，刷完做闭水试验，蓄水泡 24-48 小时，看楼下漏不漏。这一步不过，后面全白搭。</p>
+
+  <div class="st-next-wrap"><span class="nx">下一步 → 泥瓦施工</span></div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔨</span>本阶段要做的</h4>
+      <ul class="works"><li>基层处理干净、平整</li><li>刷防水涂料，一般 2-3 遍</li><li>做闭水试验，蓄满水</li><li>通知楼下邻居帮忙看顶面</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">✅</span>验收要点</h4>
+      <ul class="accept"><li>闭水试验时间做够（至少 24 小时，建议 48 小时）</li><li>楼下顶面没有渗水、水印</li><li>淋浴区防水刷到 1.8 米高，其他区域够高</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">⚠️</span>注意事项</h4>
+      <ul class="attn"><li>刷防水前基层必须干、平、无浮砂</li><li>管根、阴阳角、地漏处重点刷，做圆弧过渡</li><li>闭水时自己也要去楼下看顶面，别只听师傅说</li><li>门口做挡水坝，蓄水深度够，别泡到邻居家</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">🛒</span>这时候要买什么</h4>
+      <ul class="buy"><li>防水材料一般由施工方提供</li><li>提前和楼下邻居打招呼配合查看</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔍</span>选品要注意</h4>
+      <ul class="pick"><li>防水涂料看类型：墙面用刚性、地面用柔性更稳</li><li>别贪便宜用劣质涂料，刷够遍数和厚度才管用</li><li>看环保标准和保质期，正规品牌更放心</li></ul>
+    </div>
+    <div class="cell smart-cell">
+      <h4><span class="ic">📡</span>全屋智能 · 安装节点</h4>
+      <div class="smart-time">⏱ 水电期 · 智能电源定位</div>
+      <ul class="smart"><li>智能马桶、智能镜柜的电源位置在防水前定好，别被水淹</li><li>卫生间湿区插座选防溅盒，智能设备电源别正对花洒</li><li>镜柜后若藏智能屏，确认墙体已做防水再固定</li></ul>
+    </div>
+  </div>
+
+  <div class="local">
+    <h4><span class="ic">📍</span>长治本地实情</h4>
+    <ul class="local-list"><li>长治供暖期长（约 11 月至次年 3 月），卫生间湿气大，防水一定刷够高度</li><li>老楼楼板薄、隔音差，闭水试验更容易渗到楼下，必须提前和邻居打好招呼</li><li>本地卫生间普遍小，干湿分离要提前规划，否则防水和排水都受影响</li><li>冬天做闭水，水温低会拖慢固化，多等一天再放水更保险</li></ul>
+  </div>
+
+  <div class="pit">
+    <h4><span class="ic">🚫</span>避坑提醒</h4>
+    <ul class="pit-list"><li>闭水试验千万别偷懒不做、别提前放水</li><li>门口要做挡水坝，别泡到邻居家</li><li>发现问题立即返工，别硬着头皮往下走</li></ul>
+  </div>
+</section>
+
+<section class="stage dense">
+  <div class="st-progress">
+    <span class="st-count">阶段 05 / 16</span>
+    <span class="st-dots"><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span>
+  </div>
+
+  <header class="st-head">
+    <div class="st-num">05</div>
+    <div class="st-title">
+      <h3>泥瓦施工</h3>
+      <p class="st-tag">铺砖找平做面子</p>
+    </div>
+    <div class="st-check"><span class="cb"></span>已完成</div>
+  </header>
+
+  <p class="st-desc">铺墙砖地砖、地面找平，是家里硬装的“面子”工程，铺得好不好一眼就看出来。</p>
+
+  <div class="st-next-wrap"><span class="nx">下一步 → 木工吊顶</span></div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔨</span>本阶段要做的</h4>
+      <ul class="works"><li>包下水管道</li><li>墙砖、地砖铺贴</li><li>地面找平</li><li>窗台石、过门石安装</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">✅</span>验收要点</h4>
+      <ul class="accept"><li>用空鼓锤敲，空鼓率控制在 5% 以内</li><li>砖缝均匀、对齐</li><li>地漏处坡度对，不积水</li><li>阴阳角方正</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">⚠️</span>注意事项</h4>
+      <ul class="attn"><li>铺砖前泡水（吸水率高的砖），全瓷砖可薄贴</li><li>现场盯空鼓，尤其四角和边缝</li><li>地漏处做回字坡或切角，保证排水顺畅</li><li>瓷砖铺完做成品保护，别被后续工种划伤</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">🛒</span>这时候要买什么</h4>
+      <ul class="buy"><li>瓷砖、地砖、美缝剂</li><li>地漏、过门石、窗台石</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔍</span>选品要注意</h4>
+      <ul class="pick"><li>瓷砖看吸水率、平整度、同批次色差</li><li>地砖上墙要刷背胶或用瓷砖胶，别只用水泥</li><li>美缝剂选环氧彩砂更耐脏防霉</li><li>地漏选防臭深水封或磁吸款，别省这几十块</li></ul>
+    </div>
+    <div class="cell smart-cell">
+      <h4><span class="ic">📡</span>全屋智能 · 安装节点</h4>
+      <div class="smart-time">⏱ 泥瓦期 · 底盒预埋开孔</div>
+      <ul class="smart"><li>电动窗帘电源底盒、智能面板底盒提前预埋，深度要够（≥5cm）</li><li>瓷砖开孔给智能面板、传感器留位，别事后砸墙</li><li>壁龛或墙排处若放智能屏/音箱，预留电源和网线</li></ul>
+    </div>
+  </div>
+
+  <div class="local">
+    <h4><span class="ic">📍</span>长治本地实情</h4>
+    <ul class="local-list"><li>长治冬天供暖期室内干、夏天不算潮，瓷砖一般不用特别挑防潮款，重点看平整度和色差</li><li>本地瓦工旺季（春秋）排期紧，提前约师傅，好师傅要排队一两周</li><li>瓷砖建议在本地建材市场看实物（城隍庙、英雄路一带集中），网购买错色差退换麻烦</li><li>厨房卫生间地面建议选防滑程度高一点的，冬天穿拖鞋、有地暖也不打滑</li></ul>
+  </div>
+
+  <div class="pit">
+    <h4><span class="ic">🚫</span>避坑提醒</h4>
+    <ul class="pit-list"><li>瓷砖铺前泡水，不然会吸走水泥浆导致空鼓</li><li>留缝，别贴死，热胀冷缩会崩</li><li>地漏买防臭的，别省这几十块</li></ul>
+  </div>
+</section>
+
+<section class="stage dense">
+  <div class="st-progress">
+    <span class="st-count">阶段 06 / 16</span>
+    <span class="st-dots"><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span>
+  </div>
+
+  <header class="st-head">
+    <div class="st-num">06</div>
+    <div class="st-title">
+      <h3>木工吊顶</h3>
+      <p class="st-tag">吊顶造型留风口</p>
+    </div>
+    <div class="st-check"><span class="cb"></span>已完成</div>
+  </header>
+
+  <p class="st-desc">做客厅、走廊的吊顶造型，顺便把中央空调、新风的出风口位置留出来。</p>
+
+  <div class="st-next-wrap"><span class="nx">下一步 → 油工腻子乳胶漆</span></div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔨</span>本阶段要做的</h4>
+      <ul class="works"><li>吊顶龙骨框架</li><li>封石膏板</li><li>做窗帘盒</li><li>背景墙基层（如需要）</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">✅</span>验收要点</h4>
+      <ul class="accept"><li>吊顶平整，没有明显高低</li><li>螺丝做了防锈处理</li><li>转角用整板，防开裂</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">⚠️</span>注意事项</h4>
+      <ul class="attn"><li>吊顶前确认中央空调/新风风口尺寸位置</li><li>盯转角用整板（L 型切割）、钉眼做防锈</li><li>窗帘盒尺寸和窗帘轨道匹配，提前量好</li><li>自攻螺丝间距别太大，结构才稳</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">🛒</span>这时候要买什么</h4>
+      <ul class="buy"><li>石膏板、龙骨（一般施工方包）</li><li>提前定好灯具尺寸，方便留孔</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔍</span>选品要注意</h4>
+      <ul class="pick"><li>石膏板选大品牌（龙牌/可耐福），看厚度达标</li><li>龙骨用轻钢更稳，尽量别用木龙骨（易变形）</li><li>腻子、防锈等辅材随油工一起确认品牌</li></ul>
+    </div>
+    <div class="cell smart-cell">
+      <h4><span class="ic">📡</span>全屋智能 · 安装节点</h4>
+      <div class="smart-time">⏱ 吊顶期 · 检修口与定位</div>
+      <ul class="smart"><li>吊顶留智能主机的检修口（网关、AP、背景音乐主机）</li><li>电动窗帘盒尺寸按电机定，留好电源和检修空间</li><li>筒灯/射灯若接智能驱动，灯位和驱动盒位置提前留</li><li>背景音乐喇叭、人体存在传感器位置吊顶时定位</li></ul>
+    </div>
+  </div>
+
+  <div class="local">
+    <h4><span class="ic">📍</span>长治本地实情</h4>
+    <ul class="local-list"><li>长治层高普遍不高（2.6-2.8 米），吊顶做太厚会压抑，建议局部吊顶 + 简单边吊</li><li>老楼预制板楼顶不平，吊顶前先找平，别直接封板造成歪斜</li><li>本地冬天干燥、暖气烘烤，石膏板接缝和钉眼更要做好防裂处理</li><li>如果要装中央空调或新风，风口位置要在吊顶前和暖通师傅一起定死</li></ul>
+  </div>
+
+  <div class="pit">
+    <h4><span class="ic">🚫</span>避坑提醒</h4>
+    <ul class="pit-list"><li>吊顶转角用 L 型整板切割，防开裂</li><li>钉眼做防锈，不然以后生锈印子</li><li>灯位、检修口提前留好</li></ul>
+  </div>
+</section>
+
+<section class="stage">
+  <div class="st-progress">
+    <span class="st-count">阶段 07 / 16</span>
+    <span class="st-dots"><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span>
+  </div>
+
+  <header class="st-head">
+    <div class="st-num">07</div>
+    <div class="st-title">
+      <h3>油工腻子乳胶漆</h3>
+      <p class="st-tag">墙面刷白找平</p>
+    </div>
+    <div class="st-check"><span class="cb"></span>已完成</div>
+  </header>
+
+  <p class="st-desc">墙面刮腻子、打磨、刷漆，决定家里最终“白不白、平不平、整不整齐”。</p>
+
+  <div class="st-next-wrap"><span class="nx">下一步 → 厨卫吊顶安装</span></div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔨</span>本阶段要做的</h4>
+      <ul class="works"><li>阴阳角找直</li><li>刮腻子 2-3 遍</li><li>打磨平整</li><li>刷底漆一遍、面漆两遍</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">✅</span>验收要点</h4>
+      <ul class="accept"><li>墙面平整，无色差</li><li>没有透底、流坠、刷花</li><li>阳角顺直，不歪</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">⚠️</span>注意事项</h4>
+      <ul class="attn"><li>盯阴阳角找直，用靠尺或护角条</li><li>腻子必须干透再打磨，别抢工期开裂</li><li>刷漆前把家具地面盖好，别溅上</li><li>一遍底漆两遍面漆别省，效果差很多</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">🛒</span>这时候要买什么</h4>
+      <ul class="buy"><li>乳胶漆、腻子粉</li><li>可顺带定开关面板颜色</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔍</span>选品要注意</h4>
+      <ul class="pick"><li>乳胶漆看环保等级（十环/法国A+/无添加），别只看价格</li><li>腻子选耐水型，别用普通腻子易掉粉</li><li>调色漆先刷小样确认，避免色差翻车</li><li>底漆面漆用同系列配套，别混用</li></ul>
+    </div>
+    <div class="cell smart-cell">
+      <h4><span class="ic">📡</span>全屋智能 · 安装节点</h4>
+      <div class="smart-time">⏱ 油工期 · 底盒补平防护</div>
+      <ul class="smart"><li>智能面板底盒周边补平，漆面统一，别露出歪斜底盒</li><li>刷漆前把已布的智能线管、底盒盖好，别进灰进漆</li><li>调色灯光区域确认色温，避免智能灯装完色差</li></ul>
+    </div>
+  </div>
+
+  <div class="local">
+    <h4><span class="ic">📍</span>长治本地实情</h4>
+    <ul class="local-list"><li>长治冬天供暖期室内极干，腻子和乳胶漆容易开裂，施工后要保湿养护、别开窗猛吹</li><li>本地春秋风大灰多，刷漆关窗施工，否则墙面沾灰发花</li><li>气温低于 5 度不建议刷漆，等供暖或者开春再刷，效果差很多</li><li>老房墙面多有空鼓、起皮，铲墙皮到位再批腻子，否则新漆也会跟着掉</li></ul>
+  </div>
+
+  <div class="pit">
+    <h4><span class="ic">🚫</span>避坑提醒</h4>
+    <ul class="pit-list"><li>一遍底漆两遍面漆别省</li><li>腻子干透再打磨，别抢工期</li><li>阴雨天、返潮天别刷漆，干不透</li></ul>
+  </div>
+</section>
+
+<section class="stage">
+  <div class="st-progress">
+    <span class="st-count">阶段 08 / 16</span>
+    <span class="st-dots"><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span>
+  </div>
+
+  <header class="st-head">
+    <div class="st-num">08</div>
+    <div class="st-title">
+      <h3>厨卫吊顶安装</h3>
+      <p class="st-tag">铝扣板 + 浴霸</p>
+    </div>
+    <div class="st-check"><span class="cb"></span>已完成</div>
+  </header>
+
+  <p class="st-desc">厨房、卫生间装铝扣板吊顶，顺便把浴霸、灯具、排烟管一起装上。</p>
+
+  <div class="st-next-wrap"><span class="nx">下一步 → 全屋定制复尺 / 安装</span></div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔨</span>本阶段要做的</h4>
+      <ul class="works"><li>安装铝扣板吊顶</li><li>装浴霸/凉霸</li><li>装厨房灯具</li><li>接好排烟管</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">✅</span>验收要点</h4>
+      <ul class="accept"><li>吊顶平整、收边严密</li><li>浴霸、灯具能正常用</li><li>排烟顺畅不倒烟</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">⚠️</span>注意事项</h4>
+      <ul class="attn"><li>先装排烟管/止逆阀再装吊顶，顺序别反</li><li>浴霸、灯具线路预留对，别装完才发现错位</li><li>留个检修口，以后维护方便</li><li>用水平仪找平，别肉眼看</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">🛒</span>这时候要买什么</h4>
+      <ul class="buy"><li>铝扣板、浴霸、凉霸、厨房灯（提前买好）</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔍</span>选品要注意</h4>
+      <ul class="pick"><li>铝扣板选 0.6mm 以上厚度，太薄易变形</li><li>浴霸选风暖（别灯暖伤眼），看功率和换气量</li><li>止逆阀选硅胶/磁吸密封好的，防油烟倒灌</li><li>吊顶电器认准 3C 认证</li></ul>
+    </div>
+    <div class="cell smart-cell">
+      <h4><span class="ic">📡</span>全屋智能 · 安装节点</h4>
+      <div class="smart-time">⏱ 安装期 · 网关浴霸接电</div>
+      <ul class="smart"><li>吊顶内藏网关/路由/AP 时，留检修口方便复位</li><li>智能晾衣机、智能浴霸在吊顶时一并装好并接线</li><li>吊顶前确认智能设备电源已留，别装完发现没电</li></ul>
+    </div>
+  </div>
+
+  <div class="local">
+    <h4><span class="ic">📍</span>长治本地实情</h4>
+    <ul class="local-list"><li>长治冬天冷，浴室建议一定要装风暖浴霸（别灯暖），冬天洗澡全靠它</li><li>本地厨房油烟不算特别重，但排烟管走向要有坡度、通到外墙，别排到公共烟道反味</li><li>铝扣板在本地市场很成熟，认厚度的同时看收边条，收边不好容易积灰发黄</li><li>老楼卫生间排气孔可能偏小，装浴霸前量好孔径，不够要扩孔</li></ul>
+  </div>
+
+  <div class="pit">
+    <h4><span class="ic">🚫</span>避坑提醒</h4>
+    <ul class="pit-list"><li>先装烟管再装吊顶，顺序别反</li><li>止逆阀提前装好，防别人家油烟倒灌</li><li>留个检修口，以后好维护</li></ul>
+  </div>
+</section>
+
+<section class="stage dense">
+  <div class="st-progress">
+    <span class="st-count">阶段 09 / 16</span>
+    <span class="st-dots"><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span>
+  </div>
+
+  <header class="st-head">
+    <div class="st-num">09</div>
+    <div class="st-title">
+      <h3>全屋定制复尺 / 安装</h3>
+      <p class="st-tag">柜子进场安装</p>
+    </div>
+    <div class="st-check"><span class="cb"></span>已完成</div>
+  </header>
+
+  <p class="st-desc">衣柜、橱柜、鞋柜等定制柜，工厂生产完了，师傅上门复尺确认尺寸后安装。</p>
+
+  <div class="st-next-wrap"><span class="nx">下一步 → 木门安装</span></div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔨</span>本阶段要做的</h4>
+      <ul class="works"><li>厂家上门复尺，确认最终尺寸</li><li>柜体进场安装</li><li>橱柜台面安装</li><li>抽屉、拉篮等五金装好</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">✅</span>验收要点</h4>
+      <ul class="accept"><li>柜体与墙面贴合，不晃</li><li>门板缝隙均匀</li><li>五金开关顺滑</li><li>台面无崩边、无渗水</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">⚠️</span>注意事项</h4>
+      <ul class="attn"><li>复尺必须在瓷砖铺完、吊顶做好之后</li><li>盯柜体与墙面缝隙，过大要补缝处理</li><li>台面装完试水，看下水顺不顺、渗不渗</li><li>五金件核对品牌型号，别被偷换</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">🛒</span>这时候要买什么</h4>
+      <ul class="buy"><li>全屋定制（前期已定）</li><li>拉手、见光板等配件确认</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔍</span>选品要注意</h4>
+      <ul class="pick"><li>板材看环保等级（ENF/F4 星最优），别只看价格</li><li>板材类型按空间选：橱柜用多层/欧松，衣柜用颗粒/欧松</li><li>五金认准百隆/悍高/东泰，别用杂牌</li><li>台面石英石看石英含量（93% 以上更耐用）</li><li>合同写清材质、工期、增项怎么算</li></ul>
+    </div>
+    <div class="cell smart-cell">
+      <h4><span class="ic">📡</span>全屋智能 · 安装节点</h4>
+      <div class="smart-time">⏱ 安装期 · 柜体留电走线</div>
+      <ul class="smart"><li>柜体预留插座：灯带、消毒机、智能收纳需电源</li><li>智能镜柜、智能衣柜在定制时定好型号，柜体留走线</li><li>柜门若接电动/智能开合，复尺时沟通电机位置和电源</li></ul>
+    </div>
+  </div>
+
+  <div class="local">
+    <h4><span class="ic">📍</span>长治本地实情</h4>
+    <ul class="local-list"><li>长治全屋定制本地品牌和全国大牌都有，本地厂交期快、能上门复尺，大牌板材更稳，看自己取舍</li><li>本地房子进深普遍不大，柜子建议做到顶、别留卫生死角，也省得放杂物积灰</li><li>供暖房间板材要留意，冬天干、夏天潮，选稳定性好的板材（多层/欧松）更抗变形</li><li>量尺要在墙地砖和吊顶都完工后，本地师傅习惯早量，量早了尺寸必错</li></ul>
+  </div>
+
+  <div class="pit">
+    <h4><span class="ic">🚫</span>避坑提醒</h4>
+    <ul class="pit-list"><li>复尺要在瓷砖铺完、吊顶做好之后</li><li>橱柜高度和木门要协调，先沟通好</li><li>台面装完试水，看下水顺不顺</li></ul>
+  </div>
+</section>
+
+<section class="stage">
+  <div class="st-progress">
+    <span class="st-count">阶段 10 / 16</span>
+    <span class="st-dots"><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span>
+  </div>
+
+  <header class="st-head">
+    <div class="st-num">10</div>
+    <div class="st-title">
+      <h3>木门安装</h3>
+      <p class="st-tag">室内门装好</p>
+    </div>
+    <div class="st-check"><span class="cb"></span>已完成</div>
+  </header>
+
+  <p class="st-desc">卧室门、厨房门等室内门，量完尺寸工厂做好，现在上门安装。</p>
+
+  <div class="st-next-wrap"><span class="nx">下一步 → 地板安装</span></div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔨</span>本阶段要做的</h4>
+      <ul class="works"><li>门套安装</li><li>门扇安装</li><li>门锁、合页等五金</li><li>哑口套（如需要）</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">✅</span>验收要点</h4>
+      <ul class="accept"><li>门缝均匀</li><li>开关顺畅、没异响</li><li>门吸牢固</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">⚠️</span>注意事项</h4>
+      <ul class="attn"><li>量尺在地面找平、墙厚确定之后</li><li>门和地板谁先谁后，提前和师傅约定</li><li>盯门套与墙缝隙，过大要打胶补</li><li>合页一般 3 个，门吸位置提前定</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">🛒</span>这时候要买什么</h4>
+      <ul class="buy"><li>室内门（前期已定）</li><li>门锁、合页、门吸</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔍</span>选品要注意</h4>
+      <ul class="pick"><li>门芯看实木复合/实木，别买纸芯填充</li><li>看漆面平整无颗粒、无流坠</li><li>锁具选静音磁吸更舒服</li><li>套线、门吸等五金是否包含问清楚</li></ul>
+    </div>
+    <div class="cell smart-cell">
+      <h4><span class="ic">📡</span>全屋智能 · 安装节点</h4>
+      <div class="smart-time">⏱ 安装期 · 智能锁门磁</div>
+      <ul class="smart"><li>智能门锁提前买好，门装完即可安装（看门厚和锁体）</li><li>门磁、门窗传感器贴门框，装门时顺手定位</li><li>确认锁体导向片和门开向，避免智能锁装不上</li></ul>
+    </div>
+  </div>
+
+  <div class="local">
+    <h4><span class="ic">📍</span>长治本地实情</h4>
+    <ul class="local-list"><li>长治冬天供暖期室内干，木门容易收缩、门缝变大，装门时别把缝隙留太死</li><li>本地门洞尺寸常不规整（老楼尤其），量尺要多点测量取最小值</li><li>供暖房间的门和地板要协调好先后，先装门后铺地板容易卡门</li><li>木门在本地小厂定制更便宜，但要盯漆面和封边，别只看价格</li></ul>
+  </div>
+
+  <div class="pit">
+    <h4><span class="ic">🚫</span>避坑提醒</h4>
+    <ul class="pit-list"><li>门洞尺寸量准，不然装不上</li><li>门和地板的先后要提前和师傅定好</li><li>门底留缝要合适，不卡地板</li></ul>
+  </div>
+</section>
+
+<section class="stage">
+  <div class="st-progress">
+    <span class="st-count">阶段 11 / 16</span>
+    <span class="st-dots"><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span>
+  </div>
+
+  <header class="st-head">
+    <div class="st-num">11</div>
+    <div class="st-title">
+      <h3>地板安装</h3>
+      <p class="st-tag">铺地板上踢脚线</p>
+    </div>
+    <div class="st-check"><span class="cb"></span>已完成</div>
+  </header>
+
+  <p class="st-desc">铺木地板或复合地板，踢脚线一起装上，家里地面完成。</p>
+
+  <div class="st-next-wrap"><span class="nx">下一步 → 开关灯具五金安装</span></div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔨</span>本阶段要做的</h4>
+      <ul class="works"><li>地面清扫干净</li><li>铺防潮垫</li><li>地板铺装</li><li>踢脚线安装</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">✅</span>验收要点</h4>
+      <ul class="accept"><li>地板无空鼓、无异响</li><li>墙边留了伸缩缝</li><li>踢脚线平顺、无缝隙</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">⚠️</span>注意事项</h4>
+      <ul class="attn"><li>铺前地面干透、平整、清洁，缺一不可</li><li>墙边留伸缩缝（踢脚线遮），别顶死</li><li>铺完别马上重踩，等胶干透</li><li>地板和门底留缝，别卡门</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">🛒</span>这时候要买什么</h4>
+      <ul class="buy"><li>木地板、踢脚线、防潮垫</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔍</span>选品要注意</h4>
+      <ul class="pick"><li>按预算和是否地暖选：地暖用专用耐地热地板</li><li>看耐磨等级（家用 AC3 以上够）</li><li>踢脚线材质和地板配套</li><li>环保等级 ENF 优先</li><li>问清包不包安装、辅料谁出</li></ul>
+    </div>
+    <div class="cell smart-cell">
+      <h4><span class="ic">📡</span>全屋智能 · 安装节点</h4>
+      <div class="smart-time">⏱ 安装期 · 地暖温控走线</div>
+      <ul class="smart"><li>地暖若接智能温控，地板下传感器/温控底盒提前留</li><li>地板铺完再装踢脚线里的网线/智能线，别压坏</li><li>智能地暖温控面板底盒位置与地板完成面平齐</li></ul>
+    </div>
+  </div>
+
+  <div class="local">
+    <h4><span class="ic">📍</span>长治本地实情</h4>
+    <ul class="local-list"><li>长治集中供暖，如果铺地暖，一定选耐地热专用地板，普通地板容易变形开缝</li><li>不装地暖的房间，实木复合比纯实木更稳，本地暖气烘烤下纯实木易开裂</li><li>本地春秋短、冬夏温差大，地板墙边伸缩缝要留够，别顶死</li><li>铺前让地板在室内放一两天适应温湿度，直接铺容易后期响、翘</li></ul>
+  </div>
+
+  <div class="pit">
+    <h4><span class="ic">🚫</span>避坑提醒</h4>
+    <ul class="pit-list"><li>地板和门之间留伸缩缝，别顶死</li><li>安装前地面必须干透、清洁</li><li>潮气大的天别铺，容易变形</li></ul>
+  </div>
+</section>
+
+<section class="stage">
+  <div class="st-progress">
+    <span class="st-count">阶段 12 / 16</span>
+    <span class="st-dots"><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i></span>
+  </div>
+
+  <header class="st-head">
+    <div class="st-num">12</div>
+    <div class="st-title">
+      <h3>开关灯具五金安装</h3>
+      <p class="st-tag">家里开始亮起来</p>
+    </div>
+    <div class="st-check"><span class="cb"></span>已完成</div>
+  </header>
+
+  <p class="st-desc">把所有开关插座面板、灯具、窗帘杆等小五金装好，家里开始“亮起来”。</p>
+
+  <div class="st-next-wrap"><span class="nx">下一步 → 卫浴安装</span></div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔨</span>本阶段要做的</h4>
+      <ul class="works"><li>装开关插座面板</li><li>装主灯、筒灯、灯带</li><li>装窗帘杆等五金</li><li>智能设备此时配网</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">✅</span>验收要点</h4>
+      <ul class="accept"><li>每个插座都通电测试</li><li>灯都亮、没闪</li><li>面板端正不歪</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">⚠️</span>注意事项</h4>
+      <ul class="attn"><li>装前先断电，安全第一</li><li>装完逐一通电测试每个插座和灯</li><li>智能设备这时候连网调试</li><li>灯具易碎，轻拿轻放</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">🛒</span>这时候要买什么</h4>
+      <ul class="buy"><li>开关插座、灯具、窗帘杆（前期已买）</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔍</span>选品要注意</h4>
+      <ul class="pick"><li>开关插座看阻燃 PC 材质、带儿童安全门</li><li>品牌选公牛/施耐德/西门子，别用杂牌</li><li>灯具看无频闪驱动、色温统一（别一个冷一个暖）</li><li>窗帘杆看承重和材质，别用太细的</li></ul>
+    </div>
+    <div class="cell smart-cell">
+      <h4><span class="ic">📡</span>全屋智能 · 安装节点</h4>
+      <div class="smart-time">⏱ 安装期 · 面板网关配网</div>
+      <ul class="smart"><li>智能开关面板集中安装：先确认零线到位再上电</li><li>智能灯具、窗帘电机、传感器、网关在此阶段装好配网</li><li>网关放房屋中心、高处、少遮挡，信号最稳</li><li>逐一对设备配网测试，别漏装漏连</li></ul>
+    </div>
+  </div>
+
+  <div class="local">
+    <h4><span class="ic">📍</span>长治本地实情</h4>
+    <ul class="local-list"><li>长治冬天日照少、室内偏暗，灯光建议选色温偏暖（3000-3500K），别全用冷白显冷清</li><li>老房层高和线路条件有限，智能面板要趁装面板时一并换，别装完再返工</li><li>本地电网偶尔有波动，智能设备建议配稳压或选带保护的网关，减少掉线</li><li>面板选通用大牌，本地五金店就有货，坏了随时能换，别用太小众的品牌</li></ul>
+  </div>
+
+  <div class="pit">
+    <h4><span class="ic">🚫</span>避坑提醒</h4>
+    <ul class="pit-list"><li>装完逐一测试，别漏了</li><li>智能设备这时候连网调试</li><li>灯具易碎，轻拿轻放</li></ul>
+  </div>
+</section>
+
+<section class="stage dense">
+  <div class="st-progress">
+    <span class="st-count">阶段 13 / 16</span>
+    <span class="st-dots"><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i><i class=""></i></span>
+  </div>
+
+  <header class="st-head">
+    <div class="st-num">13</div>
+    <div class="st-title">
+      <h3>卫浴安装</h3>
+      <p class="st-tag">马桶花洒装齐</p>
+    </div>
+    <div class="st-check"><span class="cb"></span>已完成</div>
+  </header>
+
+  <p class="st-desc">马桶、花洒、浴室柜、镜柜等卫浴洁具安装到位，卫生间能用起来了。</p>
+
+  <div class="st-next-wrap"><span class="nx">下一步 → 开荒保洁</span></div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔨</span>本阶段要做的</h4>
+      <ul class="works"><li>装浴室柜、镜柜</li><li>装马桶</li><li>装花洒、龙头</li><li>装毛巾架等五金挂件</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">✅</span>验收要点</h4>
+      <ul class="accept"><li>马桶不漏水、不晃动</li><li>花洒出水正常、冷热对</li><li>柜体稳固、不晃</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">⚠️</span>注意事项</h4>
+      <ul class="attn"><li>马桶坑距量准再买（305 或 400），买错装不上</li><li>装完都试一遍水，看漏不漏、晃不晃</li><li>玻璃胶打防霉中性胶，别用酸性发黑</li><li>浴室柜调水平，门板开合顺</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">🛒</span>这时候要买什么</h4>
+      <ul class="buy"><li>马桶、花洒、浴室柜、镜柜、挂件（前期已买）</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔍</span>选品要注意</h4>
+      <ul class="pick"><li>马桶看坑距和冲水方式（虹吸式更安静）</li><li>花洒看阀芯（陶瓷阀芯）、出水方式和握感</li><li>浴室柜看防潮（多层实木/铝合金），别用普通密度板</li><li>龙头看全铜材质和起泡器</li><li>玻璃胶买防霉中性，自己备一支</li></ul>
+    </div>
+    <div class="cell smart-cell">
+      <h4><span class="ic">📡</span>全屋智能 · 安装节点</h4>
+      <div class="smart-time">⏱ 安装期 · 智能洁具接电</div>
+      <ul class="smart"><li>智能马桶、智能镜柜、智能花洒在此阶段接电装好</li><li>卫生间加水浸传感器，漏水第一时间提醒</li><li>智能设备用防霉中性胶固定，别用酸性发黑</li><li>装完逐一试功能：加热、冲洗、除雾、联动</li></ul>
+    </div>
+  </div>
+
+  <div class="local">
+    <h4><span class="ic">📍</span>长治本地实情</h4>
+    <ul class="local-list"><li>长治水质偏硬，花洒、龙头容易结水垢，选易清洁的材质和出水口，后期省心</li><li>马桶坑距量准再买，老楼坑距常是 300，新楼多为 400，买错装不上退换麻烦</li><li>本地卫生间普遍不大，浴室柜建议选挂墙式，地面好打扫、柜体不返潮</li><li>装完试水一定要试，本地个别小区水压偏低，花洒出水小要提前确认</li></ul>
+  </div>
+
+  <div class="pit">
+    <h4><span class="ic">🚫</span>避坑提醒</h4>
+    <ul class="pit-list"><li>马桶坑距量准，买错装不上</li><li>玻璃胶选防霉的，不然发黑</li><li>装完都试一遍水</li></ul>
+  </div>
+</section>
+
+<section class="stage">
+  <div class="st-progress">
+    <span class="st-count">阶段 14 / 16</span>
+    <span class="st-dots"><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i><i class=""></i></span>
+  </div>
+
+  <header class="st-head">
+    <div class="st-num">14</div>
+    <div class="st-title">
+      <h3>开荒保洁</h3>
+      <p class="st-tag">全面大扫除</p>
+    </div>
+    <div class="st-check"><span class="cb"></span>已完成</div>
+  </header>
+
+  <p class="st-desc">装修留下的垃圾和灰尘全面清理，为入住前做彻底大扫除。</p>
+
+  <div class="st-next-wrap"><span class="nx">下一步 → 竣工验收</span></div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔨</span>本阶段要做的</h4>
+      <ul class="works"><li>全屋除尘</li><li>玻璃、窗户清洁</li><li>地面、墙面除胶除污</li><li>橱柜内部清理</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">✅</span>验收要点</h4>
+      <ul class="accept"><li>无装修残留、无水泥点</li><li>玻璃光亮、无水痕</li><li>角落细节都干净</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">⚠️</span>注意事项</h4>
+      <ul class="attn"><li>全部硬装完成后才能做</li><li>盯细节：玻璃、踢脚线、缝隙都要干净</li><li>贵重小物件先收好，别弄丢</li><li>自己验收满意再付钱</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">🛒</span>这时候要买什么</h4>
+      <ul class="buy"><li>可请专业保洁，或自购工具</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔍</span>选品要注意</h4>
+      <ul class="pick"><li>请保洁看是否专业（带工具、有经验）</li><li>自己买清洁剂别用强酸强碱，伤瓷砖和洁具</li><li>别用钢丝球，会划伤表面</li></ul>
+    </div>
+    <div class="cell smart-cell">
+      <h4><span class="ic">📡</span>全屋智能 · 安装节点</h4>
+      <div class="smart-time">⏱ 保洁后 · 设备防尘防水</div>
+      <ul class="smart"><li>智能主机、摄像头别用湿布擦，断电后干擦</li><li>清洁时把网关、传感器先盖好，防进水进灰</li><li>玻璃胶未干的区域先别动智能设备</li></ul>
+    </div>
+  </div>
+
+  <div class="local">
+    <h4><span class="ic">📍</span>长治本地实情</h4>
+    <ul class="local-list"><li>长治春秋风沙大，保洁最好选风小的日子做，否则刚擦完又落灰</li><li>本地冬天冷，开窗通风除尘怕冻坏管道，保洁尽量安排在供暖前或开春</li><li>装修后的水泥点、胶印要趁早清，放久了硬化更难处理</li><li>自己找保洁或请本地家政都行，重点看有没有专业工具（玻璃器、除胶剂）</li></ul>
+  </div>
+
+  <div class="pit">
+    <h4><span class="ic">🚫</span>避坑提醒</h4>
+    <ul class="pit-list"><li>保洁要在全部硬装完成后做</li><li>别用钢丝球，会划伤瓷砖和洁具</li><li>保护膜、标签撕干净</li></ul>
+  </div>
+</section>
+
+<section class="stage">
+  <div class="st-progress">
+    <span class="st-count">阶段 15 / 16</span>
+    <span class="st-dots"><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i><i class=""></i></span>
+  </div>
+
+  <header class="st-head">
+    <div class="st-num">15</div>
+    <div class="st-title">
+      <h3>竣工验收</h3>
+      <p class="st-tag">验收合格再付尾款</p>
+    </div>
+    <div class="st-check"><span class="cb"></span>已完成</div>
+  </header>
+
+  <p class="st-desc">和施工方一起全面验收，确认所有项目合格，没问题了再结清尾款。</p>
+
+  <div class="st-next-wrap"><span class="nx">下一步 → 通风入住</span></div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔨</span>本阶段要做的</h4>
+      <ul class="works"><li>逐项验收所有项目</li><li>试水、试电、试设备</li><li>签署验收单</li><li>结算尾款、拿保修卡</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">✅</span>验收要点</h4>
+      <ul class="accept"><li>整体质量合格</li><li>问题清单整改完</li><li>保修卡、说明书、余料移交</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">⚠️</span>注意事项</h4>
+      <ul class="attn"><li>逐项验收，把问题列成清单交给施工方</li><li>试水、试电、试所有设备</li><li>留一部分尾款，验收合格再付</li><li>拿齐保修卡、说明书、剩余材料</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">🛒</span>这时候要买什么</h4>
+      <ul class="buy"><li>如有问题，整改材料（一般施工方负责）</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔍</span>选品要注意</h4>
+      <ul class="pick"><li>可自购空鼓锤、手电自己复验更踏实</li><li>准备空气质量检测仪备用（入住前用）</li><li>保修条款写清：保多久、保什么</li></ul>
+    </div>
+    <div class="cell smart-cell">
+      <h4><span class="ic">📡</span>全屋智能 · 安装节点</h4>
+      <div class="smart-time">⏱ 验收期 · 联调与教学</div>
+      <ul class="smart"><li>智能系统整体联调：灯光、窗帘、门锁、场景一键测试</li><li>教业主用 App、设场景、加家人账号</li><li>移交智能设备清单、账号、保修，留好说明书</li><li>确认断网/断电恢复后设备能自动重连</li></ul>
+    </div>
+  </div>
+
+  <div class="local">
+    <h4><span class="ic">📍</span>长治本地实情</h4>
+    <ul class="local-list"><li>本地施工队多是熟人介绍，验收更要按清单走，白纸黑字比口头承诺管用</li><li>供暖前一定要试一遍地暖/暖气，不然住进去发现问题，热力公司未必认装修责任</li><li>尾款留到位（建议 5%-10%），本地讲究&quot;验收合格再结清&quot;，别提前付完</li><li>拿齐所有说明书和保修卡，本地售后靠单据，丢了说不清</li></ul>
+  </div>
+
+  <div class="pit">
+    <h4><span class="ic">🚫</span>避坑提醒</h4>
+    <ul class="pit-list"><li>留一部分尾款，验收合格再付</li><li>保修条款写清楚，多久保什么</li><li>完工拍照留底，日后有据</li></ul>
+  </div>
+</section>
+
+<section class="stage">
+  <div class="st-progress">
+    <span class="st-count">阶段 16 / 16</span>
+    <span class="st-dots"><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class=""></i><i class="on"></i></span>
+  </div>
+
+  <header class="st-head">
+    <div class="st-num">16</div>
+    <div class="st-title">
+      <h3>通风入住</h3>
+      <p class="st-tag">通风去醛再搬家</p>
+    </div>
+    <div class="st-check"><span class="cb"></span>已完成</div>
+  </header>
+
+  <p class="st-desc">开窗通风去甲醛，放一段时间，检测合格后再安心搬家入住。</p>
+
+  <div class="st-next-wrap"><span class="nx nx-end">全部结束 · 通风入住</span></div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔨</span>本阶段要做的</h4>
+      <ul class="works"><li>持续开窗通风</li><li>放活性炭、绿植辅助</li><li>做空气质量检测</li><li>择好日子搬家</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">✅</span>验收要点</h4>
+      <ul class="accept"><li>甲醛检测达标</li><li>通风时间够（一般 3-6 个月）</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">⚠️</span>注意事项</h4>
+      <ul class="attn"><li>持续开窗通风，最好形成对流</li><li>夏天高温加速甲醛释放，通风最快</li><li>别只凭味道判断，没味也可能超标</li><li>老人、小孩、孕妇通风更久些</li></ul>
+    </div>
+    <div class="cell">
+      <h4><span class="ic">🛒</span>这时候要买什么</h4>
+      <ul class="buy"><li>除醛产品、空气质量检测仪、搬家纸箱</li></ul>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="cell">
+      <h4><span class="ic">🔍</span>选品要注意</h4>
+      <ul class="pick"><li>检测仪选带校准/找专业机构检测更准</li><li>活性炭定期更换，绿植只辅助</li><li>新风机/净化器看 CADR 值和滤芯等级</li></ul>
+    </div>
+    <div class="cell smart-cell">
+      <h4><span class="ic">📡</span>全屋智能 · 安装节点</h4>
+      <div class="smart-time">⏱ 入住期 · 维护与联动</div>
+      <ul class="smart"><li>智能新风/净化器联动空气质量，自动换气去醛</li><li>入住后用 App 看用电、用水、安防数据，心里有数</li><li>定期换滤芯、查传感器电量，保持系统灵敏</li></ul>
+    </div>
+  </div>
+
+  <div class="local">
+    <h4><span class="ic">📍</span>长治本地实情</h4>
+    <ul class="local-list"><li>长治冬天冷、开窗少，除甲醛建议配合新风或定期短时开窗，别指望自然通风</li><li>供暖期室温高会加速甲醛释放，正好也是通风去味的好时机，别错过</li><li>本地冬季雾霾天多，通风看天气，雾霾天改开净化器更合适</li><li>有老人小孩的家庭，建议开春装完、过一个夏天再入住，最稳妥</li></ul>
+  </div>
+
+  <div class="pit">
+    <h4><span class="ic">🚫</span>避坑提醒</h4>
+    <ul class="pit-list"><li>别急着住，尤其有老人小孩</li><li>夏天通风最快，高温加速释放</li><li>检测合格再入住，别只凭味道判断</li></ul>
+  </div>
+</section>
+
+
+<!-- ================= 页脚 ================= -->
+<div class="pagefoot">
+  <div class="big">装修顺序走对了，钱就省一半。</div>
+  <div class="sub">这张表只是「通用顺序」。你家户型具体怎么排、哪一步能合并、智能怎么嵌进去，得看实际情况。</div>
+
+  <div class="pf-qr-row">
+    <img src="data:image/png;base64,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" alt="扫码打开在线版">
+    <div class="pf-qr-txt">
+      <b>扫码打开在线版</b>
+      <span>手机看更方便，可装到桌面<br>工地随时翻，断网也能看</span>
+    </div>
+  </div>
+
+  <div class="pf-wx">
+    <b>微信 ZNGHS_HYL</b>
+    <span>加好友请备注「装修」，可发你家户型图聊</span>
+  </div>
+
+  <div class="pf-foot">
+    <div>侯哥智改 ｜ 资深全屋智能工程师 · 设计师 ｜ 11 年定制柜设计 + 全屋智能落地</div>
+    <div>电话 18003459640</div>
+    <div class="url">在线版：https://houyanliang888.github.io/zhuangxiu-guide/</div>
+  </div>
+</div>
+
+<div class="screen-tip">
+  按 <b>Ctrl + P</b>（Mac：⌘ + P）→ 目标选「<b>另存为 PDF</b>」→ 纸张 A4 → 边距「默认」→ 保存即可
+</div>
+
+</body>
+</html>

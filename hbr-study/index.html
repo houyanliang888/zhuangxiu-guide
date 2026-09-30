@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="theme-color" content="#16324f">
+<title>侯博睿高中学习手册</title>
+  <link rel="manifest" href="manifest.json">
+  <link rel="icon" href="icon.png" type="image/png">
+  <meta name="theme-color" content="#16324f">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="侯博睿学习手册">
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; -webkit-tap-highlight-color:transparent; }
+  :root {
+    --navy:#16324f; --navy2:#2c5d8f; --orange:#f08300; --orange2:#ffab40;
+    --bg:#eef2f7; --card:#ffffff; --text:#1c2733; --sub:#7b8794; --line:#e6ecf3;
+    --green:#2e7d32; --radius:18px; --shadow:0 4px 18px rgba(22,50,79,.08);
+  }
+  html { scroll-behavior:smooth; }
+  body { font-family:-apple-system,"PingFang SC","Microsoft YaHei","HarmonyOS Sans SC",sans-serif; background:var(--bg); color:var(--text); max-width:520px; margin:0 auto; min-height:100vh; }
+  .hidden { display:none !important; }
+  button { font-family:inherit; }
+
+  @keyframes fadeUp { from { opacity:0; transform:translateY(10px); } to { opacity:1; transform:none; } }
+  .fade { animation:fadeUp .35s ease both; }
+
+  /* ===== 顶部 Hero ===== */
+  .hero { position:relative; overflow:hidden; background:linear-gradient(155deg,#122a44 0%,#16324f 45%,#2c5d8f 100%); color:#fff; padding:26px 20px 22px; border-radius:0 0 28px 28px; }
+  .hero::before { content:""; position:absolute; right:-60px; top:-60px; width:220px; height:220px; border-radius:50%; background:rgba(255,255,255,.06); }
+  .hero::after { content:""; position:absolute; left:-40px; bottom:-70px; width:180px; height:180px; border-radius:50%; background:rgba(240,131,0,.15); }
+  .hero .back { position:relative; z-index:1; background:rgba(255,255,255,.14); border:none; color:#fff; font-size:13px; padding:6px 14px; border-radius:20px; margin-bottom:12px; cursor:pointer; backdrop-filter:blur(4px); }
+  .hero h1 { position:relative; z-index:1; font-size:21px; letter-spacing:.5px; font-weight:800; }
+  .hero .sub { position:relative; z-index:1; font-size:12px; opacity:.82; margin-top:5px; line-height:1.5; }
+  .hero-row { position:relative; z-index:1; display:flex; align-items:center; gap:14px; margin-top:16px; background:rgba(255,255,255,.09); border:1px solid rgba(255,255,255,.14); border-radius:16px; padding:12px 16px; backdrop-filter:blur(6px); }
+  .ring { width:58px; height:58px; flex-shrink:0; transform:rotate(-90deg); }
+  .ring .bg { fill:none; stroke:rgba(255,255,255,.18); stroke-width:6; }
+  .ring .fg { fill:none; stroke:var(--orange2); stroke-width:6; stroke-linecap:round; transition:stroke-dashoffset .6s ease; }
+  .ring-wrap { position:relative; width:58px; height:58px; }
+  .ring-text { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:800; }
+  .hero-stats { flex:1; }
+  .hero-stats .big { font-size:15px; font-weight:700; }
+  .hero-stats .small { font-size:11px; opacity:.8; margin-top:3px; line-height:1.5; }
+
+  /* ===== 通用卡 ===== */
+  .section-title { display:flex; align-items:center; gap:8px; margin:20px 18px 10px; font-size:15px; font-weight:800; }
+  .section-title .bar { width:4px; height:16px; background:var(--orange); border-radius:3px; }
+  .section-title .more { margin-left:auto; font-size:11px; color:var(--sub); font-weight:400; }
+
+  .notice { margin:14px 18px 0; background:linear-gradient(135deg,#fff8ef,#fff3e0); border:1px solid #ffd9a8; border-radius:14px; padding:12px 14px; font-size:12.5px; line-height:1.75; color:#7a4a00; }
+  .notice b { color:var(--orange); }
+
+  .bar-line { height:8px; background:#e9eef5; border-radius:6px; overflow:hidden; }
+  .bar-line > div { height:100%; border-radius:6px; background:linear-gradient(90deg,var(--orange),var(--orange2)); transition:width .4s; }
+
+  /* ===== 首页：快捷入口 ===== */
+  .quick { display:flex; gap:10px; margin:14px 18px 0; }
+  .quick-card { flex:1; border-radius:16px; padding:14px; color:#fff; cursor:pointer; box-shadow:var(--shadow); position:relative; overflow:hidden; }
+  .quick-card.zt { background:linear-gradient(135deg,#f08300,#ff9e3d); }
+  .quick-card.papers { background:linear-gradient(135deg,#16324f,#2c5d8f); }
+  .quick-card h3 { font-size:14.5px; font-weight:800; }
+  .quick-card p { font-size:10.5px; opacity:.9; margin-top:4px; line-height:1.4; }
+  .quick-card .em { position:absolute; right:10px; top:10px; font-size:26px; opacity:.85; }
+
+  /* ===== 科目卡 ===== */
+  .grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:0 18px 20px; }
+  .subj-card { background:var(--card); border-radius:var(--radius); padding:16px 14px 14px; box-shadow:var(--shadow); cursor:pointer; transition:transform .15s; border:1px solid var(--line); }
+  .subj-card:active { transform:scale(.97); }
+  .subj-card .icon-bubble { width:44px; height:44px; border-radius:14px; display:flex; align-items:center; justify-content:center; font-size:24px; margin-bottom:10px; }
+  .subj-card h3 { font-size:15.5px; font-weight:800; display:flex; align-items:baseline; gap:6px; }
+  .subj-card h3 .cnt { font-size:10px; color:var(--sub); font-weight:400; }
+  .subj-card .paper { font-size:10px; color:var(--sub); line-height:1.5; margin:4px 0 8px; min-height:30px; }
+  .subj-card .prog { font-size:10.5px; font-weight:700; margin-top:6px; }
+
+  /* ===== 列表页通用 ===== */
+  .page-pad { padding:14px 18px 96px; }
+  .mod-item { background:var(--card); border-radius:14px; padding:14px 16px; margin-bottom:10px; box-shadow:var(--shadow); border:1px solid var(--line); display:flex; align-items:center; gap:12px; cursor:pointer; transition:transform .15s; }
+  .mod-item:active { transform:scale(.98); }
+  .mod-item .done-mark { width:24px; height:24px; border-radius:50%; border:2px solid #d5dde6; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-size:13px; color:#fff; }
+  .mod-item.mastered { border-color:#bfe3c1; background:linear-gradient(135deg,#f4fbf4,#fff); }
+  .mod-item.mastered .done-mark { background:var(--green); border-color:var(--green); }
+  .mod-item .info { flex:1; }
+  .mod-item .info h4 { font-size:14.5px; font-weight:700; }
+  .mod-item .info p { font-size:11px; color:var(--sub); margin-top:4px; }
+  .mod-item .arrow { color:#c3ccd6; font-size:18px; }
+
+  /* ===== 详情页 ===== */
+  .tabs { display:flex; gap:8px; margin:14px 0; background:#e5eaf1; padding:5px; border-radius:14px; }
+  .tab { flex:1; text-align:center; padding:9px 0; border-radius:10px; font-size:13px; cursor:pointer; color:#5c6b7a; font-weight:700; transition:all .2s; }
+  .tab.active { background:var(--navy); color:#fff; box-shadow:0 3px 10px rgba(22,50,79,.3); }
+  .sec { background:var(--card); border-radius:14px; padding:16px; margin-bottom:12px; box-shadow:var(--shadow); border:1px solid var(--line); }
+  .sec li { font-size:13.5px; line-height:1.8; margin-left:18px; margin-bottom:7px; color:#2a3644; }
+  .sec li::marker { color:var(--navy2); font-weight:700; }
+  .sec.pitfall li::marker { content:"⚠️ "; }
+
+  .qa-card { background:var(--card); border-radius:14px; padding:16px; margin-bottom:12px; box-shadow:var(--shadow); border:1px solid var(--line); border-left:4px solid var(--orange); }
+  .qa-card .src { font-size:11px; color:var(--orange); font-weight:700; margin-bottom:7px; }
+  .qa-card .q { font-size:13.5px; line-height:1.75; font-weight:600; white-space:pre-wrap; }
+  .qa-card .a, .zt-card .a, .paper-item .a { font-size:13px; line-height:1.8; color:#41505f; margin-top:11px; padding-top:11px; border-top:1px dashed var(--line); white-space:pre-wrap; }
+  .show-btn { display:inline-block; margin-top:11px; background:linear-gradient(135deg,var(--navy),var(--navy2)); color:#fff; border:none; font-size:12px; font-weight:600; padding:8px 18px; border-radius:18px; cursor:pointer; box-shadow:0 3px 8px rgba(22,50,79,.25); }
+
+  .master-btn { position:fixed; bottom:86px; left:50%; transform:translateX(-50%); width:calc(100% - 44px); max-width:476px; padding:14px; border:none; border-radius:16px; font-size:15px; font-weight:800; cursor:pointer; background:linear-gradient(135deg,var(--navy),var(--navy2)); color:#fff; box-shadow:0 6px 18px rgba(22,50,79,.35); z-index:5; }
+  .master-btn.mastered { background:linear-gradient(135deg,#2e7d32,#43a047); }
+
+  /* ===== 筛选 chips ===== */
+  .filter-wrap { padding:14px 18px 0; }
+  .filter-label { font-size:11px; color:var(--sub); font-weight:700; margin:8px 0 6px; }
+  .filter-row { display:flex; gap:7px; flex-wrap:wrap; }
+  .chip { font-size:12px; font-weight:600; padding:7px 14px; border-radius:18px; background:#e5eaf1; color:#5c6b7a; cursor:pointer; border:none; transition:all .2s; }
+  .chip.active { background:var(--navy); color:#fff; box-shadow:0 3px 10px rgba(22,50,79,.25); }
+  .chip.year.active { background:linear-gradient(135deg,var(--orange),#ff9e3d); }
+
+  /* ===== 真题/套卷卡片 ===== */
+  .badge { font-size:10px; padding:3px 9px; border-radius:10px; font-weight:700; }
+  .b-y { background:#fff3e0; color:#e65100; }
+  .b-p { background:#e3ecff; color:#1e4d8c; }
+  .b-s { background:#e6f4ea; color:#2e7d32; }
+  .b-t { background:#f3e5f5; color:#7b1fa2; }
+  .b-real { background:#ffe0b2; color:#e65100; }
+  .b-rest { background:#e8eaf6; color:#3949ab; }
+  .b-kd { background:#e0f2f1; color:#00695c; }
+  .b-kq { background:#fce4ec; color:#ad1457; }
+
+  .zt-card { background:var(--card); border-radius:14px; padding:15px 16px; margin-bottom:12px; box-shadow:var(--shadow); border:1px solid var(--line); border-left:4px solid var(--navy); }
+  .zt-card .meta { display:flex; gap:6px; flex-wrap:wrap; margin-bottom:9px; }
+  .zt-empty { text-align:center; color:#9aa5b1; font-size:13px; padding:36px 0; }
+
+  /* ===== 套卷库 ===== */
+  .paper-card { background:var(--card); border-radius:var(--radius); padding:16px; margin-bottom:12px; box-shadow:var(--shadow); border:1px solid var(--line); cursor:pointer; transition:transform .15s; }
+  .paper-card:active { transform:scale(.98); }
+  .paper-card .head { display:flex; align-items:center; gap:10px; }
+  .paper-card .icon-bubble { width:42px; height:42px; border-radius:13px; display:flex; align-items:center; justify-content:center; font-size:22px; flex-shrink:0; }
+  .paper-card h3 { font-size:15px; font-weight:800; }
+  .paper-card .sc { font-size:10.5px; color:var(--sub); margin-top:3px; }
+  .paper-card .desc { font-size:12px; color:#5c6b7a; line-height:1.65; margin-top:10px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden; }
+  .paper-card .tags { display:flex; gap:5px; margin-top:10px; flex-wrap:wrap; }
+
+  .paper-structure { background:linear-gradient(135deg,#f0f5fb,#e8f0fa); border:1px solid #d4e2f2; border-radius:14px; padding:14px; font-size:12.5px; line-height:1.8; color:#2c4a6e; }
+  .paper-note { background:linear-gradient(135deg,#fff8ef,#fff3e0); border:1px solid #ffd9a8; border-radius:14px; padding:13px; font-size:12px; line-height:1.75; color:#7a4a00; margin-top:12px; }
+  .paper-item { background:var(--card); border-radius:14px; padding:15px; margin-bottom:11px; box-shadow:var(--shadow); border:1px solid var(--line); }
+  .paper-item .pi-head { display:flex; align-items:center; gap:8px; flex-wrap:wrap; margin-bottom:8px; }
+  .paper-item .no { font-size:12px; font-weight:800; color:var(--navy); background:#e8f0fa; padding:3px 10px; border-radius:9px; }
+  .paper-item .tt { font-size:13.5px; font-weight:700; flex:1; min-width:120px; }
+  .paper-item .dd { font-size:12.5px; line-height:1.75; color:#41505f; }
+  .paper-item .qq { font-size:13px; line-height:1.8; font-weight:600; white-space:pre-wrap; margin-top:4px; }
+
+  /* ===== 底部导航 ===== */
+  .nav { position:fixed; bottom:0; left:50%; transform:translateX(-50%); width:100%; max-width:520px; background:rgba(255,255,255,.95); backdrop-filter:blur(12px); border-top:1px solid var(--line); display:flex; z-index:20; padding-bottom:env(safe-area-inset-bottom); }
+  .nav-item { flex:1; display:flex; flex-direction:column; align-items:center; gap:2px; padding:9px 0 8px; cursor:pointer; color:#9aa5b1; font-size:10px; font-weight:600; border:none; background:none; }
+  .nav-item .ic { font-size:21px; transition:transform .2s; }
+  .nav-item.active { color:var(--orange); }
+  .nav-item.active .ic { transform:translateY(-2px) scale(1.12); }
+
+  .footer { text-align:center; font-size:10.5px; color:#aab4bf; padding:6px 0 100px; line-height:1.7; }
+
+  /* ===== 动画插图 ===== */
+  .fig-box { background:linear-gradient(135deg,#f6f9fd,#eef3fa); border:1px solid #d6e2f0; border-radius:14px; padding:8px 6px 4px; margin:11px 0 4px; overflow:hidden; }
+  .fig-box svg { display:block; width:100%; height:auto; }
+  .fig-cap { text-align:center; font-size:10.5px; color:#7a8899; padding:2px 0 5px; }
+  @keyframes drawIn { to { stroke-dashoffset: 0; } }
+  .drawpath { stroke-dasharray: 1400; stroke-dashoffset: 1400; animation: drawIn 1.8s ease forwards; }
+  .drawpath.fast { animation-duration: 1s; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .fadelate { opacity: 0; animation: fadeIn .7s ease 1.2s forwards; }
+  @keyframes dashFlow { to { stroke-dashoffset: -24; } }
+  .flowpath { stroke-dasharray: 7 5; animation: dashFlow .9s linear infinite; }
+  @keyframes ptPulse { 0%,100% { r: 4; } 50% { r: 6.5; } }
+  .pt-pulse { animation: ptPulse 1.6s ease-in-out infinite; }
+  @keyframes bob { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-4px); } }
+
+  /* ===== 逐步精讲面板 ===== */
+  .steps-panel { background:linear-gradient(160deg,#f0f6ff,#e9f1fb); border:1px solid #c8d9ef; border-radius:16px; padding:14px; margin-top:11px; }
+  .sp-head { display:flex; justify-content:space-between; align-items:center; margin-bottom:10px; }
+  .sp-head b { font-size:13px; color:var(--navy); }
+  .sp-prog { font-size:11px; font-weight:800; color:#fff; background:var(--orange); border-radius:10px; padding:3px 10px; }
+  .sp-dots { display:flex; gap:6px; margin-bottom:11px; flex-wrap:wrap; }
+  .sp-dot { width:26px; height:26px; border-radius:50%; border:2px solid #b9cbe4; background:#fff; color:#7a8ea6; font-size:11.5px; font-weight:800; display:flex; align-items:center; justify-content:center; cursor:pointer; transition:all .2s; }
+  .sp-dot.done { border-color:var(--orange); color:var(--orange); background:#fff4e8; }
+  .sp-dot.cur { border-color:var(--navy); background:var(--navy); color:#fff; transform:scale(1.12); }
+  .sp-body { background:#fff; border-radius:12px; padding:13px 14px; min-height:90px; box-shadow:0 2px 8px rgba(22,50,79,.07); }
+  .sp-step-tag { display:inline-block; font-size:10.5px; font-weight:800; color:var(--orange); background:#fff1e3; border-radius:8px; padding:2px 9px; margin-bottom:7px; }
+  .sp-step-title { font-size:13.5px; font-weight:800; color:#1d2f45; margin-bottom:7px; }
+  .sp-step-text { font-size:12.5px; line-height:1.85; color:#3d4d5f; white-space:pre-wrap; }
+  .sp-nav { display:flex; gap:9px; margin-top:11px; }
+  .step-btn { flex:1; border:none; border-radius:11px; padding:9px 0; font-size:12.5px; font-weight:700; cursor:pointer; background:#dde7f4; color:#4a5d74; transition:transform .12s; }
+  .step-btn:active { transform:scale(.96); }
+  .step-btn.primary { background:linear-gradient(135deg,#16324f,#2c5d8f); color:#fff; }
+  .step-btn.finish { background:linear-gradient(135deg,#e8862e,#f5a623); color:#fff; }
+  .sp-final { background:linear-gradient(135deg,#eefaf0,#e3f6e8); border:1px solid #b9e2c5; border-radius:12px; padding:12px 13px; font-size:12.5px; line-height:1.85; color:#1e5c33; white-space:pre-wrap; margin-top:11px; }
+</style>
+</head>
+<body>
+
+<!-- ============ 首页 ============ -->
+<div id="home">
+  <div class="hero">
+    <h1>📚 侯博睿高中学习手册</h1>
+    <div class="sub">高中六科知识总结 · 重难点 · 近四年真题 · 新高考 3+1+2</div>
+    <div class="hero-row">
+      <div class="ring-wrap">
+        <svg class="ring" width="58" height="58"><circle class="bg" cx="29" cy="29" r="24"/><circle class="fg" id="ring-fg" cx="29" cy="29" r="24" stroke-dasharray="150.8" stroke-dashoffset="150.8"/></svg>
+        <div class="ring-text" id="ring-text">0%</div>
+      </div>
+      <div class="hero-stats">
+        <div class="big" id="hero-done">已掌握 0 / 0 个模块</div>
+        <div class="small">逐个模块打勾，进度保存在本机<br>「添加到主屏幕」即可当 App 使用</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="notice">
+    🎓 <b>山西用卷沿革（刷题必看）：</b>2023 全国乙卷 → 2024 全国甲卷（老高考）→ <b>2025 首届新高考「3+1+2」</b>：语数外用<b>全国II卷</b>，物化生等选考科目<b>山西自主命题</b>。本手册真题均按此口径收录，老高考卷只取题目、不按卷型练。
+  </div>
+
+  <div class="quick fade">
+    <div class="quick-card zt" onclick="openZhenti()">
+      <div class="em">✍️</div>
+      <h3>真题精讲库</h3>
+      <p>29 道典型真题<br>按科目年份筛选</p>
+    </div>
+    <div class="quick-card papers" onclick="showView('papers')">
+      <div class="em">🧾</div>
+      <h3>真题套卷 23–26</h3>
+      <p>四年卷情 + 逐题考点<br>作文原题带审题指导</p>
+    </div>
+  </div>
+
+  <div class="section-title"><span class="bar"></span>六科知识体系<span class="more">要点 · 易错 · 真题三合一</span></div>
+  <div class="grid" id="subject-grid"></div>
+  <div class="footer">子曰学而时习之 · 把每次「已掌握」当作一次复习确认</div>
+</div>
+
+<!-- ============ 科目页 ============ -->
+<div id="subject" class="hidden">
+  <div class="hero">
+    <button class="back" onclick="goHome()">← 返回首页</button>
+    <h1 id="subj-title"></h1>
+    <div class="sub" id="subj-intro"></div>
+    <div class="hero-row"><div class="hero-stats">
+      <div class="big" id="subj-progress"></div>
+      <div class="small" id="subj-paper"></div>
+    </div></div>
+  </div>
+  <div class="page-pad" id="mod-list"></div>
+</div>
+
+<!-- ============ 模块详情页 ============ -->
+<div id="detail" class="hidden">
+  <div class="hero">
+    <button class="back" onclick="goSubject()">← 返回科目</button>
+    <h1 id="detail-title"></h1>
+    <div class="sub" id="detail-subject"></div>
+  </div>
+  <div class="page-pad">
+    <div class="tabs">
+      <div class="tab active" data-tab="points" onclick="switchTab('points')">📌 核心要点</div>
+      <div class="tab" data-tab="pitfalls" onclick="switchTab('pitfalls')">⚠️ 易错重难</div>
+      <div class="tab" data-tab="qa" onclick="switchTab('qa')">✍️ 真题精讲</div>
+    </div>
+    <div id="tab-points"><div class="sec fade"><ul id="points-list"></ul></div></div>
+    <div id="tab-pitfalls" class="hidden"><div class="sec pitfall"><ul id="pitfalls-list"></ul></div></div>
+    <div id="tab-qa" class="hidden"><div id="qa-list"></div></div>
+  </div>
+  <button class="master-btn" id="master-btn" onclick="toggleMaster()">✓ 标记为已掌握</button>
+</div>
+
+<!-- ============ 真题精讲库 ============ -->
+<div id="zhenti" class="hidden">
+  <div class="hero">
+    <button class="back" onclick="goHome()">← 返回首页</button>
+    <h1>✍️ 真题精讲库</h1>
+    <div class="sub">典型真题 · 考生回忆版 · 考点改编均有标注 · 以官方试卷为最终依据</div>
+  </div>
+  <div class="filter-wrap">
+    <div class="filter-label">科目</div>
+    <div class="filter-row" id="zt-subjects"></div>
+    <div class="filter-label">年份</div>
+    <div class="filter-row" id="zt-years"></div>
+  </div>
+  <div class="page-pad" id="zt-list" style="padding-top:10px"></div>
+</div>
+
+<!-- ============ 套卷库 ============ -->
+<div id="papers" class="hidden">
+  <div class="hero">
+    <h1>🧾 真题套卷库</h1>
+    <div class="sub">2023–2026 四年 · 山西用卷 + 全国I卷/北京/天津/上海 · 真题原题带审题指导</div>
+  </div>
+  <div class="filter-wrap">
+    <div class="filter-label">年份（山西用卷已按实际标注）</div>
+    <div class="filter-row" id="paper-years"></div>
+  </div>
+  <div class="filter-wrap">
+    <div class="filter-label">地区 / 卷别</div>
+    <div class="filter-row" id="paper-regions"></div>
+  </div>
+  <div class="page-pad" id="paper-list" style="padding-top:10px"></div>
+</div>
+
+<!-- ============ 套卷详情页 ============ -->
+<div id="paper-detail" class="hidden">
+  <div class="hero">
+    <button class="back" onclick="showView('papers')">← 返回套卷库</button>
+    <h1 id="pd-title"></h1>
+    <div class="sub" id="pd-sub"></div>
+  </div>
+  <div class="page-pad">
+    <div class="paper-structure fade" id="pd-structure"></div>
+    <div class="paper-note hidden" id="pd-note"></div>
+    <div class="section-title" style="margin:16px 0 10px"><span class="bar"></span>逐题考点与真题</div>
+    <div id="pd-items"></div>
+  </div>
+</div>
+
+<!-- ============ 底部导航 ============ -->
+<div class="nav" id="nav">
+  <button class="nav-item active" data-nav="home" onclick="showView('home')"><span class="ic">🏠</span>首页</button>
+  <button class="nav-item" data-nav="zhenti" onclick="openZhenti()"><span class="ic">✍️</span>真题</button>
+  <button class="nav-item" data-nav="papers" onclick="showView('papers')"><span class="ic">🧾</span>套卷</button>
+</div>
+
+<script src="data/math.js"></script>
+<script src="data/physics.js"></script>
+<script src="data/chemistry.js"></script>
+<script src="data/biology.js"></script>
+<script src="data/chinese.js"></script>
+<script src="data/english.js"></script>
+<script src="data/zhenti.js"></script>
+<script src="data/papers.js"></script>
+<script>
+const $ = id => document.getElementById(id);
+let curSubject = null, curModule = null;
+const MAIN_VIEWS = ['home', 'zhenti', 'papers'];
+const TAGMAP = { real: ['b-real', '真题'], rest: ['b-rest', '回忆版'], kd: ['b-kd', '考点'], kq: ['b-kq', '考情'] };
+
+function getMastered() { try { return JSON.parse(localStorage.getItem('gk_mastered') || '{}'); } catch(e){ return {}; } }
+function setMastered(m) { localStorage.setItem('gk_mastered', JSON.stringify(m)); }
+function keyOf(s, i) { return s + '_' + i; }
+
+// ===== 视图切换 =====
+function showView(v) {
+  ['home', 'subject', 'detail', 'zhenti', 'papers', 'paper-detail'].forEach(x => {
+    $(x).classList.toggle('hidden', x !== v);
+  });
+  const isMain = MAIN_VIEWS.includes(v);
+  $('nav').classList.toggle('hidden', !isMain);
+  if (isMain) document.querySelectorAll('.nav-item').forEach(b => b.classList.toggle('active', b.dataset.nav === v));
+  window.scrollTo(0, 0);
+}
+
+// ===== 首页 =====
+function renderHome() {
+  const grid = $('subject-grid');
+  const mastered = getMastered();
+  grid.innerHTML = '';
+  let total = 0, done = 0;
+  Object.keys(SUBJECTS).forEach(k => {
+    const s = SUBJECTS[k];
+    const n = s.modules.length;
+    const d = s.modules.filter((m, i) => mastered[keyOf(k, i)]).length;
+    total += n; done += d;
+    const pct = Math.round(d / n * 100);
+    const card = document.createElement('div');
+    card.className = 'subj-card fade';
+    card.innerHTML = `
+      <div class="icon-bubble" style="background:${s.color}1c">${s.icon}</div>
+      <h3>${s.name}<span class="cnt">${n} 模块</span></h3>
+      <div class="paper">${s.paper}</div>
+      <div class="bar-line"><div style="width:${pct}%;background:linear-gradient(90deg,${s.color},${s.color}bb)"></div></div>
+      <div class="prog" style="color:${s.color}">${d}/${n} 已掌握 · ${pct}%</div>`;
+    card.onclick = () => openSubject(k);
+    grid.appendChild(card);
+  });
+  const p = total ? done / total : 0;
+  const pct = Math.round(p * 100);
+  $('ring-text').textContent = pct + '%';
+  $('ring-fg').style.strokeDashoffset = (150.8 * (1 - p)).toFixed(1);
+  $('hero-done').textContent = `已掌握 ${done} / ${total} 个模块`;
+  showView('home');
+}
+
+// ===== 科目页 =====
+function openSubject(k) {
+  curSubject = k;
+  const s = SUBJECTS[k];
+  const mastered = getMastered();
+  const d = s.modules.filter((m, i) => mastered[keyOf(k, i)]).length;
+  $('subj-title').textContent = s.icon + ' ' + s.name;
+  $('subj-intro').textContent = s.intro;
+  $('subj-progress').textContent = `已掌握 ${d} / ${s.modules.length} 个模块`;
+  $('subj-paper').textContent = s.paper;
+  const list = $('mod-list');
+  list.innerHTML = '';
+  s.modules.forEach((m, i) => {
+    const done = mastered[keyOf(k, i)];
+    const item = document.createElement('div');
+    item.className = 'mod-item fade' + (done ? ' mastered' : '');
+    item.innerHTML = `<div class="done-mark">${done ? '✓' : ''}</div>
+      <div class="info"><h4>${m.t}</h4><p>要点 ${m.points.length} · 易错 ${m.pitfalls.length} · 精讲 ${m.qa.length}</p></div>
+      <div class="arrow">›</div>`;
+    item.onclick = () => openModule(k, i);
+    list.appendChild(item);
+  });
+  showView('subject');
+}
+
+// ===== 模块详情 =====
+function openModule(k, i) {
+  curSubject = k; curModule = i;
+  const s = SUBJECTS[k], m = s.modules[i];
+  $('detail-title').textContent = m.t;
+  $('detail-subject').textContent = s.icon + ' ' + s.name + ' · ' + s.paper;
+  $('points-list').innerHTML = m.points.map(p => `<li>${p}</li>`).join('');
+  $('pitfalls-list').innerHTML = m.pitfalls.map(p => `<li>${p}</li>`).join('');
+  $('qa-list').innerHTML = m.qa.map((qa, idx) => {
+    const uid = 'm' + idx;
+    regSteps(qa, uid);
+    return `
+    <div class="qa-card fade">
+      <div class="src">📄 ${qa.src}</div>
+      <div class="q" style="margin-top:4px">Q${idx + 1}：${qa.q}</div>
+      ${qaControls(qa, uid)}
+    </div>`;
+  }).join('');
+  switchTab('points');
+  updateMasterBtn();
+  showView('detail');
+}
+
+function switchTab(t) {
+  ['points', 'pitfalls', 'qa'].forEach(x => {
+    $('tab-' + x).classList.toggle('hidden', x !== t);
+    document.querySelector(`.tab[data-tab="${x}"]`).classList.toggle('active', x === t);
+  });
+}
+
+function updateMasterBtn() {
+  const mastered = getMastered();
+  const done = mastered[keyOf(curSubject, curModule)];
+  const btn = $('master-btn');
+  btn.textContent = done ? '✓ 已掌握（点击取消）' : '✓ 标记为已掌握';
+  btn.classList.toggle('mastered', !!done);
+}
+
+function toggleMaster() {
+  const mastered = getMastered();
+  const key = keyOf(curSubject, curModule);
+  if (mastered[key]) delete mastered[key]; else mastered[key] = true;
+  setMastered(mastered);
+  updateMasterBtn();
+}
+
+function goHome() { renderHome(); }
+function goSubject() { openSubject(curSubject); }
+
+// ===== 动画插图生成器 =====
+function figSVG(f) {
+  const A = (inner, cap) => `<svg viewBox="0 0 340 ${f.type === 'axis' ? 96 : 230}" xmlns="http://www.w3.org/2000/svg">${inner}</svg>${cap ? `<div class="fig-cap">${cap}</div>` : ''}`;
+  if (f.type === 'func') {
+    const W = 340, H = 230, P = 34;
+    const x0 = f.x0, x1 = f.x1, y0 = f.y0, y1 = f.y1;
+    const sx = x => P + (x - x0) / (x1 - x0) * (W - 2 * P);
+    const sy = y => H - P - (y - y0) / (y1 - y0) * (H - 2 * P);
+    const fn = new Function('x', 'return ' + f.f);
+    const mkPath = (ff) => {
+      let d = '', pen = false;
+      for (let i = 0; i <= 90; i++) {
+        const x = x0 + (x1 - x0) * i / 90;
+        let y; try { y = ff(x); } catch (e) { y = NaN; }
+        if (!isFinite(y) || y < y0 - (y1 - y0) || y > y1 + (y1 - y0)) { pen = false; continue; }
+        d += (pen ? 'L' : 'M') + sx(x).toFixed(1) + ',' + sy(y).toFixed(1);
+        pen = true;
+      }
+      return d;
+    };
+    let s = `<line x1="${P}" y1="${sy(0)}" x2="${W - 14}" y2="${sy(0)}" stroke="#8b99ab" stroke-width="1.3"/>
+      <line x1="${sx(0)}" y1="${H - P}" x2="${sx(0)}" y2="12" stroke="#8b99ab" stroke-width="1.3"/>
+      <text x="${W - 16}" y="${sy(0) + 12}" font-size="11" fill="#8b99ab">x</text>
+      <text x="${sx(0) + 5}" y="14" font-size="11" fill="#8b99ab">y</text>`;
+    if (f.f2) {
+      const fn2 = new Function('x', 'return ' + f.f2);
+      s += `<path d="${mkPath(fn2)}" fill="none" stroke="#e8862e" stroke-width="1.8" stroke-dasharray="6 4" class="fadelate"/>`;
+    }
+    s += `<path d="${mkPath(fn)}" fill="none" stroke="#16324f" stroke-width="2.6" stroke-linecap="round" class="drawpath"/>`;
+    (f.pts || []).forEach(p => {
+      s += `<circle cx="${sx(p[0])}" cy="${sy(p[1])}" r="4" fill="#e8862e" stroke="#fff" stroke-width="1.5" class="fadelate"/>
+        <text x="${sx(p[0]) + 7}" y="${sy(p[1]) - 7}" font-size="11" font-weight="700" fill="#e8862e" class="fadelate">${p[2] || ''}</text>`;
+    });
+    if (f.label) s += `<text x="${W - 14}" text-anchor="end" y="24" font-size="11.5" font-weight="700" fill="#16324f">${f.label}</text>`;
+    if (f.label2) s += `<text x="${W - 14}" text-anchor="end" y="39" font-size="11" font-weight="600" fill="#e8862e">${f.label2}</text>`;
+    return A(s, f.cap);
+  }
+  if (f.type === 'axis') {
+    const W = 340, H = 96, mid = 52;
+    const min = f.min, max = f.max;
+    const sx = v => 26 + (v - min) / (max - min) * (W - 52);
+    let s = `<line x1="16" y1="${mid}" x2="${W - 16}" y2="${mid}" stroke="#16324f" stroke-width="1.6"/>
+      <polygon points="${W - 16},${mid} ${W - 24},${mid - 4.5} ${W - 24},${mid + 4.5}" fill="#16324f"/>
+      <text x="${W - 12}" y="${mid + 14}" font-size="11" fill="#16324f">x</text>`;
+    if (f.region) {
+      const a = sx(f.region[0]), b = sx(f.region[1]);
+      s += `<rect x="${a}" y="${mid - 17}" width="${b - a}" height="34" fill="#2c5d8f" opacity="0" class="fadelate" style="animation-name:fadeIn" fill-opacity="0" id="rgx"><animate attributeName="fill-opacity" from="0" to="0.16" begin="0.5s" dur="0.8s" fill="freeze"/></rect>
+        <text x="${(a + b) / 2}" y="${mid - 24}" font-size="10.5" font-weight="700" fill="#2c5d8f" text-anchor="middle" class="fadelate">${f.regionLabel || ''}</text>`;
+    }
+    (f.pts || []).forEach(v => {
+      const hit = (f.hits || []).includes(v);
+      s += `<circle cx="${sx(v)}" cy="${mid}" r="${hit ? 5 : 3.6}" fill="${hit ? '#e8862e' : '#5c718a'}" class="${hit ? 'pt-pulse' : ''}"/>
+        <text x="${sx(v)}" y="${mid + 22}" font-size="11" font-weight="${hit ? 800 : 500}" fill="${hit ? '#e8862e' : '#5c718a'}" text-anchor="middle">${v}</text>`;
+    });
+    return A(s, f.cap);
+  }
+  if (f.type === 'vt') {
+    const W = 340, H = 230, P = 36;
+    const t0 = 0, t1 = f.tMax || 5, v0 = 0, v1 = f.vMax || 12;
+    const sx = t => P + (t - t0) / (t1 - t0) * (W - 2 * P);
+    const sy = v => H - P - (v - v0) / (v1 - v0) * (H - 2 * P);
+    let d = '';
+    (f.pts || []).forEach((p, i) => { d += (i ? 'L' : 'M') + sx(p[0]) + ',' + sy(p[1]); });
+    let s = `<line x1="${P}" y1="${sy(0)}" x2="${W - 14}" y2="${sy(0)}" stroke="#8b99ab" stroke-width="1.3"/>
+      <line x1="${P}" y1="${H - P}" x2="${P}" y2="14" stroke="#8b99ab" stroke-width="1.3"/>
+      <text x="${W - 12}" y="${sy(0) + 13}" font-size="11.5" fill="#8b99ab">t</text>
+      <text x="${P + 6}" y="16" font-size="11.5" fill="#8b99ab">v</text>`;
+    (f.fill || []).forEach(rg => {
+      const a = f.pts.filter(p => p[0] === rg[0])[0], b = f.pts.filter(p => p[0] === rg[1])[0];
+      if (a && b) s += `<polygon points="${sx(a[0])},${sy(0)} ${sx(a[0])},${sy(a[1])} ${sx(b[0])},${sy(b[1])} ${sx(b[0])},${sy(0)}" fill="#2c5d8f" class="fadelate" style="fill-opacity:0"><animate attributeName="fill-opacity" from="0" to="0.14" begin="1s" dur="0.9s" fill="freeze"/></polygon>`;
+    });
+    s += `<path d="${d}" fill="none" stroke="#16324f" stroke-width="2.6" stroke-linejoin="round" class="drawpath"/>`;
+    (f.pts || []).forEach(p => { s += `<circle cx="${sx(p[0])}" cy="${sy(p[1])}" r="4" fill="#e8862e" stroke="#fff" stroke-width="1.5" class="fadelate"/>`; });
+    (f.notes || []).forEach(n => { s += `<text x="${sx(n[0])}" y="${sy(n[1])}" font-size="10.5" font-weight="700" fill="#2c5d8f" text-anchor="middle" class="fadelate">${n[2]}</text>`; });
+    return A(s, f.cap);
+  }
+  if (f.type === 'rail') {
+    let s = '';
+    for (let r = 0; r < 3; r++) for (let c = 0; c < 8; c++)
+      s += `<text x="${52 + c * 34}" y="${72 + r * 44}" font-size="15" fill="#9fb2c8" text-anchor="middle">✕</text>`;
+    s += `<text x="30" y="66" font-size="12" font-weight="700" fill="#2c5d8f">B</text>
+      <path d="M46,56 L46,168 M46,56 L312,56 M46,168 L312,168" fill="none" stroke="#16324f" stroke-width="3.4" stroke-linecap="round"/>
+      <path d="M52,60 L52,164 M52,60 L306,60 M52,164 L306,164" fill="none" stroke="#fff" stroke-width="0" />
+      <path d="M52,112 L306,112" fill="none" stroke="#e8862e" stroke-width="2.2" class="flowpath" stroke-linecap="round"/>
+      <g><rect x="118" y="50" width="9" height="124" rx="4" fill="#e8862e"/>
+        <line x1="122" y1="40" x2="168" y2="40" stroke="#e8862e" stroke-width="2.6"/><polygon points="168,40 159,35.5 159,44.5" fill="#e8862e"/>
+        <text x="145" y="30" font-size="12" font-weight="800" fill="#e8862e">v₀</text>
+        <animateTransform attributeName="transform" type="translate" values="0,0; 130,0; 130,0" keyTimes="0;0.55;1" dur="3.2s" repeatCount="indefinite"/>
+      </g>
+      <text x="310" y="185" font-size="11" fill="#2c5d8f" font-weight="700">R</text>
+      <text x="66" y="190" font-size="11" font-weight="700" fill="#e8862e">i</text>`;
+    return A(s, f.cap);
+  }
+  if (f.type === 'collide') {
+    let s = `<line x1="20" y1="176" x2="320" y2="176" stroke="#16324f" stroke-width="2.4" stroke-linecap="round"/>
+      <g><circle cx="72" cy="152" r="17" fill="#2c5d8f"/><text x="72" y="157" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">m</text>
+        <text x="72" y="204" font-size="11.5" font-weight="700" fill="#2c5d8f" text-anchor="middle">v →</text>
+        <animateTransform attributeName="transform" type="translate" values="0,0; 50,0; 50,0; -8,0; -8,0" keyTimes="0;0.4;0.5;0.75;1" dur="3s" repeatCount="indefinite"/>
+      </g>
+      <g><circle cx="168" cy="142" r="27" fill="#e8862e"/><text x="168" y="147" font-size="11.5" font-weight="800" fill="#fff" text-anchor="middle">3m</text>
+        <text x="168" y="204" font-size="11.5" font-weight="700" fill="#e8862e" text-anchor="middle">静止 → v/2</text>
+        <animateTransform attributeName="transform" type="translate" values="0,0; 0,0; 0,0; 96,0; 96,0" keyTimes="0;0.4;0.5;0.85;1" dur="3s" repeatCount="indefinite"/>
+      </g>
+      <text x="140" y="106" font-size="11.5" font-weight="800" fill="#7a8899" text-anchor="middle">弹性碰撞：动量 + 动能 双守恒</text>`;
+    return A(s, f.cap);
+  }
+  if (f.type === 'orbit') {
+    const cx = 170, cy = 118, r = 92;
+    let s = `<defs><radialGradient id="eg" cx="35%" cy="35%"><stop offset="0%" stop-color="#6fa8dc"/><stop offset="100%" stop-color="#16324f"/></radialGradient></defs>
+      <circle cx="${cx}" cy="${cy}" r="26" fill="url(#eg)"/>
+      <text x="${cx}" y="${cy + 5}" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">地</text>
+      <circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="#8b99ab" stroke-width="1.6" stroke-dasharray="7 5" class="fadelate"/>
+      <line x1="${cx + 26}" y1="${cy}" x2="${cx + r}" y2="${cy}" stroke="#e8862e" stroke-width="2" class="fadelate"/>
+      <text x="${cx + 60}" y="${cy - 8}" font-size="11.5" font-weight="800" fill="#e8862e" class="fadelate">R + h</text>
+      <g><circle cx="${cx + r}" cy="${cy}" r="7" fill="#e8862e" stroke="#fff" stroke-width="1.5"/>
+        <animateTransform attributeName="transform" type="rotate" from="0 ${cx} ${cy}" to="360 ${cx} ${cy}" dur="7s" repeatCount="indefinite"/>
+      </g>
+      <text x="170" y="222" font-size="11.5" font-weight="700" fill="#2c5d8f" text-anchor="middle" class="fadelate">GMm/(R+h)² = m·4π²(R+h)/T²　　GM = gR²</text>`;
+    return A(s, f.cap);
+  }
+  return '';
+}
+
+// ===== 题目控件（图 + 逐步精讲/答案）=====
+function qaControls(qa, uid) {
+  const fig = qa.fig ? `<div class="fig-box">${figSVG(qa.fig)}</div>` : '';
+  if (qa.steps && qa.steps.length) {
+    return fig + `
+    <button class="show-btn" onclick="startSteps('${uid}', ${qa.steps.length})">🎬 逐步精讲 · ${qa.steps.length} 步</button>
+    <div class="steps-panel hidden" id="sp-${uid}">
+      <div class="sp-head"><b>🎬 逐步精讲</b><span class="sp-prog" id="spp-${uid}"></span></div>
+      <div class="sp-dots" id="spd-${uid}"></div>
+      <div class="sp-body" id="spb-${uid}"></div>
+      <div class="sp-nav">
+        <button class="step-btn" id="spn-${uid}-p" onclick="stepGo('${uid}',-1)">← 上一步</button>
+        <button class="step-btn primary" id="spn-${uid}-n" onclick="stepGo('${uid}',1)">下一步 →</button>
+      </div>
+      ${qa.a ? `<div class="sp-final hidden" id="spf-${uid}">📌 <b>总结与答案：</b>\n${qa.a}</div>` : ''}
+    </div>`;
+  }
+  return fig + `
+  <button class="show-btn" id="qb-${uid}" onclick="toggleA('${uid}')">👁 显示答案</button>
+  <div class="a hidden" id="qa-${uid}">💡 ${qa.a}</div>`;
+}
+function toggleA(uid) {
+  const a = $('qa-' + uid), b = $('qb-' + uid);
+  const show = a.classList.contains('hidden');
+  a.classList.toggle('hidden');
+  b.textContent = show ? '🙈 收起答案' : '👁 显示答案';
+}
+const stepCur = {};
+function startSteps(uid, n) {
+  stepCur[uid] = 0;
+  $('sp-' + uid).classList.remove('hidden');
+  renderStep(uid, n);
+  $('sp-' + uid).scrollIntoView({ behavior: 'smooth', block: 'center' });
+}
+function stepGo(uid, dir) {
+  const n = +$('spd-' + uid).dataset.n;
+  const cur = stepCur[uid];
+  const fin = $('spf-' + uid);
+  if (cur === n - 1 && dir === 1) { if (fin) fin.classList.toggle('hidden'); return; }
+  stepCur[uid] = Math.max(0, Math.min(n - 1, cur + dir));
+  if (fin) fin.classList.add('hidden');
+  renderStep(uid, n);
+}
+function jumpStep(uid, i) { const n = +$('spd-' + uid).dataset.n; stepCur[uid] = i; const fin = $('spf-' + uid); if (fin) fin.classList.add('hidden'); renderStep(uid, n); }
+function renderStep(uid, n) {
+  const cur = stepCur[uid];
+  const steps = window.__steps[uid];
+  $('spp-' + uid).textContent = (cur + 1) + ' / ' + n;
+  $('spd-' + uid).dataset.n = n;
+  $('spd-' + uid).innerHTML = steps.map((st, i) =>
+    `<div class="sp-dot ${i < cur ? 'done' : ''} ${i === cur ? 'cur' : ''}" onclick="jumpStep('${uid}',${i})">${i + 1}</div>`).join('');
+  const st = steps[cur];
+  $('spb-' + uid).innerHTML = `<span class="sp-step-tag">第 ${cur + 1} 步</span>
+    <div class="sp-step-title">${st.h}</div>
+    <div class="sp-step-text">${st.d}</div>`;
+  const pBtn = $('spn-' + uid + '-p'), nBtn = $('spn-' + uid + '-n');
+  pBtn.style.visibility = cur === 0 ? 'hidden' : 'visible';
+  if (cur === n - 1) { nBtn.textContent = window.__hasFinal[uid] ? '✅ 看总结' : '✔ 完成'; nBtn.classList.add('finish'); }
+  else { nBtn.textContent = '下一步 →'; nBtn.classList.remove('finish'); }
+}
+window.__steps = {}; window.__hasFinal = {};
+function regSteps(qa, uid) { if (qa.steps) { window.__steps[uid] = qa.steps; window.__hasFinal[uid] = !!qa.a; } }
+
+// ===== 真题精讲库 =====
+let ztFilter = { s: 'all', y: 'all' };
+function openZhenti() { renderZtFilters(); renderZtList(); showView('zhenti'); }
+
+function renderZtFilters() {
+  const subjBox = $('zt-subjects');
+  subjBox.innerHTML = '';
+  const mk = (label, val, cur, cls, fn) => {
+    const c = document.createElement('button');
+    c.className = 'chip ' + cls + (cur === val ? ' active' : '');
+    c.textContent = label;
+    c.onclick = fn;
+    return c;
+  };
+  subjBox.appendChild(mk('全部科目', 'all', ztFilter.s, '', () => { ztFilter.s = 'all'; renderZtFilters(); renderZtList(); }));
+  Object.keys(SUBJECTS).forEach(k => {
+    subjBox.appendChild(mk(SUBJECTS[k].icon + ' ' + SUBJECTS[k].name, k, ztFilter.s, '', () => { ztFilter.s = k; renderZtFilters(); renderZtList(); }));
+  });
+  const yearBox = $('zt-years');
+  yearBox.innerHTML = '';
+  yearBox.appendChild(mk('全部年份', 'all', ztFilter.y, 'year', () => { ztFilter.y = 'all'; renderZtFilters(); renderZtList(); }));
+  [2025, 2024, 2023].forEach(y => {
+    yearBox.appendChild(mk(y + ' 年', y, ztFilter.y, 'year', () => { ztFilter.y = y; renderZtFilters(); renderZtList(); }));
+  });
+}
+
+function renderZtList() {
+  const list = $('zt-list');
+  const items = ZHENTI.filter(z =>
+    (ztFilter.s === 'all' || z.s === ztFilter.s) &&
+    (ztFilter.y === 'all' || z.y === ztFilter.y)
+  );
+  if (!items.length) { list.innerHTML = '<div class="zt-empty">该筛选条件下暂无题目</div>'; return; }
+  list.innerHTML = items.map((z, idx) => {
+    const s = SUBJECTS[z.s] || { name: z.s, icon: '📄' };
+    const uid = 'z' + z.y + '-' + idx;
+    regSteps(z, uid);
+    return `
+    <div class="zt-card fade">
+      <div class="meta">
+        <span class="badge b-y">${z.y}</span>
+        <span class="badge b-p">${z.paper}</span>
+        <span class="badge b-s">${s.icon} ${s.name}</span>
+        <span class="badge b-t">${z.tag}</span>
+        ${z.steps ? `<span class="badge b-real">🎬 ${z.steps.length} 步精讲</span>` : ''}
+        ${z.fig ? `<span class="badge b-kq">📊 动画插图</span>` : ''}
+      </div>
+      <div class="q" style="font-size:13.5px;line-height:1.75;font-weight:600;white-space:pre-wrap">${z.q}</div>
+      ${qaControls(z, uid)}
+    </div>`;
+  }).join('');
+}
+
+// ===== 套卷库 =====
+let paperYear = 2026, paperRegion = 'all';
+const REGIONS = { all: '全部', sx: '山西用卷', I: '全国I卷', bj: '北京卷', tj: '天津卷', sh: '上海卷' };
+const regOf = p => p.reg || 'sx';
+const REGION_TIP = {
+  sx: '山西考生直接对标练习的卷子',
+  I: '新高考风向标（山东/广东/江苏/浙江等11省用）——难度与创新最前沿，山西II卷考生当「拓展练」',
+  bj: '微写作+二选一作文，思辨味浓，小作文训练绝佳素材',
+  tj: '天津爱考「一字多义」类命题，立意训练好材料',
+  sh: '一题70分纯思辨，全国最「哲学」的卷——练概念关系分析'
+};
+function renderPapers() {
+  const yearBox = $('paper-years');
+  yearBox.innerHTML = '';
+  [2026, 2025, 2024, 2023].forEach(y => {
+    const c = document.createElement('button');
+    c.className = 'chip year' + (paperYear === y ? ' active' : '');
+    c.textContent = y + ' 年';
+    c.onclick = () => { paperYear = y; renderPapers(); };
+    yearBox.appendChild(c);
+  });
+  const regBox = $('paper-regions');
+  regBox.innerHTML = '';
+  Object.keys(REGIONS).forEach(k => {
+    const c = document.createElement('button');
+    c.className = 'chip' + (paperRegion === k ? ' active' : '');
+    c.textContent = REGIONS[k];
+    c.onclick = () => { paperRegion = k; renderPapers(); };
+    regBox.appendChild(c);
+  });
+  const list = $('paper-list');
+  const items = PAPERS.filter(p => p.y === paperYear && (paperRegion === 'all' || regOf(p) === paperRegion));
+  const yearDesc = {
+    2026: '全国II卷 + 山西自主命题选考（最新一届，备考风向标）',
+    2025: '山西首届新高考 · 全国II卷 + 首届省命题选考',
+    2024: '全国甲卷 · 山西老高考最后一年',
+    2023: '全国乙卷 · 老高考卷型（只取题目，不按卷型练）'
+  };
+  let head = `<div class="notice" style="margin:0 0 12px">🗓 <b>${paperYear} 年：</b>${yearDesc[paperYear]}</div>`;
+  if (paperRegion !== 'all') head += `<div class="notice" style="margin:0 0 12px">🗺 <b>${REGIONS[paperRegion]}：</b>${REGION_TIP[paperRegion]}</div>`;
+  if (!items.length) {
+    list.innerHTML = head + '<div class="notice" style="margin:0;text-align:center;color:var(--sub)">该年份暂无此类卷子</div>';
+    return;
+  }
+  list.innerHTML = head + items.map(p => {
+    const s = SUBJECTS[p.subj] || { name: '', icon: '📄', color: '#16324f' };
+    const realCount = p.items.filter(it => it.tag === 'real' || it.tag === 'rest').length;
+    const gi = PAPERS.indexOf(p);
+    return `
+    <div class="paper-card fade" onclick="openPaper(${gi})">
+      <div class="head">
+        <div class="icon-bubble" style="background:${s.color}1c">${s.icon}</div>
+        <div style="flex:1">
+          <h3>${p.name}</h3>
+          <div class="sc">${p.score}</div>
+        </div>
+        <div style="color:#c3ccd6;font-size:18px">›</div>
+      </div>
+      <div class="desc">${p.note}</div>
+      <div class="tags">
+        <span class="badge b-kd">${REGIONS[regOf(p)]}</span>
+        <span class="badge b-kd">${p.items.length} 条考点/真题</span>
+        ${realCount ? `<span class="badge b-real">含 ${realCount} 道真题原题</span>` : ''}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function openPaper(idx) {
+  const p = PAPERS[idx];
+  const s = SUBJECTS[p.subj] || { name: '', icon: '📄' };
+  $('pd-title').textContent = s.icon + ' ' + p.name;
+  $('pd-sub').textContent = `${p.y} 年 · ${REGIONS[regOf(p)]} · ${p.score}`;
+  $('pd-structure').innerHTML = '<b>📋 试卷结构：</b>' + p.structure;
+  const note = $('pd-note');
+  if (p.note) { note.innerHTML = '💡 ' + p.note; note.classList.remove('hidden'); } else { note.classList.add('hidden'); }
+  $('pd-items').innerHTML = p.items.map((it, i) => {
+    const [cls, label] = TAGMAP[it.tag];
+    const uid = 'p' + idx + '-' + i;
+    regSteps(it, uid);
+    return `
+    <div class="paper-item fade">
+      <div class="pi-head">
+        <span class="no">${it.n}</span>
+        <span class="tt">${it.t}</span>
+        <span class="badge ${cls}">${label}</span>
+      </div>
+      ${it.q ? `<div class="qq">${it.q}</div>${qaControls(it, uid)}` : `<div class="dd">${it.d || it.a || ''}</div>`}
+    </div>`;
+  }).join('');
+  showView('paper-detail');
+}
+
+renderHome();
+renderPapers();
+// ===== 离线缓存注册（仅 http/https 环境，Electron/file 下自动跳过） =====
+if ("serviceWorker" in navigator && /^https?:/.test(location.protocol)) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("sw.js").catch(() => {});
+  });
+}
+</script>
+</body>
+</html>

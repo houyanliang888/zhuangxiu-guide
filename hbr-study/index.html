@@ -63,6 +63,43 @@
   .quick-card h3 { font-size:14.5px; font-weight:800; }
   .quick-card p { font-size:10.5px; opacity:.9; margin-top:4px; line-height:1.4; }
   .quick-card .em { position:absolute; right:10px; top:10px; font-size:26px; opacity:.85; }
+  .quick-card.gs { background:linear-gradient(135deg,#0f7b5f,#16a37f); }
+  .quick-card.wd { background:linear-gradient(135deg,#5b4fa8,#8478d4); }
+  .quick { flex-wrap:wrap; }
+  .quick .quick-card { flex:1 1 42%; min-width:150px; }
+  /* —— 古诗文 / 词汇 模块 —— */
+  .search-box { display:flex; align-items:center; gap:8px; background:#fff; border:1.5px solid var(--line); border-radius:13px; padding:9px 13px; margin-bottom:12px; }
+  .search-box input { flex:1; border:none; outline:none; font-size:13.5px; color:var(--ink); background:transparent; }
+  .gs-progress { display:flex; align-items:center; gap:10px; margin:10px 18px 0; }
+  .gs-bar { flex:1; height:8px; background:#e5eaf1; border-radius:6px; overflow:hidden; }
+  .gs-bar i { display:block; height:100%; background:linear-gradient(90deg,#0f7b5f,#16a37f); border-radius:6px; transition:width .3s; }
+  .gs-num { font-size:12px; font-weight:700; color:#0f7b5f; white-space:nowrap; }
+  .gs-card { background:var(--card); border-radius:15px; padding:13px 15px; margin-bottom:11px; box-shadow:var(--shadow); }
+  .gs-head { display:flex; align-items:flex-start; gap:9px; }
+  .gs-check { width:21px; height:21px; border-radius:50%; border:2px solid #c9d4de; background:#fff; cursor:pointer; flex-shrink:0; margin-top:2px; display:flex; align-items:center; justify-content:center; font-size:12px; color:#fff; transition:all .2s; }
+  .gs-check.on { background:#0f7b5f; border-color:#0f7b5f; }
+  .gs-title { flex:1; }
+  .gs-title h3 { font-size:15px; font-weight:800; color:var(--ink); }
+  .gs-title h3 .done-mark { color:#0f7b5f; font-size:12px; margin-left:5px; }
+  .gs-title .meta { font-size:11.5px; color:var(--muted); margin-top:3px; }
+  .gs-cat { font-size:10.5px; font-weight:700; padding:3px 8px; border-radius:9px; flex-shrink:0; }
+  .gs-cat.bx { background:#eaf4ee; color:#0f7b5f; }
+  .gs-cat.xx { background:#e8f0fa; color:#20578f; }
+  .gs-cat.xk { background:#f3eefc; color:#6a4fc0; }
+  .gs-cat.sc { background:#fdf2e2; color:#b56b00; }
+  .gs-famous { font-size:13px; line-height:1.85; color:#41505f; margin-top:9px; padding-top:9px; border-top:1px dashed var(--line); white-space:pre-wrap; }
+  .gs-typos { margin-top:9px; font-size:12px; color:#b5482e; background:#fdf2ee; border-radius:9px; padding:7px 10px; }
+  .wd-sec { background:var(--card); border-radius:15px; margin-bottom:11px; box-shadow:var(--shadow); overflow:hidden; }
+  .wd-sec-head { display:flex; align-items:center; gap:9px; padding:13px 15px; cursor:pointer; user-select:none; }
+  .wd-sec-head .ic { font-size:17px; }
+  .wd-sec-head h3 { flex:1; font-size:14px; font-weight:800; color:var(--ink); }
+  .wd-sec-head .cnt { font-size:11px; color:var(--muted); }
+  .wd-sec-head .arr { color:#c3ccd6; font-size:13px; transition:transform .2s; }
+  .wd-sec.open .wd-sec-head .arr { transform:rotate(90deg); }
+  .wd-list { display:none; padding:0 15px 13px; }
+  .wd-sec.open .wd-list { display:block; }
+  .wd-item { font-size:12.5px; line-height:1.7; color:#41505f; padding:7px 10px; border-radius:9px; background:#f5f8fb; margin-bottom:6px; }
+  .wd-item b { color:var(--navy); }
 
   /* ===== 科目卡 ===== */
   .grid { display:grid; grid-template-columns:1fr 1fr; gap:12px; padding:0 18px 20px; }
@@ -225,6 +262,16 @@
       <h3>真题套卷 23–26</h3>
       <p>四年卷情 + 逐题考点<br>作文原题带审题指导</p>
     </div>
+    <div class="quick-card gs" onclick="openGushici()">
+      <div class="em">📜</div>
+      <h3>必背古诗文 72 篇</h3>
+      <p>常考名句 + 易错字<br>背一篇勾一篇</p>
+    </div>
+    <div class="quick-card wd" onclick="openWords()">
+      <div class="em">🔤</div>
+      <h3>必会单词短语</h3>
+      <p>高频词 + 短语搭配<br>熟词生义 + 写作替换</p>
+    </div>
   </div>
 
   <div class="section-title"><span class="bar"></span>六科知识体系<span class="more">要点 · 易错 · 真题三合一</span></div>
@@ -314,11 +361,44 @@
   </div>
 </div>
 
+<!-- ============ 必背古诗文页 ============ -->
+<div id="gushici" class="hidden">
+  <div class="hero">
+    <h1>📜 必背古诗文 72 篇</h1>
+    <div class="sub">新课标推荐目录 · 高考默写重点 60 篇 = 必修10+选择性必修10+诗词曲40 · 选修12篇为拓展</div>
+  </div>
+  <div class="gs-progress">
+    <span class="gs-num" id="gs-num">已背 0 / 72</span>
+    <div class="gs-bar"><i id="gs-bar" style="width:0%"></i></div>
+  </div>
+  <div class="notice" style="margin-top:12px">🎯 <b>背诵顺序建议：</b>先攻 <b>必修 10 篇</b>（高考默写考得最多）→ <b>诗词曲 40 首</b> → <b>选择性必修 10 篇</b> → 学有余力再看选修 12 篇。每篇下面标了<b>常考名句</b>（默写题出处）和<b>易错字</b>（写错一个字整句不得分）。</div>
+  <div class="page-pad">
+    <div class="search-box">🔍 <input id="gs-search" placeholder="搜篇目 / 作者 / 名句关键词…" oninput="renderGsList()"></div>
+    <div class="filter-row" id="gs-filters" style="margin-bottom:12px"></div>
+    <div id="gs-list"></div>
+  </div>
+</div>
+
+<!-- ============ 必会单词短语页 ============ -->
+<div id="words" class="hidden">
+  <div class="hero">
+    <h1>🔤 必会单词与短语</h1>
+    <div class="sub">新课标 3500 词精选 · 高频词 · 短语搭配 · 熟词生义 · 写作替换</div>
+  </div>
+  <div class="page-pad">
+    <div class="search-box">🔍 <input id="wd-search" placeholder="搜单词 / 短语 / 中文…" oninput="renderWdList()"></div>
+    <div class="filter-row" id="wd-filters" style="margin-bottom:12px"></div>
+    <div id="wd-list"></div>
+  </div>
+</div>
+
 <!-- ============ 底部导航 ============ -->
 <div class="nav" id="nav">
   <button class="nav-item active" data-nav="home" onclick="showView('home')"><span class="ic">🏠</span>首页</button>
   <button class="nav-item" data-nav="zhenti" onclick="openZhenti()"><span class="ic">✍️</span>真题</button>
   <button class="nav-item" data-nav="papers" onclick="showView('papers')"><span class="ic">🧾</span>套卷</button>
+  <button class="nav-item" data-nav="gushici" onclick="openGushici()"><span class="ic">📜</span>古诗文</button>
+  <button class="nav-item" data-nav="words" onclick="openWords()"><span class="ic">🔤</span>词汇</button>
 </div>
 
 <script src="data/math.js"></script>
@@ -329,10 +409,12 @@
 <script src="data/english.js"></script>
 <script src="data/zhenti.js"></script>
 <script src="data/papers.js"></script>
+<script src="data/gushici.js"></script>
+<script src="data/words.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 let curSubject = null, curModule = null;
-const MAIN_VIEWS = ['home', 'zhenti', 'papers'];
+const MAIN_VIEWS = ['home', 'zhenti', 'papers', 'gushici', 'words'];
 const TAGMAP = { real: ['b-real', '真题'], rest: ['b-rest', '回忆版'], kd: ['b-kd', '考点'], kq: ['b-kq', '考情'] };
 
 function getMastered() { try { return JSON.parse(localStorage.getItem('gk_mastered') || '{}'); } catch(e){ return {}; } }
@@ -341,7 +423,7 @@ function keyOf(s, i) { return s + '_' + i; }
 
 // ===== 视图切换 =====
 function showView(v) {
-  ['home', 'subject', 'detail', 'zhenti', 'papers', 'paper-detail'].forEach(x => {
+  ['home', 'subject', 'detail', 'zhenti', 'papers', 'paper-detail', 'gushici', 'words'].forEach(x => {
     $(x).classList.toggle('hidden', x !== v);
   });
   const isMain = MAIN_VIEWS.includes(v);
@@ -789,6 +871,115 @@ function openPaper(idx) {
 
 renderHome();
 renderPapers();
+// ===== 必背古诗文 =====
+const GS_CATS = [['all','全部'],['必修','必修'],['选择性必修','选择性必修'],['选修','选修'],['诗词曲','诗词曲']];
+let gsCat = 'all';
+function getGsMem() { try { return JSON.parse(localStorage.getItem('hbr_gushi') || '{}'); } catch(e){ return {}; } }
+function setGsMem(m) { localStorage.setItem('hbr_gushi', JSON.stringify(m)); }
+
+function openGushici() {
+  const box = $('gs-filters');
+  box.innerHTML = '';
+  GS_CATS.forEach(([k, label]) => {
+    const c = document.createElement('button');
+    c.className = 'chip' + (gsCat === k ? ' active' : '');
+    c.textContent = label;
+    c.onclick = () => { gsCat = k; openGushici(); };
+    box.appendChild(c);
+  });
+  renderGsList();
+  showView('gushici');
+}
+
+function renderGsList() {
+  const q = ($('gs-search').value || '').trim();
+  const mem = getGsMem();
+  let done = 0;
+  GUSHICI.forEach((g, i) => { if (mem[i]) done++; });
+  $('gs-num').textContent = `已背 ${done} / ${GUSHICI.length}`;
+  $('gs-bar').style.width = (done / GUSHICI.length * 100) + '%';
+
+  const items = GUSHICI.map((g, i) => ({ ...g, i })).filter(g => {
+    if (gsCat !== 'all' && g.cat !== gsCat) return false;
+    if (q && !(g.t + g.a + g.famous).includes(q)) return false;
+    return true;
+  });
+
+  $('gs-list').innerHTML = items.length ? items.map(g => {
+    const catCls = { '必修': 'bx', '选择性必修': 'xx', '选修': 'xk', '诗词曲': 'sc' }[g.cat] || 'bx';
+    const on = mem[g.i];
+    return `
+    <div class="gs-card fade">
+      <div class="gs-head">
+        <div class="gs-check ${on ? 'on' : ''}" onclick="toggleGsMem(${g.i})" title="背过就打勾">${on ? '✓' : ''}</div>
+        <div class="gs-title">
+          <h3>${g.t}${on ? '<span class="done-mark">已背 ✓</span>' : ''}</h3>
+          <div class="meta">${g.a}</div>
+        </div>
+        <span class="gs-cat ${catCls}">${g.cat}</span>
+      </div>
+      <div class="gs-famous">${g.famous}</div>
+      <div class="gs-typos">⚠️ 易错字：${g.typos}</div>
+    </div>`;
+  }).join('') : '<div class="zt-empty">没有匹配的篇目</div>';
+}
+
+function toggleGsMem(i) {
+  const mem = getGsMem();
+  mem[i] = !mem[i];
+  if (!mem[i]) delete mem[i];
+  setGsMem(mem);
+  renderGsList();
+}
+
+// ===== 必会单词短语 =====
+let wdSec = 'all';
+function openWords() {
+  const box = $('wd-filters');
+  box.innerHTML = '';
+  const cats = [['all', '全部']].concat(WORDS.map((s, i) => [i, s.icon + ' ' + s.sec.split(' ')[0]]));
+  cats.forEach(([k, label]) => {
+    const c = document.createElement('button');
+    c.className = 'chip' + (wdSec === k ? ' active' : '');
+    c.textContent = label;
+    c.onclick = () => { wdSec = k; openWords(); };
+    box.appendChild(c);
+  });
+  renderWdList();
+  showView('words');
+}
+
+function renderWdList() {
+  const q = ($('wd-search').value || '').trim().toLowerCase();
+  const secs = WORDS.map((s, i) => ({ ...s, i })).filter(s => {
+    if (wdSec !== 'all' && s.i !== wdSec) return false;
+    if (q && !s.items.some(it => it.toLowerCase().includes(q)) && !s.sec.toLowerCase().includes(q)) return false;
+    return true;
+  });
+
+  $('wd-list').innerHTML = secs.length ? secs.map(s => {
+    let items = s.items;
+    if (q) {
+      const hit = items.filter(it => it.toLowerCase().includes(q));
+      if (hit.length) items = hit;
+    }
+    return `
+    <div class="wd-sec ${q ? 'open' : ''} fade" id="wdsec-${s.i}">
+      <div class="wd-sec-head" onclick="toggleWdSec(${s.i})">
+        <span class="ic">${s.icon}</span>
+        <h3>${s.sec}</h3>
+        <span class="cnt">${items.length} 条</span>
+        <span class="arr">▶</span>
+      </div>
+      <div class="wd-list">${items.map(it => `<div class="wd-item">${it}</div>`).join('')}</div>
+    </div>`;
+  }).join('') : '<div class="zt-empty">没有匹配的词条</div>';
+}
+
+function toggleWdSec(i) {
+  $('wdsec-' + i).classList.toggle('open');
+}
+
 // ===== 离线缓存注册（仅 http/https 环境，Electron/file 下自动跳过） =====
 if ("serviceWorker" in navigator && /^https?:/.test(location.protocol)) {
   window.addEventListener("load", () => {

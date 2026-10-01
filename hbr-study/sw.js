@@ -1,5 +1,5 @@
 // 侯博睿高中学习手册 · 离线缓存 Service Worker（PWA 用，Electron 打包时不需要但不冲突）
-const CACHE = "hbr-study-v1";
+const CACHE = "hbr-study-v2";
 const ASSETS = [
   "./index.html",
   "./manifest.json",
@@ -13,7 +13,9 @@ const ASSETS = [
   "./data/chinese.js",
   "./data/english.js",
   "./data/zhenti.js",
-  "./data/papers.js"
+  "./data/papers.js",
+  "./data/gushici.js",
+  "./data/words.js"
 ];
 
 self.addEventListener("install", (e) => {

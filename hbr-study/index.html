@@ -89,6 +89,28 @@
   .gs-cat.sc { background:#fdf2e2; color:#b56b00; }
   .gs-famous { font-size:13px; line-height:1.85; color:#41505f; margin-top:9px; padding-top:9px; border-top:1px dashed var(--line); white-space:pre-wrap; }
   .gs-typos { margin-top:9px; font-size:12px; color:#b5482e; background:#fdf2ee; border-radius:9px; padding:7px 10px; }
+  .gs-open { display:inline-flex; align-items:center; gap:4px; margin-top:10px; font-size:12.5px; font-weight:700; color:#0f7b5f; background:#eaf4ee; border-radius:9px; padding:7px 12px; cursor:pointer; border:none; }
+  .gs-open:active { transform:scale(.97); }
+
+  /* 古诗文详情页 */
+  .gsd-back { display:flex; align-items:center; gap:6px; font-size:13px; font-weight:700; color:#20578f; background:none; border:none; cursor:pointer; padding:4px 0; margin-bottom:8px; }
+  .gsd-head { display:flex; align-items:flex-end; gap:10px; flex-wrap:wrap; margin-bottom:4px; }
+  .gsd-head h2 { font-size:20px; font-weight:900; color:var(--ink); }
+  .gsd-head .au { font-size:13px; color:var(--muted); }
+  .gsd-cat { font-size:10.5px; font-weight:700; padding:3px 9px; border-radius:9px; background:#f3eefc; color:#6a4fc0; }
+  .gsd-meta { display:flex; align-items:center; gap:12px; margin:8px 0 12px; flex-wrap:wrap; }
+  .gsd-check { display:flex; align-items:center; gap:6px; font-size:12.5px; font-weight:700; color:#0f7b5f; background:#eaf4ee; border-radius:9px; padding:7px 12px; cursor:pointer; border:none; }
+  .gsd-check.on { background:#0f7b5f; color:#fff; }
+  .gsd-tip { font-size:11.5px; color:var(--muted); }
+  .gsd-text { font-size:15px; line-height:2.05; color:#222d38; white-space:pre-wrap; background:var(--card); border-radius:13px; padding:16px 18px; box-shadow:var(--shadow); letter-spacing:.2px; }
+  .gs-key { background:linear-gradient(180deg,#fff0c2,#ffe08a); border-bottom:2px solid #f0a500; border-radius:3px; padding:0 1px; font-weight:700; color:#7a4e00; box-shadow:0 0 0 1px #ffd56b inset; }
+  .gsd-sec-t { font-size:14px; font-weight:900; color:var(--ink); margin:18px 0 9px; display:flex; align-items:center; gap:7px; }
+  .gsd-sec-t::before { content:""; width:4px; height:15px; border-radius:3px; background:var(--primary); }
+  .gsd-notes { background:var(--card); border-radius:13px; padding:13px 16px; box-shadow:var(--shadow); }
+  .gsd-note { border-bottom:1px dashed var(--line); padding:8px 0; font-size:13.5px; line-height:1.7; }
+  .gsd-note:last-child { border-bottom:none; }
+  .gsd-note .w { font-weight:800; color:#0f7b5f; margin-right:8px; background:#eaf4ee; border-radius:6px; padding:1px 8px; }
+  .gsd-typos { margin-top:12px; font-size:12.5px; color:#b5482e; background:#fdf2ee; border-radius:10px; padding:11px 14px; line-height:1.8; }
   .wd-sec { background:var(--card); border-radius:15px; margin-bottom:11px; box-shadow:var(--shadow); overflow:hidden; }
   .wd-sec-head { display:flex; align-items:center; gap:9px; padding:13px 15px; cursor:pointer; user-select:none; }
   .wd-sec-head .ic { font-size:17px; }
@@ -379,6 +401,26 @@
   </div>
 </div>
 
+<!-- ============ 古诗文详情页 ============ -->
+<div id="gs-detail" class="hidden">
+  <div class="page-pad">
+    <button class="gsd-back" onclick="openGushici()">‹ 返回篇目列表</button>
+    <div class="gsd-head">
+      <h2 id="gsd-title"></h2>
+      <span class="au" id="gsd-author"></span>
+      <span class="gsd-cat" id="gsd-cat"></span>
+    </div>
+    <div class="gsd-meta">
+      <button class="gsd-check" id="gsd-check" onclick="toggleGsMem(gsCurIdx)"></button>
+      <span class="gsd-tip">🟡 黄底高亮＝本篇重点考点句（默写/理解必考）</span>
+    </div>
+    <div class="gsd-text" id="gsd-text"></div>
+    <div class="gsd-sec-t">📖 重点词语注释</div>
+    <div class="gsd-notes" id="gsd-notes"></div>
+    <div class="gsd-typos" id="gsd-typos"></div>
+  </div>
+</div>
+
 <!-- ============ 必会单词短语页 ============ -->
 <div id="words" class="hidden">
   <div class="hero">
@@ -423,7 +465,7 @@ function keyOf(s, i) { return s + '_' + i; }
 
 // ===== 视图切换 =====
 function showView(v) {
-  ['home', 'subject', 'detail', 'zhenti', 'papers', 'paper-detail', 'gushici', 'words'].forEach(x => {
+  ['home', 'subject', 'detail', 'zhenti', 'papers', 'paper-detail', 'gushici', 'gs-detail', 'words'].forEach(x => {
     $(x).classList.toggle('hidden', x !== v);
   });
   const isMain = MAIN_VIEWS.includes(v);
@@ -901,25 +943,27 @@ function renderGsList() {
 
   const items = GUSHICI.map((g, i) => ({ ...g, i })).filter(g => {
     if (gsCat !== 'all' && g.cat !== gsCat) return false;
-    if (q && !(g.t + g.a + g.famous).includes(q)) return false;
+    if (q && !(g.t + g.a + g.full + (g.famous || '')).includes(q)) return false;
     return true;
   });
 
   $('gs-list').innerHTML = items.length ? items.map(g => {
     const catCls = { '必修': 'bx', '选择性必修': 'xx', '选修': 'xk', '诗词曲': 'sc' }[g.cat] || 'bx';
     const on = mem[g.i];
+    const preview = (g.full || '').split('\n').slice(0, 2).join('\n');
+    const pFlag = on ? '<span class="done-mark">已背 ✓</span>' : '';
     return `
     <div class="gs-card fade">
       <div class="gs-head">
         <div class="gs-check ${on ? 'on' : ''}" onclick="toggleGsMem(${g.i})" title="背过就打勾">${on ? '✓' : ''}</div>
         <div class="gs-title">
-          <h3>${g.t}${on ? '<span class="done-mark">已背 ✓</span>' : ''}</h3>
+          <h3>${g.t}${pFlag}</h3>
           <div class="meta">${g.a}</div>
         </div>
         <span class="gs-cat ${catCls}">${g.cat}</span>
       </div>
-      <div class="gs-famous">${g.famous}</div>
-      <div class="gs-typos">⚠️ 易错字：${g.typos}</div>
+      <div class="gs-famous">${preview}</div>
+      <button class="gs-open" onclick="openGsDetail(${g.i})">📖 看全文 + 注释 + 考点高亮 ›</button>
     </div>`;
   }).join('') : '<div class="zt-empty">没有匹配的篇目</div>';
 }
@@ -930,6 +974,45 @@ function toggleGsMem(i) {
   if (!mem[i]) delete mem[i];
   setGsMem(mem);
   renderGsList();
+  if (!$('gs-detail').classList.contains('hidden')) renderGsDetail(i);
+}
+
+let gsCurIdx = -1;
+function openGsDetail(i) {
+  gsCurIdx = i;
+  renderGsDetail(i);
+  showView('gs-detail');
+}
+
+function escHtml(s) {
+  return (s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+}
+
+function renderGsDetail(i) {
+  const g = GUSHICI[i];
+  const mem = getGsMem();
+  $('gsd-title').textContent = g.t;
+  $('gsd-author').textContent = g.a;
+  $('gsd-cat').textContent = g.cat;
+  const on = !!mem[i];
+  const cb = $('gsd-check');
+  cb.className = 'gsd-check' + (on ? ' on' : '');
+  cb.innerHTML = on ? '✓ 已背会' : '○ 标记已背会';
+
+  // 全文 + 考点句高亮
+  let text = escHtml(g.full);
+  (g.keys || []).forEach(k => {
+    const kEsc = escHtml(k).replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    text = text.replace(new RegExp(kEsc, 'g'), m => '<span class="gs-key">' + m + '</span>');
+  });
+  $('gsd-text').innerHTML = text;
+
+  // 注释
+  $('gsd-notes').innerHTML = (g.notes || []).map(n =>
+    `<div class="gsd-note"><span class="w">${escHtml(n.w)}</span>${escHtml(n.d)}</div>`
+  ).join('') || '<div class="gsd-note">（本篇未附注释）</div>';
+
+  $('gsd-typos').innerHTML = '⚠️ <b>易错字 / 通假字：</b>' + escHtml(g.typos);
 }
 
 // ===== 必会单词短语 =====

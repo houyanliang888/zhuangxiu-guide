@@ -1,5 +1,5 @@
 // 侯博睿高中学习手册 · 离线缓存 Service Worker（PWA 用，Electron 打包时不需要但不冲突）
-const CACHE = "hbr-study-v2";
+const CACHE = "hbr-study-v3";
 const ASSETS = [
   "./index.html",
   "./manifest.json",

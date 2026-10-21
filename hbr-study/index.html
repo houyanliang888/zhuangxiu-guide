@@ -373,7 +373,7 @@
       <div class="quick-card er" onclick="openErci()">
         <div class="em">📐</div>
         <h3>数学二级结论</h3>
-        <p>选填秒杀 · 高一精编<br>23 条核心结论卡片</p>
+        <p>选填秒杀 · 全高中覆盖<br>14 模块 · 118 条结论卡片</p>
       </div>
       <div class="quick-card tr full" onclick="openTrends()">
       <div class="em">🎯</div>
@@ -553,11 +553,11 @@
   <div id="erci" class="hidden">
     <div class="erci-head">
       <button class="back" onclick="showView('home')">← 返回首页</button>
-      <h1>📐 高中数学「二次结论」· 高一精编</h1>
-      <div class="sub">网售《二次结论》同类资料精华切片 · 按高一进度筛选 · 选填直接套，大题先证后套</div>
+      <h1>📐 高中数学「二次结论」· 全高中精编</h1>
+      <div class="sub">网售《二次结论》同类资料 · 覆盖高中全 14 模块 118 条 · 选填直接套，大题先证后套</div>
     </div>
     <div class="notice erci-notice">
-      ⚠️ <b>使用铁律：</b>① 选填题结论可直接套；② <b>解答题必须先自己推导一步</b>再往下用，否则扣步骤分；③ 二级结论是加速工具，单调性/奇偶性定义法证明才是大题根本。标签：<span class="erci-tag erci-must">⭐月考必背</span> 现在背 ｜ <span class="erci-tag erci-mid">🔶期中前后</span> 提前看 ｜ <span class="erci-tag erci-ext">🔷拓展</span> 锦上添花
+      ⚠️ <b>使用铁律：</b>① 选填题结论可直接套；② <b>解答题必须先自己推导一步</b>再往下用，否则扣步骤分；③ 二级结论是加速工具，单调性/奇偶性定义法证明才是大题根本。标签：<span class="erci-tag erci-must">⭐ 选填高频</span> 现在就该会 ｜ <span class="erci-tag erci-mid">🔶 进度相关</span> 随年级推进 ｜ <span class="erci-tag erci-ext">🔷 拓展压轴</span> 冲满分
     </div>
     <div class="page-pad" id="erci-list"></div>
   </div>
@@ -1203,9 +1203,9 @@ function openErci() {
   const E = window.ERCI;
   if (!E) { wrap.innerHTML = '<p style="color:#c0392b">数据未加载（erci.js）</p>'; showView('erci'); return; }
   const TAG = {
-    must: ['⭐月考必背', 'erci-must'],
-    mid:  ['🔶期中前后', 'erci-mid'],
-    ext:  ['🔷拓展', 'erci-ext']
+    must: ['⭐ 选填高频', 'erci-must'],
+    mid:  ['🔶 进度相关', 'erci-mid'],
+    ext:  ['🔷 拓展压轴', 'erci-ext']
   };
   let h = '';
   E.forEach(g => {

@@ -305,6 +305,15 @@
   .erci-notice { font-size:13px; line-height:1.8; margin:10px 0 16px; }
   .erci-notice b { color:var(--orange); }
   .erci-notice .erci-tag { margin:0 2px; }
+  .erci-tabs { display:flex; gap:7px; overflow-x:auto; padding:2px 12px 10px; scrollbar-width:none; }
+  .erci-tabs::-webkit-scrollbar { display:none; }
+  .erci-tab { flex:0 0 auto; padding:7px 14px; border-radius:20px; font-size:13px; font-weight:700; background:#fff; border:1px solid #dde5f0; color:#5b6b7e; cursor:pointer; white-space:nowrap; }
+  .erci-tab.on { background:var(--navy2); color:#fff; border-color:var(--navy2); }
+  .erci-tab .n { font-size:11px; opacity:.75; margin-left:3px; }
+  .erci-bar { display:flex; align-items:center; gap:8px; padding:9px 14px; background:linear-gradient(90deg,#f3f7fc,#fff); border:1px solid #e3e9f2; border-radius:12px; margin:0 12px 4px; font-size:12.5px; color:#5b6b7e; flex-wrap:wrap; }
+  .erci-bar b { color:var(--orange); font-size:15px; }
+  .erci-tools { margin-left:auto; display:flex; gap:7px; }
+  .erci-tools button { font-size:12px; padding:4px 11px; border-radius:8px; border:1px solid #d8e2f0; background:#fff; color:#3c5b78; font-weight:700; cursor:pointer; }
   .erci-sec { margin:18px 0; }
   .erci-sec-h { display:flex; align-items:center; gap:8px; font-size:17px; font-weight:800; color:var(--navy); border-left:4px solid var(--orange); padding-left:10px; margin-bottom:10px; }
   .erci-num { background:var(--orange); color:#fff; font-size:11px; padding:1px 8px; border-radius:10px; font-weight:700; }
@@ -372,8 +381,8 @@
       </div>
       <div class="quick-card er" onclick="openErci()">
         <div class="em">📐</div>
-        <h3>数学二级结论</h3>
-        <p>选填秒杀 · 全高中覆盖<br>14 模块 · 118 条结论卡片</p>
+        <h3>六科二次结论</h3>
+        <p>选填秒杀 · 全科速查<br>46 模块 · 370 条结论卡片</p>
       </div>
       <div class="quick-card tr full" onclick="openTrends()">
       <div class="em">🎯</div>
@@ -553,12 +562,14 @@
   <div id="erci" class="hidden">
     <div class="erci-head">
       <button class="back" onclick="showView('home')">← 返回首页</button>
-      <h1>📐 高中数学「二次结论」· 全高中精编</h1>
-      <div class="sub">网售《二次结论》同类资料 · 覆盖高中全 14 模块 118 条 · 选填直接套，大题先证后套</div>
+      <h1>📐 高中六科「二次结论」· 全科精编</h1>
+      <div class="sub">覆盖数学/物理/化学/生物/语文/英语 · 共 46 模块 370 条 · 选填直接套，大题先证后套</div>
     </div>
     <div class="notice erci-notice">
-      ⚠️ <b>使用铁律：</b>① 选填题结论可直接套；② <b>解答题必须先自己推导一步</b>再往下用，否则扣步骤分；③ 二级结论是加速工具，单调性/奇偶性定义法证明才是大题根本。标签：<span class="erci-tag erci-must">⭐ 选填高频</span> 现在就该会 ｜ <span class="erci-tag erci-mid">🔶 进度相关</span> 随年级推进 ｜ <span class="erci-tag erci-ext">🔷 拓展压轴</span> 冲满分
+      ⚠️ <b>使用铁律：</b>① 选填题结论可直接套；② <b>解答题必须先自己推导一步</b>再往下用，否则扣步骤分；③ 二级结论是加速工具，定义法证明与规范表述才是大题根本。标签：<span class="erci-tag erci-must">⭐ 基础必拿</span> 现在就该会 ｜ <span class="erci-tag erci-mid">🔶 常考模板</span> 反复练 ｜ <span class="erci-tag erci-ext">🔷 拔高压轴</span> 冲满分
     </div>
+    <div class="erci-tabs" id="erci-tabs"></div>
+    <div class="erci-bar" id="erci-bar"></div>
     <div class="page-pad" id="erci-list"></div>
   </div>
 
@@ -585,6 +596,11 @@
 <script src="data/words.js"></script>
 <script src="data/trends.js"></script>
 <script src="data/erci.js"></script>
+<script src="data/erci-physics.js"></script>
+<script src="data/erci-chemistry.js"></script>
+<script src="data/erci-biology.js"></script>
+<script src="data/erci-chinese.js"></script>
+<script src="data/erci-english.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 let curSubject = null, curModule = null;
@@ -1198,25 +1214,81 @@ function toggleWdSec(i) {
 // ===== 命题趋势 =====
 function openTrends() { renderTrends(); showView('trends'); }
 
+const ERCI_SUBJ = [
+  { k: 'math',     n: '数学', em: '📐' },
+  { k: 'physics',  n: '物理', em: '⚡' },
+  { k: 'chemistry',n: '化学', em: '🧪' },
+  { k: 'biology',  n: '生物', em: '🧬' },
+  { k: 'chinese',  n: '语文', em: '📖' },
+  { k: 'english',  n: '英语', em: '🔤' }
+];
+let erciCur = 'math', erciKw = '';
+
+function erciTotal(k) {
+  const E = window.ERCIX && window.ERCIX[k];
+  if (!E) return 0;
+  return E.reduce((s, g) => s + g.items.length, 0);
+}
+
+function renderErciTabs() {
+  const box = $('erci-tabs'); if (!box) return;
+  box.innerHTML = ERCI_SUBJ.map(s => {
+    const t = erciTotal(s.k);
+    return '<button class="erci-tab' + (s.k === erciCur ? ' on' : '') + '" onclick="erciGo(\'' + s.k + '\')">' +
+      s.em + ' ' + s.n + '<span class="n">' + t + '</span></button>';
+  }).join('');
+}
+
+function erciGo(k) { erciCur = k; erciKw = ''; renderErci(); showView('erci'); }
+
 function openErci() {
-  const wrap = $('erci-list');
-  const E = window.ERCI;
-  if (!E) { wrap.innerHTML = '<p style="color:#c0392b">数据未加载（erci.js）</p>'; showView('erci'); return; }
+  const X = window.ERCIX;
+  if (!X) { $('erci-list').innerHTML = '<p style="color:#c0392b">数据未加载（erci.js）</p>'; showView('erci'); return; }
+  if (!X[erciCur]) erciCur = 'math';
+  renderErci();
+  showView('erci');
+}
+
+function renderErci() {
   const TAG = {
-    must: ['⭐ 选填高频', 'erci-must'],
-    mid:  ['🔶 进度相关', 'erci-mid'],
-    ext:  ['🔷 拓展压轴', 'erci-ext']
+    must: ['⭐ 基础必拿', 'erci-must'],
+    mid:  ['🔶 常考模板', 'erci-mid'],
+    ext:  ['🔷 拔高压轴', 'erci-ext']
   };
+  const cur = ERCI_SUBJ.find(s => s.k === erciCur) || ERCI_SUBJ[0];
+  renderErciTabs();
+  const E = (window.ERCIX[erciCur]) || [];
+  const kw = erciKw.trim();
+  const doneKey = 'gk_erci_';
+
+  // 统计条
+  const shown = E.reduce((s, g) => s + (kw ? g.items.filter(it => matchIt(it, kw)).length : g.items.length), 0);
+  const total = E.reduce((s, g) => s + g.items.length, 0);
+  $('erci-bar').innerHTML =
+    '<b>' + cur.em + ' ' + cur.n + '</b> · ' + E.length + ' 模块 · ' +
+    (kw ? '<b>' + shown + '</b> / ' + total : '<b>' + total + '</b>') + ' 条' +
+    '<div class="erci-tools">' +
+    '<button onclick="erciFind()">🔍 搜索</button>' +
+    '<button onclick="erciExpand(' + (kw ? 'false' : 'true') + ')">' + (kw ? '收起筛选' : '只看⭐必拿') + '</button>' +
+    '</div>';
+
   let h = '';
-  E.forEach(g => {
+  if (!E.length) h = '<p style="color:#c0392b">该科目数据未加载</p>';
+  E.forEach((g, gi) => {
+    let items = g.items;
+    if (kw) items = items.filter(it => matchIt(it, kw));
+    if (!items.length) return;
     h += '<div class="erci-sec">';
-    h += '<div class="erci-sec-h"><span class="erci-num">' + g.items.length + '条</span>' + g.cat +
+    h += '<div class="erci-sec-h"><span class="erci-num">' + items.length + '条</span>' + g.cat +
          '<span class="erci-sub">' + g.sub + '</span></div>';
     h += '<div class="erci-grid">';
-    g.items.forEach(it => {
+    items.forEach(it => {
       const tg = TAG[it.tag] || TAG.must;
-      h += '<div class="erci-card">';
-      h += '<h3>' + it.no + ' ' + it.t + ' <span class="erci-tag ' + tg[1] + '">' + tg[0] + '</span></h3>';
+      const id = doneKey + erciCur + '_' + g.cat + '_' + it.no;
+      const on = !!localStorage.getItem(id);
+      h += '<div class="erci-card"' + (on ? ' style="opacity:.62"' : '') + '>';
+      h += '<h3>' + it.no + ' ' + it.t + ' <span class="erci-tag ' + tg[1] + '">' + tg[0] + '</span>' +
+           '<button class="erci-ck" style="margin-left:auto;font-size:11px;border:none;cursor:pointer;background:none;color:' + (on ? '#2e9e5b' : '#b9c4d2') + '" onclick="erciCheck(this,\'' + id.replace(/'/g, '') + '\')">' + (on ? '✓已掌握' : '○标记') + '</button></h3>';
       h += '<div class="erci-formula">' + it.f + '</div>';
       if (it.m) h += '<div class="erci-memo"><b>记忆：</b>' + it.m + '</div>';
       if (it.u) h += '<div class="erci-use"><span class="lab">用在：</span>' + it.u + '</div>';
@@ -1225,8 +1297,36 @@ function openErci() {
     });
     h += '</div></div>';
   });
-  wrap.innerHTML = h;
-  showView('erci');
+  if (!h) h = '<p style="color:#8a96a3;padding:20px 4px">没有匹配的条目，换个关键词试试</p>';
+  $('erci-list').innerHTML = h;
+}
+
+function matchIt(it, kw) {
+  const k = kw.toLowerCase();
+  return ((it.t || '') + (it.f || '') + (it.m || '') + (it.u || '') + (it.ex || '')).toLowerCase().indexOf(k) >= 0;
+}
+
+function erciFind() {
+  const v = prompt('在「' + (ERCI_SUBJ.find(s => s.k === erciCur) || {}).n + '」中搜索关键词：', erciKw);
+  if (v === null) return;
+  erciKw = v;
+  renderErci();
+}
+
+function erciExpand(onlyMust) {
+  erciKw = onlyMust ? '⭐' : '';
+  renderErci();
+}
+
+function erciCheck(btn, id) {
+  const card = btn.closest('.erci-card');
+  if (localStorage.getItem(id)) {
+    localStorage.removeItem(id);
+    btn.textContent = '○标记'; btn.style.color = '#b9c4d2'; card.style.opacity = '';
+  } else {
+    localStorage.setItem(id, '1');
+    btn.textContent = '✓已掌握'; btn.style.color = '#2e9e5b'; card.style.opacity = '.62';
+  }
 }
 
 function renderTrends() {

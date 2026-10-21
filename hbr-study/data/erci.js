@@ -1,8 +1,9 @@
-// 高中数学「二次结论」· 全高中精编（数据驱动，挂 window.ERCI）
+// 高中数学「二次结论」· 全高中精编（数据驱动，挂 window.ERCIX.math）
 // tag: must=⭐选填高频  mid=🔶进度相关  ext=🔷拓展压轴
 // 注意：多行用 <br> 表示；不等式的 < > 已转义为 &lt; &gt;（避免 innerHTML 误判标签）
 // 公式中的上下标用 Unicode（² ³ ⁿ ₙ ₀ ₁ …），浏览器直接渲染，无需标签。
-window.ERCI = [
+window.ERCIX = window.ERCIX || {};
+window.ERCIX.math = [
   {
     cat: "一、集合与常用逻辑",
     sub: "⭐ 高一 · 选填高频",

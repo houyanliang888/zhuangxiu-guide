@@ -346,6 +346,14 @@
   .kn-body { background:#f7f9fc; border-left:3px solid var(--navy2); padding:8px 11px; border-radius:6px; font-size:13px; color:#16202e; line-height:1.85; }
   .kn-memo { font-size:12.5px; color:#5b6b7e; margin-top:6px; line-height:1.75; }
   .kn-memo b { color:var(--orange); }
+  .kn-rel { margin-top:9px; }
+  .kn-jump, .erci-jump {
+    display:inline-block; border:1px solid #cfe0f2; background:linear-gradient(180deg,#f3f9ff,#e9f3ff);
+    color:var(--navy2); font-size:12.5px; font-weight:700; padding:5px 11px; border-radius:18px; cursor:pointer;
+    transition:transform .12s ease, box-shadow .12s ease;
+  }
+  .kn-jump:hover, .erci-jump:hover { transform:translateY(-1px); box-shadow:0 3px 10px rgba(31,90,150,.18); }
+  .erci-rel { margin-top:9px; }
 </style>
 </head>
 <body>
@@ -602,7 +610,7 @@
       💡 <b>怎么用：</b>① 先点上方<b>科目标签</b>（或「全部科目」跨科搜）；② 在搜索框输入<b>关键词</b>，如「正弦定理」「动量守恒」「电化学」「非谓语」「病句」；③ 卡片即该知识点的公式或讲解。
     </div>
     <div class="erci-tabs" id="kn-tabs"></div>
-    <div class="search-box" style="margin:10px 12px 8px">🔍 <input id="kn-search" placeholder="输入知识点关键词，如：数列求和 / 洛伦兹力 / 虚拟语气…" oninput="renderKn()"></div>
+    <div class="search-box" style="margin:10px 12px 8px">🔍 <input id="kn-search" placeholder="输入知识点关键词，如：数列求和 / 洛伦兹力 / 虚拟语气…" oninput="knLinkActive=false;renderKn()"></div>
     <div class="filter-row" id="kn-filter" style="padding:0 12px 8px"></div>
     <div class="erci-bar" id="kn-bar"></div>
     <div class="page-pad" id="kn-list"></div>
@@ -1281,7 +1289,7 @@ function renderErciTabs() {
   }).join('');
 }
 
-function erciGo(k) { erciCur = k; erciKw = ''; renderErci(); showView('erci'); }
+function erciGo(k) { erciCur = k; erciKw = ''; erciLinkActive = false; renderErci(); showView('erci'); }
 
 function openErci() {
   const X = window.ERCIX;
@@ -1309,6 +1317,7 @@ function renderErci() {
   $('erci-bar').innerHTML =
     '<b>' + cur.em + ' ' + cur.n + '</b> · ' + E.length + ' 模块 · ' +
     (kw ? '<b>' + shown + '</b> / ' + total : '<b>' + total + '</b>') + ' 条' +
+    (erciLinkActive ? ' · 🔗 联动' : '') +
     '<div class="erci-tools">' +
     '<button onclick="erciFind()">🔍 搜索</button>' +
     '<button onclick="erciExpand(' + (kw ? 'false' : 'true') + ')">' + (kw ? '收起筛选' : '只看⭐必拿') + '</button>' +
@@ -1335,6 +1344,8 @@ function renderErci() {
       if (it.m) h += '<div class="erci-memo"><b>记忆：</b>' + it.m + '</div>';
       if (it.u) h += '<div class="erci-use"><span class="lab">用在：</span>' + it.u + '</div>';
       if (it.ex) h += '<div class="erci-ex"><span class="lab">例：</span>' + it.ex + '</div>';
+      const rel = linkPick(erciCur, it.t, g.cat, 'kn');
+      if (rel) h += '<div class="erci-rel"><button class="erci-jump" data-sk="' + erciCur + '" data-kw="' + escAttr(rel.kw) + '" onclick="erciJumpKn(this)">📚 相关知识点 ' + rel.n + ' 条</button></div>';
       h += '</div>';
     });
     h += '</div></div>';
@@ -1352,11 +1363,13 @@ function erciFind() {
   const v = prompt('在「' + (ERCI_SUBJ.find(s => s.k === erciCur) || {}).n + '」中搜索关键词：', erciKw);
   if (v === null) return;
   erciKw = v;
+  erciLinkActive = false;
   renderErci();
 }
 
 function erciExpand(onlyMust) {
   erciKw = onlyMust ? '⭐' : '';
+  erciLinkActive = false;
   renderErci();
 }
 
@@ -1370,6 +1383,38 @@ function erciCheck(btn, id) {
     btn.textContent = '✓已掌握'; btn.style.color = '#2e9e5b'; card.style.opacity = '.62';
   }
 }
+
+// ===== 知识点 ↔ 二次结论 联动 =====
+// 话题词表：用于在两套数据间找到「同一主题」的条目（标题搜不到时回退到话题词）
+const LINK_TOPICS = {
+  math:['集合','子集','交集','并集','补集','充要','量词','不等式','基本不等式','线性规划','函数','定义域','单调性','奇偶性','周期性','对称性','值域','指数','对数','换底','图像','零点','导数','切线','极值','最值','恒成立','三角函数','诱导公式','和差角','倍角','辅助角','周期','解三角形','正弦','余弦','面积','射影','向量','数量积','坐标','模','夹角','投影','数列','等差','等比','通项','前n项','错位相减','裂项','数学归纳','立体几何','三视图','体积','表面积','外接球','内切球','空间向量','直线','圆','点到直线','弦长','切线','椭圆','双曲线','抛物线','离心率','焦半径','焦点弦','排列','组合','二项式','通项','赋值','概率','古典','条件概率','独立','分布列','期望','方差','正态','回归','独立性检验','复数','i的','共轭','模'],
+  physics:['位移','平均速度','加速度','打点','匀变速','速度','位移公式','推论','中间时刻','逐差','自由落体','竖直上抛','重力','弹力','摩擦力','受力分析','合成','分解','正交','牛顿','超重','失重','连接体','瞬时','平衡','三力','相似','动态','曲线','平抛','斜抛','合成与分解','圆周','向心力','向心加速度','临界','离心','万有引力','重力加速度','黄金代换','宇宙速度','环绕','同步卫星','开普勒','功','功率','动能定理','机械能','功能关系','动量','冲量','动量定理','守恒','碰撞','反冲','库仑','电场强度','电势','电势能','电势差','匀强电场','电容器','电场线','欧姆','电阻','串并联','闭合电路','电功率','安培','洛伦兹','带电粒子','质谱','回旋','电磁感应','法拉第','楞次','动生','自感','涡流','交流电','有效值','变压器','远距离','简谐','单摆','波速','干涉','衍射','多普勒','折射','全反射','临界角','双缝','分子动理论','理想气体','热力学','光电效应','光子','玻尔','半衰','质能'],
+  chemistry:['阿伏伽德罗','气体摩尔','物质的量浓度','溶液配制','守恒','电离','离子方程式','离子共存','氧化还原','配平','氧化性','歧化','钠','铝','两性','铁','铜','焰色','氯','硫','浓硫酸','硝酸','氨','硅','反应热','焓变','热化学','盖斯','速率','影响因素','平衡常数','转化率','勒夏特列','等效','弱电解质','水的离子积','pH','中和滴定','盐类水解','影响','溶度积','沉淀','原电池','电极反应','电解','电解规律','金属腐蚀','周期表','半径','金属性','非金属性','化学键','8电子','等电子','σ键','π键','杂化','分子极性','氢键','VSEPR','晶体','晶胞','配位数','同分异构','官能团','反应类型','命名','烃','衍生物','检验','仪器','分离','提纯','物质检验','误差'],
+  biology:['氨基酸','脱水缩合','肽键','DNA','RNA','碱基','互补配对','原核','真核','细胞器','细胞膜','生物膜','酶','特性','影响酶','ATP','光合','色素','光反应','暗反应','C3','C5','呼吸','有氧','无氧','反应式','有丝','减数','染色体','DNA数目','图像鉴别','分离定律','自由组合','伴性','系谱','概率','配子','半保留','转录','翻译','中心法则','密码子','突变','基因重组','染色体变异','育种','进化','基因频率','神经','反射弧','突触','体液','激素','免疫','防线','特异性','生长素','两重性','顶端优势','种群','群落','演替','能量流动','物质循环','食物链','生物多样性','微生物','PCR','粗提取','探究'],
+  chinese:['实词','走','兵','数','顾','举','胜','望','信','相','乘','就','绝','类','率','徒','亡','修','许','易','质','族','卒','虚词','之','乎','者','也','以','而','其','于','为','乃','则','且','若','所','何','因','焉','与','判断句','被动句','宾语前置','定语后置','状语后置','主谓倒装','省略','名作动','名作状','使动','意动','文化常识','称谓','官职','科举','历法','礼俗','修辞','比喻','比拟','夸张','对偶','排比','反复','设问','反问','通感','病句','语序','搭配','成分残缺','结构混乱','表意不明','不合逻辑','标点','顿号','逗号','分号','引号','破折号','冒号','诗歌','意象','表现手法','抒情方式','语言风格','炼字','现代文','论述','文学','实用','作文','立意','结构','开头','论证','素材'],
+  english:['一般现在','一般过去','一般将来','现在进行','过去进行','现在完成','过去完成','现在完成进行','过去将来','被动语态','非谓语','不定式','动名词','主语','宾语','定语','状语','补语','名词性从句','主语从句','宾语从句','表语从句','同位语从句','定语从句','关系代词','关系副词','状语从句','时间','条件','原因','让步','目的','结果','地点','比较','虚拟语气','if','suggest','wish','倒装','完全倒装','部分倒装','强调句','主谓一致','情态','can','may','must','should','need','介词','固定搭配','短语','动词','break','cut','come','get','look','put','set','take','turn','阅读','细节','主旨','推断','七选五','书面','过渡','书信','通知','投稿','替换']
+};
+function countInErci(subj, kw) {
+  const A = window.ERCIX && window.ERCIX[subj]; if (!A) return 0;
+  let n = 0; A.forEach(g => g.items.forEach(it => { if (matchIt(it, kw)) n++; })); return n;
+}
+function countInKn(subj, kw) {
+  const A = window.KNOWLEDGE && window.KNOWLEDGE[subj]; if (!A) return 0;
+  let n = 0; A.forEach(g => g.items.forEach(it => { if (knMatch(it, kw)) n++; })); return n;
+}
+// 选取联动关键词：先试标题，再试章节，再试话题词；返回 {kw,n} 或 null
+function linkPick(subj, title, cat, target) {
+  const cnt = target === 'erci' ? countInErci : countInKn;
+  const titleS = knStrip(title), catS = knStrip(cat);
+  const cands = [titleS, catS].concat((LINK_TOPICS[subj] || []).filter(t => (titleS + ' ' + catS).includes(t)));
+  for (const c of cands) { if (!c) continue; const n = cnt(subj, c); if (n > 0) return { kw: c, n: n }; }
+  return null;
+}
+function escAttr(s) { return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
+
+let erciLinkActive = false, knLinkActive = false;
+function knJumpErci(btn) { erciCur = btn.dataset.sk; erciKw = btn.dataset.kw; erciLinkActive = true; openErci(); }
+function erciJumpKn(btn) { knCur = btn.dataset.sk; const b = $('kn-search'); if (b) b.value = btn.dataset.kw; knLinkActive = true; openKn(); }
 
 function renderTrends() {
   const T = window.TRENDS; if (!T) return;
@@ -1444,7 +1489,7 @@ function renderKnTabs() {
   ).join('');
 }
 
-function knGo(k) { knCur = k; renderKn(); showView('knowledge'); }
+function knGo(k) { knCur = k; knLinkActive = false; renderKn(); showView('knowledge'); }
 
 function openKn() {
   const X = window.KNOWLEDGE;
@@ -1460,7 +1505,7 @@ function renderKnFilter() {
     '<button class="chip' + (knType === v ? ' active' : '') + '" onclick="knSetType(\'' + v + '\')">' + l + '</button>'
   ).join('');
 }
-function knSetType(t) { knType = t; renderKn(); }
+function knSetType(t) { knType = t; knLinkActive = false; renderKn(); }
 
 function knMatch(it, kw) {
   if (!kw) return true;
@@ -1480,12 +1525,13 @@ function renderKn() {
       g.items.forEach(it => {
         if (knType !== 'all' && it.type !== knType) return;
         if (!knMatch(it, kw)) return;
-        collected.push({ it, em: s.em });
+        collected.push({ it, em: s.em, sk: s.k, cat: g.cat });
       });
     });
   });
   const scopeName = knCur === 'all' ? '全部科目' : (KN_SUBJ.find(s => s.k === knCur).em + ' ' + KN_SUBJ.find(s => s.k === knCur).n);
-  $('kn-bar').innerHTML = '<b>' + scopeName + '</b> · 命中 <b>' + collected.length + '</b> 条' + (kw ? '（关键词「' + knSafe(kw) + '」）' : '');
+  $('kn-bar').innerHTML = '<b>' + scopeName + '</b> · 命中 <b>' + collected.length + '</b> 条' +
+    (kw ? '（关键词「' + knSafe(kw) + '」）' : '') + (knLinkActive ? ' · 🔗 来自二次结论联动' : '');
   let h = '';
   if (!collected.length) {
     h = '<p style="color:#8a96a3;padding:22px 4px;text-align:center">没有匹配的知识点，换个关键词试试～<br>例如：正弦定理 / 动量守恒 / 电化学 / 非谓语 / 病句</p>';
@@ -1496,6 +1542,8 @@ function renderKn() {
       h += '<div class="kn-card"><h3>' + (knCur === 'all' ? o.em + ' ' : '') + knSafe(it.t) + ' <span class="kn-tag ' + tg[0] + '">' + tg[1] + '</span></h3>';
       h += '<div class="kn-body">' + knSafe(it.f) + '</div>';
       if (it.m) h += '<div class="kn-memo"><b>提示：</b>' + knSafe(it.m) + '</div>';
+      const rel = linkPick(o.sk, it.t, o.cat, 'erci');
+      if (rel) h += '<div class="kn-rel"><button class="kn-jump" data-sk="' + o.sk + '" data-kw="' + escAttr(rel.kw) + '" onclick="knJumpErci(this)">↪ 相关二次结论 ' + rel.n + ' 条</button></div>';
       h += '</div>';
     });
   }

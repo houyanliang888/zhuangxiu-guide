@@ -333,6 +333,19 @@
   .erci-ex { font-size:12.5px; margin-top:6px; background:#fffaf2; border:1px solid #f3e3cf; border-radius:8px; padding:6px 10px; }
   .erci-ex .lab { font-weight:700; color:var(--orange); margin-right:4px; }
   @media(max-width:680px){ .erci-grid { grid-template-columns:1fr; } }
+
+  /* ===== 知识点速查 ===== */
+  .kn-head { background:linear-gradient(135deg,#0b6e99,#29a3d1); color:#fff; border-radius:var(--radius); padding:18px 20px; margin-bottom:12px; }
+  .kn-head h1 { margin:6px 0 4px; font-size:20px; }
+  .kn-head .sub { font-size:12.5px; opacity:.92; }
+  .kn-tag { font-size:10.5px; padding:1px 7px; border-radius:6px; font-weight:700; white-space:nowrap; }
+  .kn-f { background:#fde8e6; color:#c0392b; }
+  .kn-c { background:#e8f1fb; color:var(--navy2); }
+  .kn-card { background:#fff; border:1px solid #e3e9f2; border-radius:12px; padding:12px 14px; box-shadow:0 2px 8px rgba(22,50,79,.05); margin-bottom:11px; }
+  .kn-card h3 { margin:0 0 7px; font-size:14.5px; color:var(--navy2); display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+  .kn-body { background:#f7f9fc; border-left:3px solid var(--navy2); padding:8px 11px; border-radius:6px; font-size:13px; color:#16202e; line-height:1.85; }
+  .kn-memo { font-size:12.5px; color:#5b6b7e; margin-top:6px; line-height:1.75; }
+  .kn-memo b { color:var(--orange); }
 </style>
 </head>
 <body>
@@ -383,6 +396,11 @@
         <div class="em">📐</div>
         <h3>六科二次结论</h3>
         <p>选填秒杀 · 全科速查<br>46 模块 · 370 条结论卡片</p>
+      </div>
+      <div class="quick-card wd" onclick="openKn()">
+        <div class="em">📚</div>
+        <h3>六科知识点速查</h3>
+        <p>公式讲解搜索引擎<br>选科目 + 输关键词即出</p>
       </div>
       <div class="quick-card tr full" onclick="openTrends()">
       <div class="em">🎯</div>
@@ -573,6 +591,23 @@
     <div class="page-pad" id="erci-list"></div>
   </div>
 
+  <!-- ============ 知识点速查 ============ -->
+  <div id="knowledge" class="hidden">
+    <div class="kn-head">
+      <button class="back" onclick="showView('home')">← 返回首页</button>
+      <h1>📚 六科知识点速查</h1>
+      <div class="sub">遇到不会的知识点？选科目 → 输关键词 → 秒出公式 / 讲解</div>
+    </div>
+    <div class="notice">
+      💡 <b>怎么用：</b>① 先点上方<b>科目标签</b>（或「全部科目」跨科搜）；② 在搜索框输入<b>关键词</b>，如「正弦定理」「动量守恒」「电化学」「非谓语」「病句」；③ 卡片即该知识点的公式或讲解。
+    </div>
+    <div class="erci-tabs" id="kn-tabs"></div>
+    <div class="search-box" style="margin:10px 12px 8px">🔍 <input id="kn-search" placeholder="输入知识点关键词，如：数列求和 / 洛伦兹力 / 虚拟语气…" oninput="renderKn()"></div>
+    <div class="filter-row" id="kn-filter" style="padding:0 12px 8px"></div>
+    <div class="erci-bar" id="kn-bar"></div>
+    <div class="page-pad" id="kn-list"></div>
+  </div>
+
   <!-- ============ 底部导航 ============ -->
 <div class="nav" id="nav">
   <button class="nav-item active" data-nav="home" onclick="showView('home')"><span class="ic">🏠</span>首页</button>
@@ -582,6 +617,7 @@
   <button class="nav-item" data-nav="gushici" onclick="openGushici()"><span class="ic">📜</span>古诗文</button>
   <button class="nav-item" data-nav="words" onclick="openWords()"><span class="ic">🔤</span>词汇</button>
   <button class="nav-item" data-nav="erci" onclick="openErci()"><span class="ic">📐</span>结论</button>
+  <button class="nav-item" data-nav="knowledge" onclick="openKn()"><span class="ic">📚</span>速查</button>
 </div>
 
 <script src="data/math.js"></script>
@@ -601,10 +637,16 @@
 <script src="data/erci-biology.js"></script>
 <script src="data/erci-chinese.js"></script>
 <script src="data/erci-english.js"></script>
+<script src="data/knowledge-math.js"></script>
+<script src="data/knowledge-physics.js"></script>
+<script src="data/knowledge-chemistry.js"></script>
+<script src="data/knowledge-biology.js"></script>
+<script src="data/knowledge-chinese.js"></script>
+<script src="data/knowledge-english.js"></script>
 <script>
 const $ = id => document.getElementById(id);
 let curSubject = null, curModule = null;
-const MAIN_VIEWS = ['home', 'trends', 'erci', 'zhenti', 'papers', 'gushici', 'words'];
+const MAIN_VIEWS = ['home', 'trends', 'erci', 'knowledge', 'zhenti', 'papers', 'gushici', 'words'];
 const TAGMAP = { real: ['b-real', '真题'], rest: ['b-rest', '回忆版'], kd: ['b-kd', '考点'], kq: ['b-kq', '考情'] };
 
 function getMastered() { try { return JSON.parse(localStorage.getItem('gk_mastered') || '{}'); } catch(e){ return {}; } }
@@ -613,7 +655,7 @@ function keyOf(s, i) { return s + '_' + i; }
 
 // ===== 视图切换 =====
 function showView(v) {
-  ['home', 'subject', 'detail', 'trends', 'trend-detail', 'erci', 'zhenti', 'papers', 'paper-detail', 'gushici', 'gs-detail', 'words'].forEach(x => {
+  ['home', 'subject', 'detail', 'trends', 'trend-detail', 'erci', 'knowledge', 'zhenti', 'papers', 'paper-detail', 'gushici', 'gs-detail', 'words'].forEach(x => {
     $(x).classList.toggle('hidden', x !== v);
   });
   const isMain = MAIN_VIEWS.includes(v);
@@ -1365,6 +1407,99 @@ function openTrendDetail(i) {
     <div class="trd-block act fade"><h4>备考动作</h4><ul>${s.actions.map(x => `<li>${x}</li>`).join('')}</ul></div>
     <div class="footer">以山西省招生考试管理中心当年公告为最终依据</div>`;
   showView('trend-detail');
+}
+
+// ===== 知识点速查 =====
+const KN_SUBJ = [
+  { k:'all',      n:'全部', em:'🌐' },
+  { k:'math',     n:'数学', em:'📐' },
+  { k:'physics',  n:'物理', em:'⚡' },
+  { k:'chemistry',n:'化学', em:'🧪' },
+  { k:'biology',  n:'生物', em:'🧬' },
+  { k:'chinese',  n:'语文', em:'📖' },
+  { k:'english',  n:'英语', em:'🔤' }
+];
+let knCur = 'all', knType = 'all';
+
+// 仅保留白名单标签，其余标签删除；再转义残留尖括号，防止数据里的 < 击穿页面
+function knSafe(s) {
+  s = String(s || '');
+  s = s.replace(/<\/?([a-z]+)(\s[^<>]*)?>/g, (m, tag) => ['br','sub','sup','b','i'].includes(tag.toLowerCase()) ? m : '');
+  s = s.replace(/&(?!#?\w+;)/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  return s;
+}
+function knStrip(s) { return String(s || '').replace(/<[^>]+>/g, ''); }
+
+function knCount(k) {
+  const X = window.KNOWLEDGE; if (!X) return 0;
+  if (k === 'all') { let n = 0; Object.keys(X).forEach(s => X[s].forEach(g => n += g.items.length)); return n; }
+  const E = X[k] || []; return E.reduce((a, g) => a + g.items.length, 0);
+}
+
+function renderKnTabs() {
+  const box = $('kn-tabs'); if (!box) return;
+  box.innerHTML = KN_SUBJ.map(s =>
+    '<button class="erci-tab' + (s.k === knCur ? ' on' : '') + '" onclick="knGo(\'' + s.k + '\')">' +
+    s.em + ' ' + s.n + '<span class="n">' + knCount(s.k) + '</span></button>'
+  ).join('');
+}
+
+function knGo(k) { knCur = k; renderKn(); showView('knowledge'); }
+
+function openKn() {
+  const X = window.KNOWLEDGE;
+  if (!X) { $('kn-list').innerHTML = '<p style="color:#c0392b">数据未加载（knowledge-*.js）</p>'; showView('knowledge'); return; }
+  renderKn();
+  showView('knowledge');
+}
+
+function renderKnFilter() {
+  const box = $('kn-filter'); if (!box) return;
+  const opts = [['all','全部'],['公式','公式'],['概念','概念/方法']];
+  box.innerHTML = opts.map(([v, l]) =>
+    '<button class="chip' + (knType === v ? ' active' : '') + '" onclick="knSetType(\'' + v + '\')">' + l + '</button>'
+  ).join('');
+}
+function knSetType(t) { knType = t; renderKn(); }
+
+function knMatch(it, kw) {
+  if (!kw) return true;
+  const k = kw.toLowerCase();
+  return (knStrip(it.t) + (it.f ? knStrip(it.f) : '') + (it.m || '')).toLowerCase().indexOf(k) >= 0;
+}
+
+function renderKn() {
+  renderKnTabs();
+  renderKnFilter();
+  const X = window.KNOWLEDGE || {};
+  const kw = ($('kn-search').value || '').trim();
+  const subs = knCur === 'all' ? KN_SUBJ.filter(s => s.k !== 'all') : KN_SUBJ.filter(s => s.k === knCur);
+  let collected = [];
+  subs.forEach(s => {
+    (X[s.k] || []).forEach(g => {
+      g.items.forEach(it => {
+        if (knType !== 'all' && it.type !== knType) return;
+        if (!knMatch(it, kw)) return;
+        collected.push({ it, em: s.em });
+      });
+    });
+  });
+  const scopeName = knCur === 'all' ? '全部科目' : (KN_SUBJ.find(s => s.k === knCur).em + ' ' + KN_SUBJ.find(s => s.k === knCur).n);
+  $('kn-bar').innerHTML = '<b>' + scopeName + '</b> · 命中 <b>' + collected.length + '</b> 条' + (kw ? '（关键词「' + knSafe(kw) + '」）' : '');
+  let h = '';
+  if (!collected.length) {
+    h = '<p style="color:#8a96a3;padding:22px 4px;text-align:center">没有匹配的知识点，换个关键词试试～<br>例如：正弦定理 / 动量守恒 / 电化学 / 非谓语 / 病句</p>';
+  } else {
+    collected.forEach(o => {
+      const it = o.it;
+      const tg = it.type === '公式' ? ['kn-f','公式'] : ['kn-c','概念'];
+      h += '<div class="kn-card"><h3>' + (knCur === 'all' ? o.em + ' ' : '') + knSafe(it.t) + ' <span class="kn-tag ' + tg[0] + '">' + tg[1] + '</span></h3>';
+      h += '<div class="kn-body">' + knSafe(it.f) + '</div>';
+      if (it.m) h += '<div class="kn-memo"><b>提示：</b>' + knSafe(it.m) + '</div>';
+      h += '</div>';
+    });
+  }
+  $('kn-list').innerHTML = h;
 }
 
 // ===== 离线缓存注册（仅 http/https 环境，Electron/file 下自动跳过） =====
